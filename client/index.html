@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" integrity="sha384-HzUaiJdCTIY/RL2vDPRGdEQHHahjzwoJJzGUkYjHVzTwXFQ2QN/nVgX7tzoMW3Ov"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="./stylesheets/main.css">
+    <link rel="stylesheet" href="/public/stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="/public/stylesheets/main.css">
     <title>Home</title>
 </head>
 
@@ -23,10 +22,10 @@
           </button>
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
-                <ul class="nav navbar-nav">                   
+                <ul class="nav navbar-nav">
                     <li>
                         <a href="#">Help</a>
-                    </li>                                        
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Login</a></li>
@@ -37,8 +36,14 @@
     </nav>
 
     <div id="main-content">
-        <h1>Something</h1>
+        <h1 class="text-center">Something</h1>
     </div>
+
+    <script src="/systemjs/system.js"></script>
+    <script src="/public/scripts/system-config.js"></script>
+    <script>
+        System.import('main');
+    </script>
 </body>
 
 </html>
