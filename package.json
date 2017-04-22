@@ -1,0 +1,33 @@
+{
+  "name": "football-world",
+  "version": "1.0.0",
+  "description": "SPA app on a football related theme. The name pretty much says it all.",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "nodemon server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Js-Apps-Team-Gooseberry/FootballWorld.git"
+  },
+  "keywords": [
+    "football",
+    "premierleague",
+    "news",
+    "standings",
+    "predictions"
+  ],
+  "author": "team-gooseberry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Js-Apps-Team-Gooseberry/FootballWorld/issues"
+  },
+  "homepage": "https://github.com/Js-Apps-Team-Gooseberry/FootballWorld#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "eslint": "^3.19.0",
+    "nodemon": "^1.11.0"
+  }
+}

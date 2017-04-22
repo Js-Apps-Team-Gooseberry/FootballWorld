@@ -1,0 +1,24 @@
+{
+  "name": "football-world",
+  "description": "SPA app on a football related theme. The name pretty much says it all.",
+  "main": "server/server.js",
+  "authors": [
+    "team-gooseberry"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "football",
+    "premierleague",
+    "news",
+    "standings",
+    "predictions"
+  ],
+  "homepage": "https://github.com/Js-Apps-Team-Gooseberry/FootballWorld",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
