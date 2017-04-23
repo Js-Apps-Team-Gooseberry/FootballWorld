@@ -1,15 +1,14 @@
-/* globals module require __dirname */
+/* globals require module __dirname */
 
 const fs = require('fs'),
-    path = require('path'),
-    models = require('./models');
+    path = require('path');
 
 let dataExport = {};
 
 fs.readdirSync(__dirname)
-    .filter(x => x.includes('-data.js'))
+    .filter(x => x.includes('-model.js'))
     .forEach(data => {
-        let dataModule = require(path.join(__dirname, data))(models);
+        let dataModule = require(path.join(__dirname, data));
 
         Object.keys(dataModule)
             .forEach(key => {

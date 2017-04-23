@@ -13,7 +13,7 @@
     "standings",
     "predictions"
   ],
-  "homepage": "https://github.com/Js-Apps-Team-Gooseberry/FootballWorld",
+  "homepage": "https://github.com/Js-Apps-Team-Gooseberry/TsarFootball",
   "ignore": [
     "**/.*",
     "node_modules",

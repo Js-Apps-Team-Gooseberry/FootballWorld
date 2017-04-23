@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Js-Apps-Team-Gooseberry/FootballWorld.git"
+    "url": "git+https://github.com/Js-Apps-Team-Gooseberry/TsarFootball.git"
   },
   "keywords": [
     "football",
@@ -21,9 +21,9 @@
   "author": "team-gooseberry",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Js-Apps-Team-Gooseberry/FootballWorld/issues"
+    "url": "https://github.com/Js-Apps-Team-Gooseberry/TsarFootball/issues"
   },
-  "homepage": "https://github.com/Js-Apps-Team-Gooseberry/FootballWorld#readme",
+  "homepage": "https://github.com/Js-Apps-Team-Gooseberry/TsarFootball#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",

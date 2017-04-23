@@ -20,7 +20,7 @@ function _get(name) {
 function compile(templateName, data) {
     let result = _get(templateName)
         .then(template => {
-            var templateFunction = Handlebars.compile(template);
+            let templateFunction = Handlebars.compile(template);
             return templateFunction(data);
         });
 
