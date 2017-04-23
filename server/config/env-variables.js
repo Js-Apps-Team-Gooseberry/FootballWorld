@@ -2,7 +2,7 @@
 
 let connectionString = {
     production: '',
-    development: 'mongodb://localhost/football-world'
+    development: 'mongodb://localhost/tsar-football'
 };
 
 module.exports = {
