@@ -1,5 +1,5 @@
 {
-  "name": "football-world",
+  "name": "tsar-football",
   "description": "SPA app on a football related theme. The name pretty much says it all.",
   "main": "server/server.js",
   "authors": [
@@ -22,6 +22,10 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "navigo": "^4.6.2",
+    "handlebars": "^4.0.5",
+    "bootstrap": "^3.3.7",
+    "toastr": "^2.1.3"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "football-world",
+  "name": "tsar-football",
   "version": "1.0.0",
   "description": "SPA app on a football related theme. The name pretty much says it all.",
   "main": "server/server.js",

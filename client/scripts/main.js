@@ -1,4 +1,5 @@
 import 'jquery';
 import 'bootstrap';
+import * as toastr from 'toastr';
 
-console.log('wa wa');
+toastr.success('Welcome!');
