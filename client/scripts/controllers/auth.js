@@ -1,4 +1,5 @@
 import { compile } from 'templates-compiler';
+import * as authService from 'auth-service';
 import * as toastr from 'toastr';
 import $ from 'jquery';
 
@@ -9,6 +10,8 @@ function register() {
         .then(html => $mainContainer.html(html))
         .then(() => {
             $('#btn-register').on('click', () => {
+                $('#btn-register').addClass('disabled');
+
                 let username = $('#register-username').val();
                 if (!username || username.trim().length < 6 || username.trim().length > 15) {
                     $('#form-register-username').addClass('has-error');
@@ -60,6 +63,39 @@ function register() {
                 } else {
                     $('#form-register-email').removeClass('has-error').addClass('has-success');
                 }
+
+                let user = {
+                    username,
+                    password,
+                    name,
+                    email,
+                    profilePicture: $('#register-profile-picture').val()
+                };
+
+                authService.register(user)
+                    .then(() => {
+                        toastr.success(`User ${username} successfully registered!`);
+                        $('#register-username').val('');
+                        $('#register-password').val('');
+                        $('#register-confirm-password').val('');
+                        $('#register-name').val('');
+                        $('#register-email').val('');
+                        $('#register-profile-picture').val('');
+                        $('#btn-register').removeClass('disabled');
+                    })
+                    .catch(error => {
+                        if (error.status == 409) {
+                            toastr.error('User with the same username already exists!');
+                            $('#form-register-username').addClass('has-error');
+                            $('#btn-register').removeClass('disabled');
+                            $('#register-username').focus();
+                            return;
+                        } else {
+                            toastr.error('An error occured! Please try again later!');
+                            $('#btn-register').removeClass('disabled');
+                            console.log(error);
+                        }
+                    });
             });
         });
 

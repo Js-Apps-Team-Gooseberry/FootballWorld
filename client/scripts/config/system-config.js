@@ -3,14 +3,18 @@
 SystemJS.config({
     transpiler: 'plugin-babel',
     map: {
+        // plugins
         'plugin-babel': '/babel/plugin-babel.js',
         'systemjs-babel-build': '/babel/systemjs-babel-browser.js',
 
-        // app start script
+        // app
         'main': '/public/scripts/main.js',
         'toastr': '/public/scripts/config/toastr-config.js',
         'requester': '/public/scripts/requester.js',
         'templates-compiler': '/public/scripts/templates-compiler.js',
+
+        // services
+        'auth-service': '/public/scripts/services/auth.js',
 
         // controllers
         'controllers': '/public/scripts/controllers/index.js',
