@@ -7,8 +7,7 @@ module.exports = function (app, data) {
 
     router
         .post('/register', controllers.register)
-        .put('/login', controllers.login)
-        .put('/logout', controllers.logout);
+        .put('/login', controllers.login);
 
     app.use('/api/auth', router);
 };

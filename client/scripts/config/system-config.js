@@ -9,6 +9,7 @@ SystemJS.config({
 
         // app
         'main': '/public/scripts/main.js',
+        'utils': '/public/scripts/utils.js',
         'toastr': '/public/scripts/config/toastr-config.js',
         'requester': '/public/scripts/requester.js',
         'templates-compiler': '/public/scripts/templates-compiler.js',
@@ -25,7 +26,7 @@ SystemJS.config({
         'jquery': '/public/bower_components/jquery/dist/jquery.js',
         'bootstrap': '/public/bower_components/bootstrap/dist/js/bootstrap.js',
         'navigo': '/public/bower_components/navigo/lib/navigo.js',
-        'handlebars': '/public/bower_components/handlebars/handlebars.js',        
+        'handlebars': '/public/bower_components/handlebars/handlebars.js',
         'toastr-lib': '/public/bower_components/toastr/toastr.js'
     }
 });

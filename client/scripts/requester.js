@@ -12,6 +12,8 @@ function get(url) {
 }
 
 function getJSON(url, headers = {}) {
+    headers.authorization = localStorage.getItem('token');
+
     return new Promise((resolve, reject) => {
         $.ajax({
             url,
@@ -25,6 +27,8 @@ function getJSON(url, headers = {}) {
 }
 
 function putJSON(url, body, headers = {}) {
+    headers.authorization = localStorage.getItem('token');
+    
     return new Promise((resolve, reject) => {
         $.ajax({
             url,
@@ -39,6 +43,8 @@ function putJSON(url, body, headers = {}) {
 }
 
 function postJSON(url, body, headers = {}) {
+    headers.authorization = localStorage.getItem('token');
+    
     return new Promise((resolve, reject) => {
         $.ajax({
             url,
