@@ -13,7 +13,9 @@ SystemJS.config({
         'templates-compiler': '/public/scripts/templates-compiler.js',
 
         // controllers
+        'controllers': '/public/scripts/controllers/index.js',
         'home-controller': '/public/scripts/controllers/home.js',
+        'auth-controller': '/public/scripts/controllers/auth.js',
 
         // libs
         'jquery': '/public/bower_components/jquery/dist/jquery.js',

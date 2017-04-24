@@ -1,7 +1,16 @@
 body {
-    padding-top: 40px;
+    padding-top: 60px;
 }
 
 nav a {
     font-size: 1.5rem;
+}
+
+.panel-credentials {
+    padding: 0 15px;
+    box-shadow: 0 0 10px lightgrey;
+}
+
+.panel-credentials h2 {
+    margin: 0;
 }
