@@ -5,6 +5,64 @@ import $ from 'jquery';
 
 const $mainContainer = $('#main-container');
 
+function login() {
+    compile('login')
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            $('#btn-login').on('click', () => {
+                $('#btn-login').addClass('disabled');
+
+                let username = $('#login-username').val();
+                if (!username) {
+                    $('#form-login-username').addClass('has-error');
+                    $('#login-username').focus();
+                    toastr.error('Username required!');
+                    return;
+                } else {
+                    $('#form-login-username').removeClass('has-error').addClass('has-success');
+                }
+
+                let password = $('#login-password').val();
+                if (!password) {
+                    $('#form-login-password').addClass('has-error');
+                    $('#login-password').focus();
+                    toastr.error('Provide your password!');
+                    return;
+                } else {
+                    $('#form-login-password').removeClass('has-error').addClass('has-success');
+                }
+
+                let user = {
+                    username,
+                    password
+                };
+
+                authService.login(user)
+                    .then(response => {
+                        localStorage.setItem('currentUser', JSON.stringify(response.user));
+                        localStorage.setItem('token', response.token);
+                        toastr.success('Login successful!');
+                        $(location).attr('href', '#/home');
+                    })
+                    .catch(error => {
+                        if (error.status == 401) {
+                            toastr.error('Invalid username or/and password!');
+                            $('#form-login-username').addClass('has-error');
+                            $('#form-login-password').addClass('has-error');
+                            $('#btn-login').removeClass('disabled');
+                        } else if (error.status == 403) {
+                            toastr.error('Account blocked!');
+                            $('#btn-login').removeClass('disabled');
+                        } else {
+                            toastr.error('An error occured! Please try again later!');
+                            $('#btn-login').removeClass('disabled');
+                            console.log(error);
+                        }
+                    });
+            });
+        });
+}
+
 function register() {
     compile('register')
         .then(html => $mainContainer.html(html))
@@ -105,4 +163,4 @@ function register() {
     }
 }
 
-export { register };
+export { register, login };

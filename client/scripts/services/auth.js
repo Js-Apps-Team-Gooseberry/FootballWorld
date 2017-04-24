@@ -4,4 +4,8 @@ function register(user) {
     return requester.postJSON('/api/auth/register', user);
 }
 
-export { register };
+function login(user) {
+    return requester.putJSON('/api/auth/login', user);
+}
+
+export { register, login };

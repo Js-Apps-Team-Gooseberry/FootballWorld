@@ -64,7 +64,8 @@ module.exports = (data) => {
                         token: 'JWT ' + token,
                         user: userToReturn
                     });
-                });
+                })
+                .catch(error => res.status(500).json(error));
         },
         logout(req, res) {
             req.logout();
