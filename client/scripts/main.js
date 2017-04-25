@@ -2,9 +2,9 @@ import 'jquery';
 import 'bootstrap';
 import Navigo from 'navigo';
 import * as controllers from 'controllers';
-import { checkIfLoggedIn } from 'utils';
+import { toggleButtonsIfLoggedIn } from 'utils';
 
-checkIfLoggedIn();
+toggleButtonsIfLoggedIn();
 
 const router = new Navigo(null, false);
 

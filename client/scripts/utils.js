@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-function checkIfLoggedIn() {
+function toggleButtonsIfLoggedIn() {
     if (localStorage.getItem('currentUser') != undefined) {
         $('.logged-out').addClass('hidden');
         $('.logged-in').removeClass('hidden');
@@ -10,4 +10,4 @@ function checkIfLoggedIn() {
     }
 }
 
-export { checkIfLoggedIn };
+export { toggleButtonsIfLoggedIn };
