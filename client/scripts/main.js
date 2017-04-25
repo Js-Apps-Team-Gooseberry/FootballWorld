@@ -14,6 +14,5 @@ router
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
     .on('/profile', controllers.auth.profile)
-    .on('*', controllers.home.get)
     .resolve();
 
