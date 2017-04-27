@@ -14,3 +14,36 @@ nav a {
 .panel-credentials h2 {
     margin: 0;
 }
+
+.article-news {
+    padding: 10px;
+}
+.article-news a {
+    text-decoration: none;
+}
+
+.content-news {
+    padding: 5px;
+}
+.content-news h3 .time{
+    color: #5bc0de;
+}
+
+.content-news p{
+    color: #333333;
+}
+
+.article:hover .article-news {
+    -webkit-box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
+    -moz-box-shadow:    3px 3px 14px 0px rgba(50, 50, 50, 0.71);
+    box-shadow:         3px 3px 14px 0px rgba(50, 50, 50, 0.71);
+    border: hidden;
+}
+
+.img-container img {
+    width: 100%;
+    height: 130px;
+}
+.content-news {
+    height: 150px;
+}
