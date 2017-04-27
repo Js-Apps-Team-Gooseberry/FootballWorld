@@ -3,9 +3,9 @@ import $ from 'jquery';
 
 const $mainContainer = $('#main-container');
 
-function get() {
-    compile('home')
+function getAll() {
+    compile('news-list')
         .then(html => $mainContainer.html(html));
 }
 
-export { get };
+export { getAll };

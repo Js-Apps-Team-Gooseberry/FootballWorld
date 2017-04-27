@@ -24,6 +24,10 @@ let newsEntrySchema = new Schema({
     tags: {
         type: [String]
     },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
     createdOn: {
         type: Date,
         default: new Date

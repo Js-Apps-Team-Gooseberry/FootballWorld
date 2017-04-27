@@ -14,6 +14,7 @@ router
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
     .on('/profile', controllers.auth.profile)
-    .on('/article', controllers.news.loadNews)
+    .on('/article', controllers.article.loadArticle)
+    .on('/news', controllers.news.getAll)
     .resolve();
 
