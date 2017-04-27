@@ -5,7 +5,7 @@ const pageSize = 10;
 module.exports = (data) => {
     return {
         getNewsForUsers(req, res) {
-            let page = req.body.page;
+            let page = req.headers.page;
             if (!page) {
                 page = 1;
             }

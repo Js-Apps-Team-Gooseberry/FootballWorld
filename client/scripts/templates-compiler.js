@@ -1,5 +1,14 @@
 import Handlebars from 'handlebars';
 import { get as getTemplate } from 'requester';
+import paginate from 'handlebars-paginate';
+import { formatDate } from 'utils';
+
+Handlebars.registerHelper('date', date => {
+    let formattedDate = formatDate(date);
+    return formattedDate;
+});
+
+Handlebars.registerHelper('paginate', paginate);
 
 const cachedTemplates = {};
 

@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <h1>Latest News</h1>
+        <hr /> {{#each newsEntries}}
+        <div class="panel news-entry">
+            <div class="col-md-3 news-entry-image" style="background-image: url('{{imageUrl}}');">
+            </div>
+            <div class="col-md-9">
+                <h2 class="news-entry-title">{{title}}</h2>
+                <p class="news-entry-date">{{#date createdOn}}{{/date}}</p>
+                <p class="news-entry-content">{{content}}</p>
+            </div>
+        </div>
+        {{/each}}
+        <div class="pager">
+            <ul class="pagination">
+                {{#paginate pagination type="previous"}}
+                <li {{#if disabled}}class="disabled" disabled="true" {{/if}}><a href="#/news/{{n}}">«</a></li>
+                {{/paginate}}
+
+                 {{#paginate pagination type="middle" limit="5"}}
+                <li {{#if active}}class="active" {{/if}}><a href="#/news/{{n}}">{{n}}</a></li>
+                {{/paginate}} 
+                
+                {{#paginate pagination type="next"}}
+                <li {{#if disabled}}class="disabled" {{/if}}><a href="#/news/{{n}}">»</a></li>
+                {{/paginate}}
+            </ul>
+        </div>
+    </div>
+</div>

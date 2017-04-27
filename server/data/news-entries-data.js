@@ -1,4 +1,6 @@
-/* globals module */
+/* globals module require */
+
+const pageCalculator = require('../utils/page-calculator');
 
 module.exports = (models) => {
     const NewsEntry = models.NewsEntry;
@@ -40,9 +42,10 @@ module.exports = (models) => {
                                 return reject(error);
                             }
 
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
                             let news = {
                                 newsEntries,
-                                count
+                                pagesCount
                             };
 
                             return resolve(news);

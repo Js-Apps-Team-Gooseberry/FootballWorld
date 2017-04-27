@@ -1,7 +1,11 @@
 import * as requester from 'requester';
 
 function getNotDeletedArticlesByPage(page) {
-    return requester.postJSON('/api/news/get-all-for-users', page);
+    let headers = {
+        page
+    };
+
+    return requester.getJSON('/api/news/get-all-for-users', headers);
 }
 
 export { getNotDeletedArticlesByPage };

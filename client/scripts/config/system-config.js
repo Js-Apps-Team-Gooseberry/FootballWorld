@@ -30,6 +30,7 @@ SystemJS.config({
         'bootstrap': '/libs/bootstrap/dist/js/bootstrap.js',
         'navigo': '/libs/navigo/lib/navigo.js',
         'handlebars': '/libs/handlebars/dist/handlebars.js',
+        'handlebars-paginate': '/libs/handlebars-paginate/index.js',
         'toastr-lib': '/libs/toastr/toastr.js'
     }
 });
