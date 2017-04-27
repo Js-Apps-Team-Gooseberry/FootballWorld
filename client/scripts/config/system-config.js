@@ -21,7 +21,7 @@ SystemJS.config({
         'controllers': '/public/scripts/controllers/index.js',
         'home-controller': '/public/scripts/controllers/home.js',
         'auth-controller': '/public/scripts/controllers/auth.js',
-        'news-controller': '/public/scripts/controllers/news.js',
+        'article-controller': '/public/scripts/controllers/article.js',
 
         // libs
         'jquery': '/libs/jquery/dist/jquery.js',

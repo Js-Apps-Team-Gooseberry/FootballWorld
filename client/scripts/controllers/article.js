@@ -3,9 +3,9 @@ import $ from 'jquery';
 
 const $mainContainer = $('#main-container');
 
-function loadNews() {
-    compile('news')
+function loadArticle() {
+    compile('article')
         .then(html=> $mainContainer.html(html));
 }
 
-export { loadNews };
+export { loadArticle };
