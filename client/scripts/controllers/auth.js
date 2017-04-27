@@ -2,7 +2,7 @@ import { compile } from 'templates-compiler';
 import * as authService from 'auth-service';
 import * as toastr from 'toastr';
 import $ from 'jquery';
-import { checkIfLoggedIn } from 'utils';
+import { toggleButtonsIfLoggedIn } from 'utils';
 
 const $mainContainer = $('#main-container');
 
@@ -24,32 +24,37 @@ function login() {
     compile('login')
         .then(html => $mainContainer.html(html))
         .then(() => {
-            $('#btn-login').on('click', () => {
-                $('#btn-login').addClass('disabled');
-                $('#btn-login').attr('disabled', true);
+            let $btnLogin = $('#btn-login');
+            $btnLogin.on('click', () => {
+                $btnLogin.addClass('disabled');
+                $btnLogin.attr('disabled', true);
 
-                let username = $('#login-username').val();
+                let $loginUsername = $('#login-username');
+                let $formLoginUsername = $('#form-login-username');
+                let username = $loginUsername.val();
                 if (!username) {
-                    $('#form-login-username').addClass('has-error');
-                    $('#login-username').focus();
+                    $formLoginUsername.addClass('has-error');
+                    $loginUsername.focus();
                     toastr.error('Username required!');
-                    $('#btn-login').removeClass('disabled');
-                    $('#btn-login').attr('disabled', false);
+                    $btnLogin.removeClass('disabled');
+                    $btnLogin.attr('disabled', false);
                     return;
                 } else {
-                    $('#form-login-username').removeClass('has-error').addClass('has-success');
+                    $formLoginUsername.removeClass('has-error').addClass('has-success');
                 }
 
-                let password = $('#login-password').val();
+                let $loginPassword = $('#login-password');
+                let $formLoginPassword = $('#form-login-password');
+                let password = $loginPassword.val();
                 if (!password) {
-                    $('#form-login-password').addClass('has-error');
-                    $('#login-password').focus();
+                    $formLoginPassword.addClass('has-error');
+                    $loginPassword.focus();
                     toastr.error('Provide your password!');
-                    $('#btn-login').removeClass('disabled');
-                    $('#btn-login').attr('disabled', false);
+                    $btnLogin.removeClass('disabled');
+                    $btnLogin.attr('disabled', false);
                     return;
                 } else {
-                    $('#form-login-password').removeClass('has-error').addClass('has-success');
+                    $formLoginPassword.removeClass('has-error').addClass('has-success');
                 }
 
                 let user = {
@@ -63,13 +68,13 @@ function login() {
                         localStorage.setItem('token', response.token);
                         toastr.success('Login successful!');
                         $(location).attr('href', '#/home');
-                        checkIfLoggedIn();
+                        toggleButtonsIfLoggedIn();
                     })
                     .catch(error => {
                         if (error.status == 401) {
                             toastr.error('Invalid username or/and password!');
-                            $('#form-login-username').addClass('has-error');
-                            $('#form-login-password').addClass('has-error');
+                            $formLoginUsername.addClass('has-error');
+                            $formLoginPassword.addClass('has-error');
                         } else if (error.status == 403) {
                             toastr.error('Account blocked!');
                         } else {
@@ -77,8 +82,8 @@ function login() {
                             console.log(error);
                         }
 
-                        $('#btn-login').removeClass('disabled');
-                        $('#btn-login').attr('disabled', false);
+                        $btnLogin.removeClass('disabled');
+                        $btnLogin.attr('disabled', false);
                     });
             });
         });
@@ -91,7 +96,7 @@ function logout() {
     }
 
     localStorage.clear();
-    checkIfLoggedIn();
+    toggleButtonsIfLoggedIn();
     $(location).attr('href', '#/home');
     toastr.success('Successfully logged out!');
 }
@@ -116,108 +121,121 @@ function register() {
     compile('register')
         .then(html => $mainContainer.html(html))
         .then(() => {
-            $('#btn-register').on('click', () => {
-                $('#btn-register').addClass('disabled');
-                $('#btn-register').attr('disabled', true);
+            let $btnRegister = $('#btn-register');
+            $btnRegister.on('click', () => {
+                $btnRegister.addClass('disabled');
+                $btnRegister.attr('disabled', true);
 
-                let username = $('#register-username').val();
+                let $registerUsername = $('#register-username');
+                let $formRegisterUsername = $('#form-register-username');
+                let username = $registerUsername.val();
                 if (!username || username.trim().length < 6 || username.trim().length > 15) {
-                    $('#form-register-username').addClass('has-error');
-                    $('#register-username').focus();
-                    $('#btn-register').removeClass('disabled');
-                    $('#btn-register').attr('disabled', false);
+                    $formRegisterUsername.addClass('has-error');
+                    $registerUsername.focus();
+                    $btnRegister.removeClass('disabled');
+                    $btnRegister.attr('disabled', false);
                     toastr.error('Username length should be between 6 and 15 symbols!');
                     return;
                 } else {
-                    $('#form-register-username').removeClass('has-error').addClass('has-success');
+                    $formRegisterUsername.removeClass('has-error').addClass('has-success');
                 }
 
-                let password = $('#register-password').val();
+                let $registerPassword = $('#register-password');
+                let $formRegisterPassword = $('#form-register-password');
+                let password = $registerPassword.val();
                 if (!password || password.trim().length < 6 || password.trim().length > 15) {
-                    $('#form-register-password').addClass('has-error');
-                    $('#register-password').focus();
+                    $formRegisterPassword.addClass('has-error');
+                    $registerPassword.focus();
                     toastr.error('Pasword length should be between 6 and 15 symbols!');
-                    $('#btn-register').removeClass('disabled');
-                    $('#btn-register').attr('disabled', false);
+                    $btnRegister.removeClass('disabled');
+                    $btnRegister.attr('disabled', false);
                     return;
                 } else {
-                    $('#form-register-password').removeClass('has-error').addClass('has-success');
+                    $formRegisterPassword.removeClass('has-error').addClass('has-success');
                 }
 
-                let confirmPassword = $('#register-confirm-password').val();
+                let $registerConfirmPassword = $('#register-confirm-password');
+                let $formRegisterConfirmPassword = $('#form-register-confirm-password');
+                let confirmPassword = $registerConfirmPassword.val();
                 if (password !== confirmPassword) {
-                    $('#form-register-password').addClass('has-error');
-                    $('#form-register-confirm-password').addClass('has-error');
-                    $('#register-confirm-password').focus();
-                    $('#btn-register').removeClass('disabled');
-                    $('#btn-register').attr('disabled', false);
+                    $formRegisterPassword.addClass('has-error');
+                    $formRegisterConfirmPassword.addClass('has-error');
+                    $registerConfirmPassword.focus();
+                    $btnRegister.removeClass('disabled');
+                    $btnRegister.attr('disabled', false);
                     toastr.error('Paswords do not match!');
                     return;
                 } else {
-                    $('#form-register-password').removeClass('has-error').addClass('has-success');
-                    $('#form-register-confirm-password').removeClass('has-error').addClass('has-success');
+                    $formRegisterPassword.removeClass('has-error').addClass('has-success');
+                    $formRegisterConfirmPassword.removeClass('has-error').addClass('has-success');
                 }
 
-                let name = $('#register-name').val();
+                let $registerName = $('#register-name');
+                let $formRegisterName = $('#form-register-name');
+                let name = $registerName.val();
                 if (!name || name.trim().length < 3 || name.trim().length > 25) {
-                    $('#form-register-name').addClass('has-error');
-                    $('#register-name').focus();
+                    $formRegisterName.addClass('has-error');
+                    $registerName.focus();
                     toastr.error('Name length should be between 3 and 25 symbols!');
-                    $('#btn-register').removeClass('disabled');
-                    $('#btn-register').attr('disabled', false);
+                    $btnRegister.removeClass('disabled');
+                    $btnRegister.attr('disabled', false);
                     return;
                 } else {
-                    $('#form-register-name').removeClass('has-error').addClass('has-success');
+                    $formRegisterName.removeClass('has-error').addClass('has-success');
                 }
 
-                let email = $('#register-email').val();
+                let $registerEmail = $('#register-email');
+                let $formRegisterEmail = $('#form-register-email');
+                let email = $registerEmail.val();
                 if (!email || !validateEmail(email)) {
-                    $('#form-register-email').addClass('has-error');
-                    $('#register-email').focus();
+                    $formRegisterEmail.addClass('has-error');
+                    $registerEmail.focus();
                     toastr.error('Please enter a valid E-Mail address!');
-                    $('#btn-register').removeClass('disabled');
-                    $('#btn-register').attr('disabled', false);
+                    $btnRegister.removeClass('disabled');
+                    $btnRegister.attr('disabled', false);
                     return;
                 } else {
-                    $('#form-register-email').removeClass('has-error').addClass('has-success');
+                    $formRegisterEmail.removeClass('has-error').addClass('has-success');
                 }
+
+                let $registerProfilePic = $('#register-profile-picture');
 
                 let user = {
                     username,
                     password,
                     name,
                     email,
-                    profilePicture: $('#register-profile-picture').val()
+                    profilePicture: $registerProfilePic.val()
                 };
 
                 authService.register(user)
                     .then(response => {
-                        $('#register-username').val('');
-                        $('#register-password').val('');
-                        $('#register-confirm-password').val('');
-                        $('#register-name').val('');
-                        $('#register-email').val('');
-                        $('#register-profile-picture').val('');
+                        $registerUsername.val('');
+                        $registerPassword.val('');
+                        $registerConfirmPassword.val('');
+                        $registerName.val('');
+                        $registerEmail.val('');
+                        $registerProfilePic.val('');
 
                         toastr.success(`User ${username} successfully registered!`);
                         localStorage.setItem('currentUser', JSON.stringify(response.user));
                         localStorage.setItem('token', response.token);
                         $(location).attr('href', '#/home');
-                        checkIfLoggedIn();
+                        toggleButtonsIfLoggedIn();
                     })
                     .catch(error => {
                         if (error.status == 409) {
                             toastr.error('User with the same username already exists!');
-                            $('#form-register-username').addClass('has-error');
-                            $('#register-username').focus();
+                            $formRegisterUsername.addClass('has-error');
+                            $registerUsername.focus();
                         } else {
                             toastr.error('An error occured! Please try again later!');
-                            $('#btn-register').removeClass('disabled');
+                            $btnRegister.removeClass('disabled');
                             console.log(error);
                         }
 
-                        $('#btn-register').removeClass('disabled');
-                        $('#btn-register').attr('disabled', false);
+                        $btnRegister.removeClass('disabled');
+                        $btnRegister.attr('disabled', false);
                     });
             });
         });

@@ -2,9 +2,9 @@ import 'jquery';
 import 'bootstrap';
 import Navigo from 'navigo';
 import * as controllers from 'controllers';
-import { checkIfLoggedIn } from 'utils';
+import { toggleButtonsIfLoggedIn } from 'utils';
 
-checkIfLoggedIn();
+toggleButtonsIfLoggedIn();
 
 const router = new Navigo(null, false);
 
@@ -14,7 +14,10 @@ router
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
     .on('/profile', controllers.auth.profile)
+<<<<<<< HEAD
     .on('/news', controllers.news.loadNews)
     .on('*', controllers.home.get)
+=======
+>>>>>>> b1d855e5897157215e5ca9fc7f401b0fab4915e5
     .resolve();
 
