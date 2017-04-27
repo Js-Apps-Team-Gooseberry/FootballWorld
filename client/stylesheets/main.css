@@ -52,10 +52,12 @@ nav a {
 }
 
 .news-entry {
+    cursor: pointer;
     height: 200px;
     border: 1px solid lightgrey;
     box-shadow: 0 0 6px lightgrey;
     overflow: hidden;
+    color: black;
 }
 
 .news-entry-image {
@@ -79,4 +81,41 @@ nav a {
     height: 8rem;
     line-height: 2rem;
     overflow: hidden;
+}
+
+.img-news-details {
+    width: 100%;
+}
+
+.news-details-content {
+    white-space: pre-wrap;
+    text-align: justify;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.aside-photo {
+    padding-right: 0;
+}
+
+.aside-title {
+    margin-top: 0;
+    font-weight: bold;
+    border-bottom: 2px solid black;
+    text-align: right;
+}
+
+.aside-article {
+    color: black;
+}
+
+.aside-tab {
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.aside-tab:hover .aside-article {
+    text-decoration: underline;
 }

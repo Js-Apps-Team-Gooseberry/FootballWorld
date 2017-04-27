@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row">
+        <article class="col-md-8">
+            <img src="{{article.imageUrl}}" class="img-news-details" alt="{{article.title}}">
+            <h2 class="bold">{{article.title}}</h2>
+            <p class="news-entry-date">{{#date article.createdOn}}{{/date}}</p>
+            <p class="news-details-content">{{article.content}}</p>
+        </article>
+        <aside class="col-md-4">
+            {{#if related}}
+            <h4 class="aside-title">Related News</h4>
+            {{/if}}
+            {{#each related}}
+            <div class="row aside-tab">
+                <a href="#/news/details/{{_id}}">
+                    <div class="col-md-4 aside-photo">
+                        <img src="{{imageUrl}}" class="img-responsive" alt="{{title}}">
+                    </div>
+                    <div class="col-md-8 aside-article">
+                        {{title}}
+                    </div>
+                </a>
+            </div>
+            {{/each}}
+            <h4 class="aside-title">Latest News</h4>
+            {{#each latest}}
+            <div class="row aside-tab">
+                <a href="#/news/details/{{_id}}">
+                    <div class="col-md-4 aside-photo">
+                        <img src="{{imageUrl}}" class="img-responsive" alt="{{title}}">
+                    </div>
+                    <div class="col-md-8 aside-article">
+                        {{title}}
+                    </div>
+                </a>
+            </div>
+            {{/each}}
+        </aside>
+    </div>
+</div>

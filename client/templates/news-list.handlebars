@@ -1,16 +1,19 @@
 <div class="container">
     <div class="row">
         <h1>Latest News</h1>
-        <hr /> {{#each newsEntries}}
-        <div class="panel news-entry">
-            <div class="col-md-3 news-entry-image" style="background-image: url('{{imageUrl}}');">
+        <hr /> 
+        {{#each newsEntries}}
+        <a href="#/news/details/{{_id}}">
+            <div class="panel news-entry">
+                <div class="col-md-3 news-entry-image" style="background-image: url('{{imageUrl}}');">
+                </div>
+                <div class="col-md-9">
+                    <h2 class="news-entry-title">{{title}}</h2>
+                    <p class="news-entry-date">{{#date createdOn}}{{/date}}</p>
+                    <p class="news-entry-content">{{content}}</p>
+                </div>
             </div>
-            <div class="col-md-9">
-                <h2 class="news-entry-title">{{title}}</h2>
-                <p class="news-entry-date">{{#date createdOn}}{{/date}}</p>
-                <p class="news-entry-content">{{content}}</p>
-            </div>
-        </div>
+        </a>
         {{/each}}
         <div class="pager">
             <ul class="pagination">

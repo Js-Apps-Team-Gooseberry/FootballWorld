@@ -26,6 +26,7 @@ module.exports = (models) => {
             });
         },
         getNotDeletedNewsEntriesByPage(page, pageSize) {
+            pageSize = +pageSize;
             return new Promise((resolve, reject) => {
                 NewsEntry.find({})
                     .where({ isDeleted: false })
@@ -50,6 +51,48 @@ module.exports = (models) => {
 
                             return resolve(news);
                         });
+                    });
+            });
+        },
+        getNewsEntryById(id) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.findOne({ _id: id }, (error, newsEntry) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(newsEntry);
+                });
+            });
+        },
+        getNewsByTags(tags, currentArticle, articlesCount) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.find({ tags: { '$in': tags } })
+                    .where({ _id: { $ne: currentArticle._id } })
+                    .where({ isDeleted: false })
+                    .sort({ createdOn: -1 })
+                    .limit(articlesCount)
+                    .exec((error, newsEntries) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(newsEntries);
+                    });
+            });
+        },
+        getLatestAsideNewsEntries(articlesCount, currentArticleId) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.find({})
+                    .where({ isDeleted: false })
+                    .where({ _id: { $ne: currentArticleId } })
+                    .sort({ createdOn: -1 })
+                    .limit(articlesCount)
+                    .exec((error, newsEntries) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        return resolve(newsEntries);
                     });
             });
         }

@@ -16,6 +16,7 @@ router
     .on('/profile', controllers.auth.profile)
     .on('/article', controllers.article.loadArticle)
     .on('/news/:page', controllers.news.getAll)
+    .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
     .resolve();
 
