@@ -1,8 +1,7 @@
 /* globals module */
 
 module.exports = (models) => {
-    const NewsArticle = models.NewsArticle;
-    // const Comment = models.Comment;
+    const NewsEntry = models.NewsEntry;
 
     return {
         createNewArticle(title, imageUrl, content, tagsStr, createdOn) {
@@ -13,7 +12,7 @@ module.exports = (models) => {
 
                 let tags = tagsStr.split(' ');
 
-                let newArticle = new NewsArticle({ title, imageUrl, content, tags, createdOn });
+                let newArticle = new NewsEntry({ title, imageUrl, content, tags, createdOn });
 
                 newArticle.save((error, dbArticle) => {
                     if (error) {

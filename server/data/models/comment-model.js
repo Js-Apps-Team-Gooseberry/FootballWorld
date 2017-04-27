@@ -24,6 +24,6 @@ let commentSchema = new Schema({
 });
 
 mongoose.model('comment', commentSchema);
-let Comment = mongoose.model('news-article');
+let Comment = mongoose.model('comment');
 
-module.exports.Comment = Comment;
+module.exports = { Comment, commentSchema };

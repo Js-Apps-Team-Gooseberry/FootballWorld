@@ -15,9 +15,5 @@ router
     .on('/logout', controllers.auth.logout)
     .on('/profile', controllers.auth.profile)
     .on('/article', controllers.news.loadNews)
-<<<<<<< HEAD
-    .on('*', controllers.home.get)
-=======
->>>>>>> b1d855e5897157215e5ca9fc7f401b0fab4915e5
     .resolve();
 

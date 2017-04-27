@@ -1,10 +1,10 @@
 /* globals require module */
 
 const mongoose = require('mongoose'),
-    Comment = require('./comment-model').Comment,
+    commentSchema = require('./comment-model').commentSchema,
     Schema = mongoose.Schema;
 
-let newsArticleSchema = new Schema({
+let newsEntrySchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -29,14 +29,14 @@ let newsArticleSchema = new Schema({
         default: new Date
     },
     comments: {
-        type: [Comment]
+        type: [commentSchema]
     },
     likes: {
         type: [String]
     }
 });
 
-mongoose.model('news-article', newsArticleSchema);
-let NewsArticle = mongoose.model('news-article');
+mongoose.model('news-entry', newsEntrySchema);
+let NewsEntry = mongoose.model('news-entry');
 
-module.exports.NewsArticle = NewsArticle;
+module.exports.NewsEntry = NewsEntry;
