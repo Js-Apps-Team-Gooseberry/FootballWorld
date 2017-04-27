@@ -21,6 +21,7 @@ SystemJS.config({
         'controllers': '/public/scripts/controllers/index.js',
         'home-controller': '/public/scripts/controllers/home.js',
         'auth-controller': '/public/scripts/controllers/auth.js',
+        'news-controller': '/public/scripts/controllers/news.js',
 
         // libs
         'jquery': '/public/bower_components/jquery/dist/jquery.js',
