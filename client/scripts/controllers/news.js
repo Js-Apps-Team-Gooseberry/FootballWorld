@@ -58,9 +58,7 @@ function getById(params) {
         .then(html => $mainContainer.html(html))
         .then(() => {
             const $newCommentTextArea = $('#news-new-comment-content'),
-                $formNewsNewComment = $('#form-news-new-comment'),
-                $btnNewsComment = $('#btn-news-comment'),
-                $newsCommentBox = $('#news-comment-box');
+                $btnNewsComment = $('#btn-news-comment');
 
             _bindDeleteButtons(data);
 
@@ -68,51 +66,78 @@ function getById(params) {
                 $btnNewsComment.removeClass('hidden');
             });
 
-            $btnNewsComment.on('click', () => {
-                if ($newCommentTextArea.val().length < 3 || $newCommentTextArea.val().length > 500) {
-                    toastr.error('The comments\' length must be between 3 and 300 symbols!');
-                    $formNewsNewComment.addClass('has-error');
-                    $newCommentTextArea.focus();
-                    return;
-                } else {
-                    $formNewsNewComment.removeClass('has-error');
-                }
-
-                $btnNewsComment.addClass('disabled');
-                $newCommentTextArea.attr('disabled', true);
-                $btnNewsComment.attr('disabled', true);
-
-                newsService.comment(data.article._id, data.user._id, $newCommentTextArea.val())
-                    .then((response) => {
-
-                        let newCommentData = response.comments[response.comments.length - 1];
-                        newCommentData.author = data.user;
-
-                        compile('comment', newCommentData)
-                            .then(html => {
-                                toastr.success('Comment submitted!');
-
-                                $newsCommentBox.append(html);
-
-                                $btnNewsComment.removeClass('disabled');
-                                $newCommentTextArea.val('');
-                                $newCommentTextArea.attr('disabled', false);
-                                $btnNewsComment.attr('disabled', false);
-                            });
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        toastr.error('An error occured!');
-
-                        $btnNewsComment.removeClass('disabled');
-                        $newCommentTextArea.attr('disabled', false);
-                        $btnNewsComment.attr('disabled', false);
-                    });
-            });
+            _bindCommentButton(data);
         })
         .catch(error => {
             console.log(error);
         });
+}
+
+function _bindDeleteButtons(data) {
+    const $newsCommentBox = $('#news-comment-box');
+
+    $newsCommentBox.on('click', '.btn-news-delete-comment', (ev) => {
+        let commentId = $(ev.target).parent().parent().attr('id');
+        newsService.deleteComment(data.article._id, commentId)
+            .then(() => {
+                toastr.success('Comment successfully deleted!');
+                $(`#${commentId}`).remove();
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occurred!');
+            });
+    });
+}
+
+function _bindCommentButton(data) {
+    const $newCommentTextArea = $('#news-new-comment-content'),
+        $btnNewsComment = $('#btn-news-comment'),
+        $formNewsNewComment = $('#form-news-new-comment'),
+        $newsCommentBox = $('#news-comment-box');
+
+    $btnNewsComment.on('click', () => {
+        if ($newCommentTextArea.val().length < 3 || $newCommentTextArea.val().length > 500) {
+            toastr.error('The comments\' length must be between 3 and 500 symbols!');
+            $formNewsNewComment.addClass('has-error');
+            $newCommentTextArea.focus();
+            return;
+        } else {
+            $formNewsNewComment.removeClass('has-error');
+        }
+
+        $btnNewsComment.addClass('disabled');
+        $newCommentTextArea.attr('disabled', true);
+        $btnNewsComment.attr('disabled', true);
+
+        newsService.comment(data.article._id, data.user._id, $newCommentTextArea.val())
+            .then((response) => {
+
+                let newCommentData = response.comments[response.comments.length - 1];
+                newCommentData.author = data.user;
+
+                compile('comment', newCommentData)
+                    .then(html => {
+                        toastr.success('Comment submitted!');
+
+                        $newsCommentBox.append(html);
+
+                        $btnNewsComment.addClass('hidden');
+                        $btnNewsComment.removeClass('disabled');
+                        $newCommentTextArea.val('');
+                        $newCommentTextArea.attr('disabled', false);
+                        $btnNewsComment.attr('disabled', false);
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occured!');
+
+                $btnNewsComment.removeClass('disabled');
+                $newCommentTextArea.attr('disabled', false);
+                $btnNewsComment.attr('disabled', false);
+            });
+    });
 }
 
 function getCreatePage() {
@@ -275,23 +300,6 @@ function flagNewsEntryAsDeleted(params) {
             $btnNewsDelete.attr('disabled', false);
             toastr.error('An error occured! Try again later!');
         });
-}
-
-function _bindDeleteButtons(data) {
-    const $newsCommentBox = $('#news-comment-box');
-
-    $newsCommentBox.on('click', '.btn-news-delete-comment', (ev) => {
-        let commentId = $(ev.target).parent().parent().attr('id');
-        newsService.deleteComment(data.article._id, commentId)
-            .then(() => {
-                toastr.success('Comment successfully deleted!');
-                $(`#${commentId}`).remove();
-            })
-            .catch(error => {
-                console.log(error);
-                toastr.error('An error occurred!');
-            });
-    });
 }
 
 function _isUrlValid(str) {
