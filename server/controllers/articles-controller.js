@@ -6,10 +6,16 @@ module.exports = (data) => {
             let title = req.body.title;
             let imageUrl = req.body.imageUrl;
             let content = req.body.content;
-            let tags = req.body.tags;
             let createdOn = req.body.createdOn;
-            
-            data.createNewArticle(title, imageUrl, content, tags, createdOn)
+            let matchPrediction = req.body.matchPrediction;
+            let sideA = req.body.sideA;
+            let sideB = req.body.sideB;
+            let lineupsA = req.body.lineupsA;
+            let lineupsB = req.body.lineupsB;
+            let injuredA = req.body.injuredA;
+            let injuredB = req.body.injuredB;
+
+            data.createNewArticle(title, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, createdOn)
                 .then(newArticle => {
                     return res.status(201).json(newArticle);
                 })

@@ -24,9 +24,37 @@ let articleSchema = new Schema({
     tags: {
         type: [String]
     },
+    sideA: {
+        type: String,
+        required: true
+    },
+    sideB: {
+        type: String,
+        required: true
+    },
+    injuredA: {
+        type: String,
+        required: true
+    },
+    injuredB: {
+        type: String,
+        required: true
+    },
+    lineupsA: {
+        type: String,
+        required: true
+    },
+    lineupsB: {
+        type: String,
+        required: true
+    },
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    matchPrediction: {
+        type: String,
+        required: true
     },
     createdOn: {
         type: Date,

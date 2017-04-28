@@ -6,17 +6,15 @@ module.exports = (models) => {
     const Article = models.Article;
 
     return {
-        createNewArticle(title, imageUrl, content, tagsStr, createdOn) {
+        createNewArticle(title, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, createdOn) {
             return new Promise((resolve, reject) => {
                 if (createdOn == null) {
                     createdOn = new Date();
                 }
 
-                let tags = tagsStr.split(',')
-                    .map(t => t.trim())
-                    .filter(t => t !== '');
+                let tags = [sideA, sideB];                
 
-                let newArticle = new Article({ title, imageUrl, content, tags, createdOn });
+                let newArticle = new Article({ title, imageUrl, content, tags, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, createdOn });
 
                 newArticle.save((error, dbArticle) => {
                     if (error) {
