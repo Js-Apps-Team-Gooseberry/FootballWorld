@@ -6,13 +6,13 @@ module.exports = (models) => {
     const NewsEntry = models.NewsEntry;
 
     return {
-        createNewArticle(title, imageUrl, content, tagsStr, createdOn) {
+        createNewNewsEntry(title, imageUrl, content, tagsStr, createdOn) {
             return new Promise((resolve, reject) => {
                 if (createdOn == null) {
                     createdOn = new Date();
                 }
 
-                let tags = tagsStr.split(' ');
+                let tags = tagsStr.split(',').filter(t => t.trim() !== '');
 
                 let newArticle = new NewsEntry({ title, imageUrl, content, tags, createdOn });
 
