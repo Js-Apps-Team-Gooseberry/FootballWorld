@@ -11,7 +11,8 @@ module.exports = function (app, data) {
         .post('/get-by-id', controllers.getNewsEntryById)
         .post('/get-aside-latest', controllers.getLatestAsideNewsEntries)
         .post('/get-by-tag', controllers.getNewsByTags)
-        .put('/edit', controllers.editNewsEntry);
+        .put('/edit', controllers.editNewsEntry)
+        .put('/flag-delete', controllers.flagNewsEntryAsDeleted);
 
     app.use('/api/news', router);
 };

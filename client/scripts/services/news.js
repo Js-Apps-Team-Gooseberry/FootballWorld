@@ -59,4 +59,12 @@ function editNewsEntry(articleId, title, imageUrl, content, tags) {
     return requester.putJSON('/api/news/edit', body);
 }
 
-export { getNotDeletedArticlesByPage, getById, getByTags, getAsideLatest, createNewEntry, editNewsEntry };
+function flagNewsEntryAsDeleted(articleId) {
+    let body = {
+        articleId
+    };
+
+    return requester.putJSON('/api/news/flag-delete', body);
+}
+
+export { getNotDeletedArticlesByPage, getById, getByTags, getAsideLatest, createNewEntry, editNewsEntry, flagNewsEntryAsDeleted };

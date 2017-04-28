@@ -37,7 +37,7 @@ module.exports = (data) => {
 
             data.getNewsEntryById(id)
                 .then(newsEntry => {
-                    if (!newsEntry) {
+                    if (!newsEntry || newsEntry.isDeleted) {
                         return res.status(404).json({ message: 'Not found!' });
                     }
 
@@ -80,6 +80,17 @@ module.exports = (data) => {
 
             data.editNewsEntry(id, title, imageUrl, content, tags)
                 .then((response) => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        flagNewsEntryAsDeleted(req, res) {
+            let id = req.body.articleId;
+
+            data.flagNewsEntryAsDeleted(id)
+                .then(response => {
                     return res.status(200).json(response);
                 })
                 .catch(error => {

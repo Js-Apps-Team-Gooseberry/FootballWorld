@@ -192,8 +192,33 @@ function getEditPage(params) {
         });
 }
 
+function flagNewsEntryAsDeleted(params) {
+    if (!params || !params.id) {
+        // 404?
+    }
+
+    let $btnNewsDelete = $('btn-news-delete');
+    $btnNewsDelete.addClass('disabled');
+    $btnNewsDelete.attr('disabled', true);
+
+    let id = params.id;
+
+    newsService.flagNewsEntryAsDeleted(id)
+        .then(response => {
+            console.log(response);
+            toastr.success('Article successfully flagged as deleted!');
+            $(location).attr('href', '#/news');
+        })
+        .catch(error => {
+            console.log(error);
+            $btnNewsDelete.removeClass('disabled');
+            $btnNewsDelete.attr('disabled', false);
+            toastr.error('An error occured! Try again later!');
+        });
+}
+
 function _isUrlValid(str) {
     let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$', 'i');
     return pattern.test(str);
 }
-export { getAll, getById, getCreatePage, getEditPage };
+export { getAll, getById, getCreatePage, getEditPage, flagNewsEntryAsDeleted };

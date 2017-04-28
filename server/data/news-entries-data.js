@@ -110,6 +110,17 @@ module.exports = (models) => {
                     return resolve(result);
                 });
             });
+        },
+        flagNewsEntryAsDeleted(id) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.update({ _id: id }, { $set: { isDeleted: true } }, (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(result);
+                });
+            });
         }
     };
 };
