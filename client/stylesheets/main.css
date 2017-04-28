@@ -123,3 +123,8 @@ nav a {
 .btn-create {
     margin-top: 25px;
 }
+
+.btn-black {
+    background: black;
+    color: white;
+}

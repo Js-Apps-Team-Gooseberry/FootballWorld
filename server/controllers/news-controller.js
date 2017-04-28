@@ -70,6 +70,21 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        editNewsEntry(req, res) {
+            let id = req.body.articleId;
+            let title = req.body.title;
+            let imageUrl = req.body.imageUrl;
+            let content = req.body.content;
+            let tags = req.body.tags;
+
+            data.editNewsEntry(id, title, imageUrl, content, tags)
+                .then((response) => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

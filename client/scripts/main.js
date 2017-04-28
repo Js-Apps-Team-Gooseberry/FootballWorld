@@ -17,6 +17,7 @@ router
     .on('/article', controllers.article.loadArticle)
     .on('/news/create', controllers.news.getCreatePage)
     .on('/news/:page', controllers.news.getAll)
+    .on('/news/edit/:id', controllers.news.getEditPage)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
     .resolve();

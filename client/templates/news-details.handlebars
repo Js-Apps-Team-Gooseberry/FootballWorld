@@ -1,16 +1,24 @@
 <div class="container">
     <div class="row">
+        {{!--left side--}}
         <article class="col-md-8">
             <img src="{{article.imageUrl}}" class="img-news-details" alt="{{article.title}}">
             <h2 class="bold">{{article.title}}</h2>
             <p class="news-entry-date">{{#date article.createdOn}}{{/date}}</p>
             <p class="news-details-content">{{article.content}}</p>
+            <hr />
+            <div class="text-right">
+                <h4 class="aside-title">Admin options</h4>
+                <a href="#/news/edit/{{article._id}}" class="btn btn-default btn-black">Edit Article</a>
+                <a href="#/news/delete/{{article._id}}" onclick="return confirm('Do you really want to delete this article?')" class="btn btn-default btn-black">Delete Article</a>
+            </div>
         </article>
+
+        {{!--right side--}}
         <aside class="col-md-4">
             {{#if related}}
             <h4 class="aside-title">Related News</h4>
-            {{/if}}
-            {{#each related}}
+            {{/if}} {{#each related}}
             <div class="row aside-tab">
                 <a href="#/news/details/{{_id}}">
                     <div class="col-md-4 aside-photo">

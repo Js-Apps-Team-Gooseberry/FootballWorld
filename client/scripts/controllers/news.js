@@ -45,7 +45,7 @@ function getById(params) {
             data.related = related;
             return newsService.getAsideLatest(latestCount, data.article._id);
         })
-        .then(latest => {            
+        .then(latest => {
             data.latest = latest;
             return compile('news-details', data);
         })
@@ -120,8 +120,80 @@ function getCreatePage() {
         });
 }
 
+function getEditPage(params) {
+    if (!params || !params.id) {
+        // handle the 404
+    }
+
+    newsService.getById(params.id)
+        .then(data => {
+            data.tags = data.tags.join(', ');
+            return compile('news-edit', data);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $btnNewsEdit = $('#btn-news-edit'),
+                $newsEditTitle = $('#news-edit-title'),
+                $newsEditImageUrl = $('#news-edit-image-url'),
+                $newsEditTags = $('#news-edit-tags'),
+                $newsEditContent = $('#news-edit-content'),
+                $formNewsEditTitle = $('#form-news-edit-title'),
+                $formNewsEditImageUrl = $('#form-news-edit-image-url'),
+                $formNewsEditContent = $('#form-news-edit-content');
+
+            $btnNewsEdit.on('click', () => {
+                if ($newsEditTitle.val().trim().length < 5 || $newsEditTitle.val().trim().length > 100) {
+                    toastr.error('Title length should be between 5 and 100 symbols!');
+                    $formNewsEditTitle.addClass('has-error');
+                    $newsEditTitle.focus();
+                    return;
+                } else {
+                    $formNewsEditTitle.removeClass('has-error');
+                }
+
+                if (!_isUrlValid($newsEditImageUrl.val())) {
+                    toastr.error('Please enter a valid URL!');
+                    $formNewsEditImageUrl.addClass('has-error');
+                    $newsEditImageUrl.focus();
+                    return;
+                } else {
+                    $formNewsEditImageUrl.removeClass('has-error');
+                }
+
+                if ($newsEditContent.val().trim().length < 5 || $newsEditContent.val().trim().length > 5000) {
+                    toastr.error('Content length should be between 5 and 5000 symbols!');
+                    $formNewsEditContent.addClass('has-error');
+                    $newsEditContent.focus();
+                    return;
+                } else {
+                    $formNewsEditContent.removeClass('has-error');
+                }
+
+                $btnNewsEdit.attr('disabled', true);
+                $btnNewsEdit.addClass('disabled');
+
+                let title = $newsEditTitle.val();
+                let imageUrl = $newsEditImageUrl.val();
+                let tags = $newsEditTags.val();
+                let content = $newsEditContent.val();
+
+                newsService.editNewsEntry(params.id, title, imageUrl, content, tags)
+                    .then(() => {
+                        toastr.success('Article successfully altered!');
+                        $(location).attr('href', `#/news/details/${params.id}`);
+                    })
+                    .catch(error => {
+                        $btnNewsEdit.attr('disabled', false);
+                        $btnNewsEdit.removeClass('disabled');
+                        toastr.error('Invalid data! Try again!');
+                        console.log(error);
+                    });
+            });
+        });
+}
+
 function _isUrlValid(str) {
-    let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$','i');
+    let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$', 'i');
     return pattern.test(str);
 }
-export { getAll, getById, getCreatePage };
+export { getAll, getById, getCreatePage, getEditPage };

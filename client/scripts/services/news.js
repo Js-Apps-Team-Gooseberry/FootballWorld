@@ -43,8 +43,20 @@ function createNewEntry(title, imageUrl, content, tags) {
         content,
         tags
     };
-    console.log(body);
+
     return requester.postJSON('/api/news/create', body);
 }
 
-export { getNotDeletedArticlesByPage, getById, getByTags, getAsideLatest, createNewEntry };
+function editNewsEntry(articleId, title, imageUrl, content, tags) {
+    let body = {
+        articleId,
+        title,
+        imageUrl,
+        content,
+        tags
+    };
+
+    return requester.putJSON('/api/news/edit', body);
+}
+
+export { getNotDeletedArticlesByPage, getById, getByTags, getAsideLatest, createNewEntry, editNewsEntry };

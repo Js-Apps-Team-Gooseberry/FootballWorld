@@ -95,6 +95,21 @@ module.exports = (models) => {
                         return resolve(newsEntries);
                     });
             });
+        },
+        editNewsEntry(id, title, imageUrl, content, tags) {
+            tags = tags.split(',')
+                .map(t => t.trim())
+                .filter(t => t !== '');
+
+            return new Promise((resolve, reject) => {
+                NewsEntry.update({ _id: id }, { $set: { title: title, imageUrl: imageUrl, content: content, tags: tags } }, (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(result);
+                });
+            });
         }
     };
 };
