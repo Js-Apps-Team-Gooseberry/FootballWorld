@@ -16,7 +16,6 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
-
         },
         getNotDeletedArticlesByPage(req, res) {
             let page = req.body.page;

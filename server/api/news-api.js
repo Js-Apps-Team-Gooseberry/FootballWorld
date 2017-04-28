@@ -7,6 +7,7 @@ module.exports = function (app, data) {
 
     router
         .get('/get-all-for-users', controllers.getNewsForUsers)
+        .post('/create', controllers.createNewNewsEntry)
         .post('/get-by-id', controllers.getNewsEntryById)
         .post('/get-aside-latest', controllers.getLatestAsideNewsEntries)
         .post('/get-by-tag', controllers.getNewsByTags);

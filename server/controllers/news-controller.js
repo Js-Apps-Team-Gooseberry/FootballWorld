@@ -2,6 +2,21 @@
 
 module.exports = (data) => {
     return {
+        createNewNewsEntry(req, res) {
+            let title = req.body.title;
+            let imageUrl = req.body.imageUrl;
+            let content = req.body.content;
+            let tags = req.body.tags;
+            let createdOn = req.body.createdOn;
+
+            data.createNewNewsEntry(title, imageUrl, content, tags, createdOn)
+                .then(newArticle => {
+                    return res.status(201).json(newArticle);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
         getNewsForUsers(req, res) {
             let page = req.headers.page;
             let pageSize = req.headers.pagesize;
@@ -49,12 +64,12 @@ module.exports = (data) => {
             let articlesCount = req.body.articlesCount;
             let currentArticleId = req.body.currentArticleId;
             data.getLatestAsideNewsEntries(articlesCount, currentArticleId)
-            .then(newsEntries => {
-                return res.status(200).json(newsEntries);
-            })
-            .catch(error => {
-                return res.status(500).json(error);
-            });
+                .then(newsEntries => {
+                    return res.status(200).json(newsEntries);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

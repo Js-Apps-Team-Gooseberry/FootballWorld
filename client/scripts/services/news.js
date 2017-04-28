@@ -36,4 +36,15 @@ function getAsideLatest(articlesCount, currentArticleId) {
     return requester.postJSON('/api/news/get-aside-latest', body);
 }
 
-export { getNotDeletedArticlesByPage, getById, getByTags, getAsideLatest };
+function createNewEntry(title, imageUrl, content, tags) {
+    let body = {
+        title,
+        imageUrl,
+        content,
+        tags
+    };
+    console.log(body);
+    return requester.postJSON('/api/news/create', body);
+}
+
+export { getNotDeletedArticlesByPage, getById, getByTags, getAsideLatest, createNewEntry };

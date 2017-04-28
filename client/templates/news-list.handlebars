@@ -1,6 +1,13 @@
 <div class="container">
     <div class="row">
-        <h1>Latest News</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Latest News</h1>
+            </div>
+            <div class="col-md-4 text-right">
+                <a href="#/news/create" class="btn btn-success btn-create">Write a New Article</a>
+            </div>
+        </div>
         <hr /> 
         {{#each newsEntries}}
         <a href="#/news/details/{{_id}}">
@@ -19,13 +26,9 @@
             <ul class="pagination">
                 {{#paginate pagination type="previous"}}
                 <li {{#if disabled}}class="disabled" disabled="true" {{/if}}><a href="#/news/{{n}}">«</a></li>
-                {{/paginate}}
-
-                 {{#paginate pagination type="middle" limit="5"}}
+                {{/paginate}} {{#paginate pagination type="middle" limit="5"}}
                 <li {{#if active}}class="active" {{/if}}><a href="#/news/{{n}}">{{n}}</a></li>
-                {{/paginate}} 
-                
-                {{#paginate pagination type="next"}}
+                {{/paginate}} {{#paginate pagination type="next"}}
                 <li {{#if disabled}}class="disabled" {{/if}}><a href="#/news/{{n}}">»</a></li>
                 {{/paginate}}
             </ul>
