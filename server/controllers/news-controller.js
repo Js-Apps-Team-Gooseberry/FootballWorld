@@ -96,6 +96,31 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        commentNewsEntry(req, res) {
+            let newsEntryId = req.body.newsEntryId;
+            let userId = req.body.userId;
+            let content = req.body.commentContent;
+
+            data.commentNewsEntry(newsEntryId, userId, content)
+                .then(response => {
+                    return res.status(201).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        deleteNewsEntryComment(req, res) {
+            let newsEntryId = req.body.newsEntryId;
+            let commentId = req.body.commentId;
+
+            data.deleteNewsEntryComment(newsEntryId, commentId)
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

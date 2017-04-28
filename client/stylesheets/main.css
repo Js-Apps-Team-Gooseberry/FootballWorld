@@ -128,3 +128,36 @@ nav a {
     background: black;
     color: white;
 }
+
+.italic {
+    font-style: italic;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.btn-comment-delete {
+    color: grey;
+    margin-top: 0.6%;
+    cursor: pointer;
+}
+
+.btn-comment-delete:hover {
+    text-decoration: underline;
+}
+
+.comment {
+    border: 1px solid beige;
+    box-shadow: 0 0 5px lightgrey;
+    margin-bottom: 15px;
+    padding: 5px 0;
+}
+
+.btn-news-comment {
+    margin-top: 1%;
+}
+
+.comment-content {
+    word-break: break-all;
+}

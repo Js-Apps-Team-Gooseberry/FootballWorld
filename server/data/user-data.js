@@ -33,6 +33,10 @@ module.exports = (models) => {
             let salt = encryptor.generateSalt(),
                 passHash = encryptor.generateHashedPassword(salt, password);
 
+            if (profilePicture.trim() == '') {
+                profilePicture = 'https://www.kirkleescollege.ac.uk/wp-content/uploads/2015/09/default-avatar.png';
+            }
+
             let userObject = {
                 username,
                 name,

@@ -7,10 +7,41 @@
             <p class="news-entry-date">{{#date article.createdOn}}{{/date}}</p>
             <p class="news-details-content">{{article.content}}</p>
             <hr />
+            <div id="news-comment-box" class="comment-box">
+                <h4 class="aside-title">Comments</h4>
+                {{#each article.comments}}
+                <div class="row comment" id="{{_id}}">
+                    <div class="col-md-2">
+                        <img src="{{author.userAvatar}}" alt="{{author.username}}" class="img-responsive img-circle">
+                    </div>
+                    <div class="col-md-10">
+                        <p class="inline-block"><span class="bold">{{author.username}}</span> <span class="italic small">{{#date createdOn}}{{/date}}</span></p>
+                        <p class="btn-news-delete-comment inline-block pull-right small btn-comment-delete" onclick="return confirm('Are you sure you want to delete this comment?')">
+                            Delete</p>
+                        <p class="comment-content">{{content}}</p>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div class="row comment">
+                <div class="col-md-2">
+                    <img src="{{user.profilePicture}}" alt="{{user.username}}" class="img-responsive img-circle">
+                </div>
+                <div class="col-md-10">
+                    <p class="inline-block"><span class="bold">{{user.username}}</span></p>
+                    <div id="form-news-new-comment">
+                        <textarea id="news-new-comment-content" cols="30" rows="2" placeholder="Type your comment here..." class="form-control" />
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-success btn-xs btn-news-comment hidden" id="btn-news-comment">Submit</button>
+                    </div>
+                </div>
+            </div>
             <div class="text-right">
                 <h4 class="aside-title">Admin options</h4>
                 <a href="#/news/edit/{{article._id}}" class="btn btn-default btn-black">Edit Article</a>
-                <a href="#/news/delete/{{article._id}}" id="btn-news-delete" onclick="return confirm('Do you really want to delete this article?')" class="btn btn-default btn-black">Delete Article</a>
+                <a href="#/news/delete/{{article._id}}" id="btn-news-delete" onclick="return confirm('Do you really want to delete this article?')"
+                    class="btn btn-default btn-black">Delete Article</a>
             </div>
         </article>
 

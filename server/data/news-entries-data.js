@@ -3,7 +3,9 @@
 const pageCalculator = require('../utils/page-calculator');
 
 module.exports = (models) => {
-    const NewsEntry = models.NewsEntry;
+    const NewsEntry = models.NewsEntry,
+        Comment = models.Comment,
+        User = models.User;
 
     return {
         createNewNewsEntry(title, imageUrl, content, tagsStr, createdOn) {
@@ -119,6 +121,63 @@ module.exports = (models) => {
                     }
 
                     return resolve(result);
+                });
+            });
+        },
+        commentNewsEntry(newsEntryId, userId, commentContent) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.findOne({ _id: newsEntryId }, (error, newsEntry) => {
+                    if (error) {
+                        return reject(error);
+                    } else if (!newsEntry) {
+                        return reject({ message: 'No such article found!' });
+                    }
+
+                    User.findOne({ _id: userId }, (error, user) => {
+                        if (error) {
+                            return reject(error);
+                        } else if (!user) {
+                            return reject({ message: 'You are not authorized to comment!' });
+                        }
+
+                        let createdOn = new Date();
+                        let comment = new Comment({ author: { username: user.username, userId: user._id, userAvatar: user.profilePicture }, content: commentContent, createdOn });
+                        newsEntry.comments.push(comment);
+                        newsEntry.save((error, result) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            return resolve(result);
+                        });
+                    });
+                });
+            });
+        },
+        deleteNewsEntryComment(newsEntryId, commentId) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.findOne({ _id: newsEntryId }, (error, newsEntry) => {
+                    if (error) {
+                        return reject(error);
+                    } else if (!newsEntry) {
+                        return reject({ message: 'No such article found!' });
+                    }
+
+                    let comment = newsEntry.comments.find(x => x._id == commentId);
+                    let index = newsEntry.comments.indexOf(comment);
+
+                    if (index < 0) {
+                        return reject({ message: 'No such comment found!' });
+                    }
+
+                    newsEntry.comments.splice(index, 1);
+                    newsEntry.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(result);
+                    });
                 });
             });
         }

@@ -58,4 +58,20 @@ function postJSON(url, body, headers = {}) {
     });
 }
 
-export { get, getJSON, postJSON, putJSON };
+function deleteJSON(url, body, headers = {}) {
+    headers.authorization = localStorage.getItem('token');
+    
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url,
+            headers,
+            method: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify(body)
+        })
+            .done(resolve)
+            .fail(reject);
+    });
+}
+
+export { get, getJSON, postJSON, putJSON, deleteJSON };
