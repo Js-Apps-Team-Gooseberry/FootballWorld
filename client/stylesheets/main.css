@@ -224,3 +224,8 @@ nav a {
 .comment-box {
     margin-top: 25px;
 }
+
+.news-description {
+    margin-bottom: 25px;
+    line-height: 2.5rem;
+}

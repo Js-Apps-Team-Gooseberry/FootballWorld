@@ -168,9 +168,11 @@ function getCreatePage() {
                 $newsCreateTitle = $('#news-create-title'),
                 $newsCreateImageUrl = $('#news-create-image-url'),
                 $newsCreateTags = $('#news-create-tags'),
+                $newsCreateDescription = $('#news-create-description'),
                 $newsCreateContent = $('#news-create-content'),
                 $formNewsCreateTitle = $('#form-news-create-title'),
                 $formNewsCreateImageUrl = $('#form-news-create-image-url'),
+                $formNewsCreateDescription = $('#form-news-create-description'),
                 $formNewsCreateContent = $('#form-news-create-content');
 
             $btnNewsCreate.on('click', () => {
@@ -192,6 +194,15 @@ function getCreatePage() {
                     $formNewsCreateImageUrl.removeClass('has-error');
                 }
 
+                if ($newsCreateDescription.val().trim().length < 20 || $newsCreateDescription.val().trim().length > 1000) {
+                    toastr.error('Description length should be between 20 and 1000 symbols!');
+                    $formNewsCreateDescription.addClass('has-error');
+                    $newsCreateDescription.focus();
+                    return;
+                } else {
+                    $formNewsCreateDescription.removeClass('has-error');
+                }
+
                 if ($newsCreateContent.val().trim().length < 5 || $newsCreateContent.val().trim().length > 5000) {
                     toastr.error('Content length should be between 5 and 5000 symbols!');
                     $formNewsCreateContent.addClass('has-error');
@@ -205,11 +216,13 @@ function getCreatePage() {
                 $btnNewsCreate.addClass('disabled');
 
                 let title = $newsCreateTitle.val();
+                let description = $newsCreateDescription.val();
                 let imageUrl = $newsCreateImageUrl.val();
                 let tags = $newsCreateTags.val();
                 let content = $newsCreateContent.val();
+                let author = JSON.parse(localStorage.getItem('currentUser')).username;
 
-                newsService.createNewEntry(title, imageUrl, content, tags)
+                newsService.createNewEntry(title, description, author, imageUrl, content, tags)
                     .then(response => {
                         console.log(response);
                         toastr.success('Article successfully added!');
@@ -241,9 +254,11 @@ function getEditPage(params) {
                 $newsEditTitle = $('#news-edit-title'),
                 $newsEditImageUrl = $('#news-edit-image-url'),
                 $newsEditTags = $('#news-edit-tags'),
+                $newsEditDescription = $('#news-edit-description'),
                 $newsEditContent = $('#news-edit-content'),
                 $formNewsEditTitle = $('#form-news-edit-title'),
                 $formNewsEditImageUrl = $('#form-news-edit-image-url'),
+                $formNewsEditDescription = $('#form-news-edit-description'),
                 $formNewsEditContent = $('#form-news-edit-content');
 
             $btnNewsEdit.on('click', () => {
@@ -265,6 +280,15 @@ function getEditPage(params) {
                     $formNewsEditImageUrl.removeClass('has-error');
                 }
 
+                if ($newsEditDescription.val().trim().length < 20 || $newsEditDescription.val().trim().length > 1000) {
+                    toastr.error('Description length should be between 20 and 1000 symbols!');
+                    $formNewsEditDescription.addClass('has-error');
+                    $newsEditDescription.focus();
+                    return;
+                } else {
+                    $formNewsEditDescription.removeClass('has-error');
+                }
+
                 if ($newsEditContent.val().trim().length < 5 || $newsEditContent.val().trim().length > 5000) {
                     toastr.error('Content length should be between 5 and 5000 symbols!');
                     $formNewsEditContent.addClass('has-error');
@@ -279,10 +303,11 @@ function getEditPage(params) {
 
                 let title = $newsEditTitle.val();
                 let imageUrl = $newsEditImageUrl.val();
+                let description = $newsEditDescription.val();
                 let tags = $newsEditTags.val();
                 let content = $newsEditContent.val();
 
-                newsService.editNewsEntry(params.id, title, imageUrl, content, tags)
+                newsService.editNewsEntry(params.id, title, description, imageUrl, content, tags)
                     .then(() => {
                         toastr.success('Article successfully altered!');
                         $(location).attr('href', `#/news/details/${params.id}`);
