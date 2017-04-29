@@ -21,5 +21,6 @@ router
     .on('/news/delete/:id', controllers.news.flagNewsEntryAsDeleted)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
+    .on('*', controllers.home.get)
     .resolve();
 

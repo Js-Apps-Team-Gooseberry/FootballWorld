@@ -21,9 +21,16 @@ function getAll(params) {
                 pageCount: data.pagesCount,
                 page
             };
-            return compile('news-list', data);
+            return compile('news/news-list', data);
         })
-        .then(html => $mainContainer.html(html));
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            $('.pagination').on('click', 'a', () => {
+                $('html, body').animate({
+                    scrollTop: $('body').offset().top
+                }, 500);
+            });
+        });
 }
 
 function getById(params) {
@@ -53,10 +60,14 @@ function getById(params) {
                 data.user = currentUser;
             }
 
-            return compile('news-details', data);
+            return compile('news/news-details', data);
         })
         .then(html => $mainContainer.html(html))
         .then(() => {
+            $('html, body').animate({
+                scrollTop: $('body').offset().top
+            }, 500);
+
             _bindFacebookShareButton(data);
 
             const $newCommentTextArea = $('#news-new-comment-content'),
@@ -106,7 +117,7 @@ function _bindDeleteButtons(data) {
         if (ev.isDefaultPrevented()) {
             return;
         }
-        
+
         let commentId = $(ev.target).parent().parent().attr('id');
         newsService.deleteComment(data.article._id, commentId)
             .then(() => {
@@ -175,7 +186,7 @@ function _bindCommentButton(data) {
 }
 
 function getCreatePage() {
-    compile('news-create')
+    compile('news/news-create')
         .then(html => $mainContainer.html(html))
         .then(() => {
             const $btnNewsCreate = $('#btn-news-create'),
@@ -260,7 +271,7 @@ function getEditPage(params) {
     newsService.getById(params.id)
         .then(data => {
             data.tags = data.tags.join(', ');
-            return compile('news-edit', data);
+            return compile('news/news-edit', data);
         })
         .then(html => $mainContainer.html(html))
         .then(() => {
