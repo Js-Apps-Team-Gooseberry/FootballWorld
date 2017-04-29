@@ -57,6 +57,8 @@ function getById(params) {
         })
         .then(html => $mainContainer.html(html))
         .then(() => {
+            _bindFacebookShareButton(data);
+
             const $newCommentTextArea = $('#news-new-comment-content'),
                 $btnNewsComment = $('#btn-news-comment');
 
@@ -71,6 +73,24 @@ function getById(params) {
         .catch(error => {
             console.log(error);
         });
+}
+
+function _bindFacebookShareButton(data) {
+    $('meta[property=\'og:type\']').attr('content', 'article');
+    $('meta[property=\'og:title\']').attr('content', data.article.title);
+    $('meta[property=\'og:url\']').attr('content', `http://tsar-football.herokuapp.com/#/news/details/${data.article._id}`);
+    $('meta[property=\'og:description\']').attr('content', data.article.description);
+    $('meta[property=\'og:image\']').attr('content', data.article.imageUrl);
+
+    let $btnFacebookShare = $('#btn-facebook-share');
+    $btnFacebookShare.click((ev) => {
+        ev.preventDefault();
+        window.open(
+            $btnFacebookShare.attr('href'),
+            'popupWindow',
+            'width=600,height=600'
+        );
+    });
 }
 
 function _bindDeleteButtons(data) {

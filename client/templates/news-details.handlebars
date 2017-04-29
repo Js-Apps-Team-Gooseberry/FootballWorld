@@ -8,15 +8,20 @@
                     <p class="no-margin-bottom">By <span class="bold">Some Author</span></p>
                     <p class="italic no-margin-bottom">{{#date article.createdOn}}{{/date}}</p>
                 </div>
-                <div class="col-md-3 no-padding field-facebook text-center"><img class="icon-social" src="https://doc.owncloud.org/server/8.0/admin_manual/_static/img/social/facebook.svg"
-                        alt="facebook">
-                    <span class="bold"> Share to Facebook</span></div>
-                <div class="col-md-3 no-padding field-comments text-center"><img class="icon-social" src="https://www.gettingout.com/wp-content/uploads/2014/03/message-icon-LARGE.png"
-                        alt="comments"><span class="bold"> 23 Comments</span></div>
-
+                <a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=http%3A%2F%2Ftsar-football.herokuapp.com%2F%23%2Fnews%2Fdetails%2F{{article._id}}&display=popup&ref=plugin&src=share_button">
+                    <div class="col-md-3 no-padding field-facebook text-center">
+                        <img class="icon-social" src="https://doc.owncloud.org/server/8.0/admin_manual/_static/img/social/facebook.svg" alt="facebook">
+                        <span class="bold"> Share to Facebook</span>
+                    </div>
+                </a>
+                <div class="col-md-3 no-padding field-comments text-center">
+                    <img class="icon-social" src="https://www.gettingout.com/wp-content/uploads/2014/03/message-icon-LARGE.png" alt="comments">
+                    <span class="bold"> 23 Comments</span>
+                </div>
                 <div class="col-md-4 text-right tags-header">
                     {{#each article.tags}}
-                    <span class="label label-success">{{this}}</span> {{/each}}
+                    <span class="label label-success">{{this}}</span> 
+                    {{/each}}
                 </div>
             </div>
             <hr class="no-margin-top" />
