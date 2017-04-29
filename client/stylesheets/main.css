@@ -93,6 +93,7 @@ nav a {
 .news-details-content {
     white-space: pre-wrap;
     text-align: justify;
+    margin-bottom: 25px;
 }
 
 .bold {
@@ -129,6 +130,7 @@ nav a {
 
 .btn-black {
     background: black;
+    border-color: black;
     color: white;
 }
 
@@ -142,7 +144,6 @@ nav a {
 
 .btn-comment-delete {
     color: grey;
-    margin-top: 0.6%;
     cursor: pointer;
 }
 
@@ -155,6 +156,14 @@ nav a {
     box-shadow: 0 0 5px lightgrey;
     margin-bottom: 15px;
     padding: 5px 0;
+}
+
+.comment-avatar {
+    padding-right: 28px;
+}
+
+.comment-content {
+    padding-left: 0;
 }
 
 .btn-news-comment {
@@ -170,7 +179,7 @@ nav a {
 }
 
 .news-header {
-    padding-left: 2.5%;
+    padding: 0 15px;
     margin: 0;
 }
 
@@ -181,7 +190,7 @@ nav a {
 }
 
 .icon-social {
-    max-width: 44px;
+    max-width: 37px;
 }
 
 .no-padding {
@@ -197,27 +206,30 @@ nav a {
 }
 
 .socials-container {
-    padding: 3px 0;
-    margin-bottom: 45px;
+    margin-bottom: 38px;
 }
 
 .tags-header {
-    padding-top: 10px;
+    padding: 7px 0;
 }
 
 .tags-header span {
     cursor: pointer;
 }
 
+.field-facebook {
+    color: black;
+}
+
 .field-facebook:hover {
     color: white;
-    background: #3A5BA2;
+    background: #45619D;
     cursor: pointer;
 }
 
 .field-comments:hover {
     color: white;
-    background: #6DA643;
+    background: #43ac6a;
     cursor: pointer;
 }
 
@@ -228,4 +240,13 @@ nav a {
 .news-description {
     margin-bottom: 25px;
     line-height: 2.5rem;
+}
+
+.comment-box {
+    padding-top: 60px;
+    margin-top: -60px;
+}
+
+.news-main-heading {
+    font-size: 4.5rem;
 }

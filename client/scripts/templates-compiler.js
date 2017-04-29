@@ -8,6 +8,16 @@ Handlebars.registerHelper('date', date => {
     return formattedDate;
 });
 
+Handlebars.registerHelper('commentsCount', comments => {
+    if (comments == null || comments.length == 0) {
+        return 'Comments';
+    } else if (comments.length == 1) {
+        return '1 Comment';
+    } else {
+        return `${comments.length} Comments`;
+    }
+});
+
 Handlebars.registerHelper('paginate', paginate);
 
 const cachedTemplates = {};

@@ -33,8 +33,8 @@ function getById(params) {
 
     let id = params.id;
     let data = {};
-    let relatedCount = 5;
-    let latestCount = 10;
+    let relatedCount = 6;
+    let latestCount = 12;
 
     newsService.getById(id)
         .then(article => {
@@ -68,6 +68,12 @@ function getById(params) {
                 $btnNewsComment.removeClass('hidden');
             });
 
+            $('#btn-comments-scroll').on('click', () => {
+                $('html, body').animate({
+                    scrollTop: $('#news-comment-box').offset().top
+                }, 1000);
+            });
+
             _bindCommentButton(data);
         })
         .catch(error => {
@@ -97,6 +103,10 @@ function _bindDeleteButtons(data) {
     const $newsCommentBox = $('#news-comment-box');
 
     $newsCommentBox.on('click', '.btn-news-delete-comment', (ev) => {
+        if (ev.isDefaultPrevented()) {
+            return;
+        }
+        
         let commentId = $(ev.target).parent().parent().attr('id');
         newsService.deleteComment(data.article._id, commentId)
             .then(() => {
@@ -141,6 +151,10 @@ function _bindCommentButton(data) {
                         toastr.success('Comment submitted!');
 
                         $newsCommentBox.append(html);
+
+                        $('html, body').animate({
+                            scrollTop: $(`#${newCommentData._id}`).offset().top
+                        }, 1000);
 
                         $btnNewsComment.addClass('hidden');
                         $btnNewsComment.removeClass('disabled');
