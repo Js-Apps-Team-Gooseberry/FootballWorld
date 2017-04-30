@@ -3,7 +3,8 @@
 const express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    morgan = require('morgan');
+    morgan = require('morgan'),
+    prerender = require('prerender-node');
 
 let app = express();
 app.use('/public', express.static('client'));
@@ -12,5 +13,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(prerender);
 
 module.exports = app;
