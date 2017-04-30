@@ -4,7 +4,7 @@
   "description": "SPA app on a football related theme. The name pretty much says it all.",
   "main": "server/server.js",
   "scripts": {
-    "start": "nodemon server/server.js",
+    "start": "node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
