@@ -14,10 +14,11 @@ router
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
     .on('/profile', controllers.auth.profile)
-    .on('/article', controllers.article.loadArticle)
     .on('/news/create', controllers.news.getCreatePage)
     .on('/news/:page', controllers.news.getAll)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
+    .on('/articles', controllers.articles.getAllArticles)
+    .on('/articles/create', controllers.articles.getCreateArticlePage)
     .resolve();
 
