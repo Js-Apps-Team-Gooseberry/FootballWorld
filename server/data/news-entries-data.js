@@ -108,12 +108,24 @@ module.exports = (models) => {
                 .filter(t => t !== '');
 
             return new Promise((resolve, reject) => {
-                NewsEntry.update({ _id: id }, { $set: { title: title, description: description, imageUrl: imageUrl, content: content, tags: tags } }, (error, result) => {
+                NewsEntry.findOne({ _id: id }, (error, entry) => {
                     if (error) {
                         return reject(error);
                     }
 
-                    return resolve(result);
+                    entry.title = title;
+                    entry.description = description;
+                    entry.imageUrl = imageUrl;
+                    entry.content = content;
+                    entry.tags = tags;
+
+                    entry.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(result);
+                    });
                 });
             });
         },

@@ -24,6 +24,15 @@ function getAll(params) {
             return compile('news/news-list', data);
         })
         .then(html => $mainContainer.html(html))
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
+        })
         .then(() => {
             $('.pagination').on('click', 'a', () => {
                 $('html, body').animate({
@@ -34,10 +43,6 @@ function getAll(params) {
 }
 
 function getById(params) {
-    if (!params || !params.id) {
-        // handle the 404
-    }
-
     let id = params.id;
     let data = {};
     let relatedCount = 6;
@@ -63,6 +68,15 @@ function getById(params) {
             return compile('news/news-details', data);
         })
         .then(html => $mainContainer.html(html))
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
+        })
         .then(() => {
             $('html, body').animate({
                 scrollTop: $('body').offset().top
@@ -264,14 +278,19 @@ function getCreatePage() {
 }
 
 function getEditPage(params) {
-    if (!params || !params.id) {
-        // handle the 404
-    }
-
     newsService.getById(params.id)
         .then(data => {
             data.tags = data.tags.join(', ');
             return compile('news/news-edit', data);
+        })
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
         })
         .then(html => $mainContainer.html(html))
         .then(() => {
@@ -340,7 +359,7 @@ function getEditPage(params) {
                     .catch(error => {
                         $btnNewsEdit.attr('disabled', false);
                         $btnNewsEdit.removeClass('disabled');
-                        toastr.error('Invalid data! Try again!');
+                        toastr.error('An error occured! Check if your data is correct or try again later!');
                         console.log(error);
                     });
             });
@@ -348,10 +367,6 @@ function getEditPage(params) {
 }
 
 function flagNewsEntryAsDeleted(params) {
-    if (!params || !params.id) {
-        // 404?
-    }
-
     let $btnNewsDelete = $('btn-news-delete');
     $btnNewsDelete.addClass('disabled');
     $btnNewsDelete.attr('disabled', true);
