@@ -17,13 +17,14 @@ SystemJS.config({
         // services
         'auth-service': '/public/scripts/services/auth.js',
         'news-service': '/public/scripts/services/news.js',
+        'articles-service': '/public/scripts/services/articles.js',
 
         // controllers
         'controllers': '/public/scripts/controllers/index.js',
         'home-controller': '/public/scripts/controllers/home.js',
         'auth-controller': '/public/scripts/controllers/auth.js',
-        'article-controller': '/public/scripts/controllers/article.js',
         'news-controller': '/public/scripts/controllers/news.js',
+        'articles-controller': '/public/scripts/controllers/articles.js',
 
         // libs
         'jquery': '/libs/jquery/dist/jquery.js',

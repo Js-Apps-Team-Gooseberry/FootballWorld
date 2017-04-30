@@ -38,40 +38,42 @@ nav a {
     margin: 0;
 }
 
-.article-news {
+.article-entry {
+    border: 1px solid lightgrey;
+    cursor: pointer;
+    box-shadow: 0 0 6px lightgrey;
+    overflow: hidden;
     padding: 10px;
 }
 
-.article-news a {
+.article-entry a {
     text-decoration: none;
 }
 
-.content-news {
-    padding: 5px;
-}
-
-.content-news h3 .time {
+.article-content h3 .time {
     color: #5bc0de;
 }
 
-.content-news p {
+.article-content p {
     color: #333333;
+    overflow: hidden;
+    height: 10rem;
+    line-height: 2rem;
 }
 
-.article:hover .article-news {
+.article:hover .article-entry {
     -webkit-box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
     -moz-box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
     box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
     border: hidden;
 }
+.article-create-time {
+    font-style: italic;
+}
 
 .img-container img {
     width: 100%;
-    height: 130px;
-}
-
-.content-news {
-    height: 150px;
+    height: 200px;
 }
 
 .news-entry {

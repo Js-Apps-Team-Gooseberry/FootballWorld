@@ -13,14 +13,15 @@ router
     .on('/register', controllers.auth.register)
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
-    .on('/profile', controllers.auth.profile)
-    .on('/article', controllers.article.loadArticle)
+    .on('/profile', controllers.auth.profile)    
     .on('/news/create', controllers.news.getCreatePage)
     .on('/news/:page', controllers.news.getAll)
     .on('/news/edit/:id', controllers.news.getEditPage)
     .on('/news/delete/:id', controllers.news.flagNewsEntryAsDeleted)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
-    .on('*', controllers.home.get)
-    .resolve();
+	.on('/articles', controllers.articles.getAllArticles)
+    .on('/articles/create', controllers.articles.getCreateArticlePage)
+	.on('*', controllers.home.get)   
+     .resolve();
 
