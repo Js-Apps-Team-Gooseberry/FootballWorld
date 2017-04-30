@@ -2,6 +2,13 @@ body {
     padding-top: 60px;
 }
 
+.form-control:focus {
+    border-color: #358753;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 3px #85d0a1;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 3px #85d0a1;
+}
+
 nav a {
     font-size: 1.5rem;
 }
@@ -74,10 +81,6 @@ nav a {
     margin-top: 5px;
 }
 
-.news-entry-date {
-    font-style: italic;
-}
-
 .news-entry-content {
     text-align: justify;
     height: 8rem;
@@ -123,5 +126,103 @@ nav a {
 }
 
 .btn-create {
+    margin-top: 25px;
+}
+
+.btn-black {
+    background: black;
+    color: white;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.btn-comment-delete {
+    color: grey;
+    margin-top: 0.6%;
+    cursor: pointer;
+}
+
+.btn-comment-delete:hover {
+    text-decoration: underline;
+}
+
+.comment {
+    border: 1px solid beige;
+    box-shadow: 0 0 5px lightgrey;
+    margin-bottom: 15px;
+    padding: 5px 0;
+}
+
+.btn-news-comment {
+    margin-top: 1%;
+}
+
+.comment-content {
+    word-break: break-word;
+}
+
+.news-container {
+    margin-bottom: 60px;
+}
+
+.news-header {
+    padding-left: 2.5%;
+    margin: 0;
+}
+
+.news-header h1 {
+    border-left: 3px solid black;
+    padding-left: 1%;
+    margin: 0;
+}
+
+.icon-social {
+    max-width: 44px;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.no-margin-top {
+    margin-top: 0;
+}
+
+.socials-container {
+    padding: 3px 0;
+    margin-bottom: 45px;
+}
+
+.tags-header {
+    padding-top: 10px;
+}
+
+.tags-header span {
+    cursor: pointer;
+}
+
+.field-facebook:hover {
+    color: white;
+    background: #3A5BA2;
+    cursor: pointer;
+}
+
+.field-comments:hover {
+    color: white;
+    background: #6DA643;
+    cursor: pointer;
+}
+
+.comment-box {
     margin-top: 25px;
 }

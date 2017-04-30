@@ -16,6 +16,8 @@ router
     .on('/profile', controllers.auth.profile)
     .on('/news/create', controllers.news.getCreatePage)
     .on('/news/:page', controllers.news.getAll)
+    .on('/news/edit/:id', controllers.news.getEditPage)
+    .on('/news/delete/:id', controllers.news.flagNewsEntryAsDeleted)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
     .on('/articles', controllers.articles.getAllArticles)

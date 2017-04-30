@@ -1,16 +1,68 @@
 <div class="container">
-    <div class="row">
+    <div class="row news-container">
+        <div class="row news-header">
+            <h1 class="bold">{{article.title}}</h1>
+            <hr class="no-margin-bottom" />
+            <div class="socials-container">
+                <div class="col-md-2 no-padding">
+                    <p class="no-margin-bottom">By <span class="bold">Some Author</span></p>
+                    <p class="italic no-margin-bottom">{{#date article.createdOn}}{{/date}}</p>
+                </div>
+                <div class="col-md-3 no-padding field-facebook text-center"><img class="icon-social" src="https://doc.owncloud.org/server/8.0/admin_manual/_static/img/social/facebook.svg"
+                        alt="facebook">
+                    <span class="bold"> Share to Facebook</span></div>
+                <div class="col-md-3 no-padding field-comments text-center"><img class="icon-social" src="https://www.gettingout.com/wp-content/uploads/2014/03/message-icon-LARGE.png"
+                        alt="comments"><span class="bold"> 23 Comments</span></div>
+
+                <div class="col-md-4 text-right tags-header">
+                    {{#each article.tags}}
+                    <span class="label label-success">{{this}}</span> {{/each}}
+                </div>
+            </div>
+            <hr class="no-margin-top" />
+        </div>
+        {{!--left side--}}
         <article class="col-md-8">
             <img src="{{article.imageUrl}}" class="img-news-details" alt="{{article.title}}">
-            <h2 class="bold">{{article.title}}</h2>
-            <p class="news-entry-date">{{#date article.createdOn}}{{/date}}</p>
+            <hr />
             <p class="news-details-content">{{article.content}}</p>
+            <div id="news-comment-box" class="comment-box">
+                <h4 class="aside-title">Comments</h4>
+                {{#each article.comments}}
+                <div class="row comment" id="{{_id}}">
+                    <div class="col-md-2">
+                        <img src="{{author.userAvatar}}" alt="{{author.username}}" class="img-responsive img-circle">
+                    </div>
+                    <div class="col-md-10">
+                        <p class="inline-block"><span class="bold">{{author.username}}</span> <span class="italic small">{{#date createdOn}}{{/date}}</span></p>
+                        <p class="btn-news-delete-comment inline-block pull-right small btn-comment-delete" onclick="return confirm('Are you sure you want to delete this comment?')">
+                            Delete</p>
+                        <p class="comment-content">{{content}}</p>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div id="new-comment-box" class="row comment">
+                <div class="col-md-2">
+                    <img src="{{user.profilePicture}}" alt="{{user.username}}" class="img-responsive img-circle">
+                </div>
+                <div class="col-md-10">
+                    <p class="inline-block"><span class="bold">{{user.username}}</span></p>
+                    <div id="form-news-new-comment">
+                        <textarea id="news-new-comment-content" cols="30" rows="2" placeholder="Type your comment here..." class="form-control" />
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-success btn-xs btn-news-comment hidden" id="btn-news-comment">Submit</button>
+                    </div>
+                </div>
+            </div>
         </article>
+
+        {{!--right side--}}
         <aside class="col-md-4">
             {{#if related}}
             <h4 class="aside-title">Related News</h4>
-            {{/if}}
-            {{#each related}}
+            {{/if}} {{#each related}}
             <div class="row aside-tab">
                 <a href="#/news/details/{{_id}}">
                     <div class="col-md-4 aside-photo">
@@ -35,6 +87,12 @@
                 </a>
             </div>
             {{/each}}
+            <div class="text-right">
+                <h4 class="aside-title">Admin options</h4>
+                <a href="#/news/edit/{{article._id}}" class="btn btn-default btn-black">Edit Article</a>
+                <a href="#/news/delete/{{article._id}}" id="btn-news-delete" onclick="return confirm('Do you really want to delete this article?')"
+                    class="btn btn-default btn-black">Delete Article</a>
+            </div>
         </aside>
     </div>
 </div>

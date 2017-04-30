@@ -43,8 +43,57 @@ function createNewEntry(title, imageUrl, content, tags) {
         content,
         tags
     };
-    console.log(body);
+
     return requester.postJSON('/api/news/create', body);
 }
 
-export { getNotDeletedArticlesByPage, getById, getByTags, getAsideLatest, createNewEntry };
+function editNewsEntry(articleId, title, imageUrl, content, tags) {
+    let body = {
+        articleId,
+        title,
+        imageUrl,
+        content,
+        tags
+    };
+
+    return requester.putJSON('/api/news/edit', body);
+}
+
+function flagNewsEntryAsDeleted(articleId) {
+    let body = {
+        articleId
+    };
+
+    return requester.putJSON('/api/news/flag-delete', body);
+}
+
+function comment(newsEntryId, userId, commentContent) {
+    let body = {
+        newsEntryId,
+        userId,
+        commentContent
+    };
+
+    return requester.postJSON('/api/news/comment', body);
+}
+
+function deleteComment(newsEntryId, commentId) {
+    let body = {
+        newsEntryId,
+        commentId
+    };
+
+    return requester.deleteJSON('/api/news/delete-comment', body);
+}
+
+export {
+    getNotDeletedArticlesByPage,
+    getById,
+    getByTags,
+    getAsideLatest,
+    createNewEntry,
+    editNewsEntry,
+    flagNewsEntryAsDeleted,
+    comment,
+    deleteComment
+};

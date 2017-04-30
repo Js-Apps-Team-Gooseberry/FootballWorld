@@ -5,8 +5,17 @@ const mongoose = require('mongoose'),
 
 let commentSchema = new Schema({
     author: {
-        type: String,
-        required: true
+        username: {
+            type: String,
+            required: true
+        },
+        userId: {
+            type: String,
+            required: true
+        },
+        userAvatar: {
+            type: String
+        }
     },
     content: {
         type: String,
@@ -17,9 +26,6 @@ let commentSchema = new Schema({
     createdOn: {
         type: Date,
         default: new Date
-    },
-    isDeleted: {
-        type: Boolean
     }
 });
 

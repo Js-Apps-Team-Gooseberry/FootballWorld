@@ -10,7 +10,11 @@ module.exports = function (app, data) {
         .post('/create', controllers.createNewNewsEntry)
         .post('/get-by-id', controllers.getNewsEntryById)
         .post('/get-aside-latest', controllers.getLatestAsideNewsEntries)
-        .post('/get-by-tag', controllers.getNewsByTags);
+        .post('/get-by-tag', controllers.getNewsByTags)
+        .put('/edit', controllers.editNewsEntry)
+        .put('/flag-delete', controllers.flagNewsEntryAsDeleted)
+        .post('/comment', controllers.commentNewsEntry)
+        .delete('/delete-comment', controllers.deleteNewsEntryComment);
 
     app.use('/api/news', router);
 };

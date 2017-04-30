@@ -45,14 +45,99 @@ function getById(params) {
             data.related = related;
             return newsService.getAsideLatest(latestCount, data.article._id);
         })
-        .then(latest => {            
+        .then(latest => {
             data.latest = latest;
+
+            if (localStorage.getItem('currentUser')) {
+                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                data.user = currentUser;
+            }
+
             return compile('news-details', data);
         })
         .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $newCommentTextArea = $('#news-new-comment-content'),
+                $btnNewsComment = $('#btn-news-comment');
+
+            _bindDeleteButtons(data);
+
+            $newCommentTextArea.on('focus', () => {
+                $btnNewsComment.removeClass('hidden');
+            });
+
+            _bindCommentButton(data);
+        })
         .catch(error => {
             console.log(error);
         });
+}
+
+function _bindDeleteButtons(data) {
+    const $newsCommentBox = $('#news-comment-box');
+
+    $newsCommentBox.on('click', '.btn-news-delete-comment', (ev) => {
+        let commentId = $(ev.target).parent().parent().attr('id');
+        newsService.deleteComment(data.article._id, commentId)
+            .then(() => {
+                toastr.success('Comment successfully deleted!');
+                $(`#${commentId}`).remove();
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occurred!');
+            });
+    });
+}
+
+function _bindCommentButton(data) {
+    const $newCommentTextArea = $('#news-new-comment-content'),
+        $btnNewsComment = $('#btn-news-comment'),
+        $formNewsNewComment = $('#form-news-new-comment'),
+        $newsCommentBox = $('#news-comment-box');
+
+    $btnNewsComment.on('click', () => {
+        if ($newCommentTextArea.val().length < 3 || $newCommentTextArea.val().length > 500) {
+            toastr.error('The comments\' length must be between 3 and 500 symbols!');
+            $formNewsNewComment.addClass('has-error');
+            $newCommentTextArea.focus();
+            return;
+        } else {
+            $formNewsNewComment.removeClass('has-error');
+        }
+
+        $btnNewsComment.addClass('disabled');
+        $newCommentTextArea.attr('disabled', true);
+        $btnNewsComment.attr('disabled', true);
+
+        newsService.comment(data.article._id, data.user._id, $newCommentTextArea.val())
+            .then((response) => {
+
+                let newCommentData = response.comments[response.comments.length - 1];
+                newCommentData.author = data.user;
+
+                compile('comment', newCommentData)
+                    .then(html => {
+                        toastr.success('Comment submitted!');
+
+                        $newsCommentBox.append(html);
+
+                        $btnNewsComment.addClass('hidden');
+                        $btnNewsComment.removeClass('disabled');
+                        $newCommentTextArea.val('');
+                        $newCommentTextArea.attr('disabled', false);
+                        $btnNewsComment.attr('disabled', false);
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occured!');
+
+                $btnNewsComment.removeClass('disabled');
+                $newCommentTextArea.attr('disabled', false);
+                $btnNewsComment.attr('disabled', false);
+            });
+    });
 }
 
 function getCreatePage() {
@@ -120,8 +205,105 @@ function getCreatePage() {
         });
 }
 
+function getEditPage(params) {
+    if (!params || !params.id) {
+        // handle the 404
+    }
+
+    newsService.getById(params.id)
+        .then(data => {
+            data.tags = data.tags.join(', ');
+            return compile('news-edit', data);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $btnNewsEdit = $('#btn-news-edit'),
+                $newsEditTitle = $('#news-edit-title'),
+                $newsEditImageUrl = $('#news-edit-image-url'),
+                $newsEditTags = $('#news-edit-tags'),
+                $newsEditContent = $('#news-edit-content'),
+                $formNewsEditTitle = $('#form-news-edit-title'),
+                $formNewsEditImageUrl = $('#form-news-edit-image-url'),
+                $formNewsEditContent = $('#form-news-edit-content');
+
+            $btnNewsEdit.on('click', () => {
+                if ($newsEditTitle.val().trim().length < 5 || $newsEditTitle.val().trim().length > 100) {
+                    toastr.error('Title length should be between 5 and 100 symbols!');
+                    $formNewsEditTitle.addClass('has-error');
+                    $newsEditTitle.focus();
+                    return;
+                } else {
+                    $formNewsEditTitle.removeClass('has-error');
+                }
+
+                if (!_isUrlValid($newsEditImageUrl.val())) {
+                    toastr.error('Please enter a valid URL!');
+                    $formNewsEditImageUrl.addClass('has-error');
+                    $newsEditImageUrl.focus();
+                    return;
+                } else {
+                    $formNewsEditImageUrl.removeClass('has-error');
+                }
+
+                if ($newsEditContent.val().trim().length < 5 || $newsEditContent.val().trim().length > 5000) {
+                    toastr.error('Content length should be between 5 and 5000 symbols!');
+                    $formNewsEditContent.addClass('has-error');
+                    $newsEditContent.focus();
+                    return;
+                } else {
+                    $formNewsEditContent.removeClass('has-error');
+                }
+
+                $btnNewsEdit.attr('disabled', true);
+                $btnNewsEdit.addClass('disabled');
+
+                let title = $newsEditTitle.val();
+                let imageUrl = $newsEditImageUrl.val();
+                let tags = $newsEditTags.val();
+                let content = $newsEditContent.val();
+
+                newsService.editNewsEntry(params.id, title, imageUrl, content, tags)
+                    .then(() => {
+                        toastr.success('Article successfully altered!');
+                        $(location).attr('href', `#/news/details/${params.id}`);
+                    })
+                    .catch(error => {
+                        $btnNewsEdit.attr('disabled', false);
+                        $btnNewsEdit.removeClass('disabled');
+                        toastr.error('Invalid data! Try again!');
+                        console.log(error);
+                    });
+            });
+        });
+}
+
+function flagNewsEntryAsDeleted(params) {
+    if (!params || !params.id) {
+        // 404?
+    }
+
+    let $btnNewsDelete = $('btn-news-delete');
+    $btnNewsDelete.addClass('disabled');
+    $btnNewsDelete.attr('disabled', true);
+
+    let id = params.id;
+
+    newsService.flagNewsEntryAsDeleted(id)
+        .then(response => {
+            console.log(response);
+            toastr.success('Article successfully flagged as deleted!');
+            $(location).attr('href', '#/news');
+        })
+        .catch(error => {
+            console.log(error);
+            $btnNewsDelete.removeClass('disabled');
+            $btnNewsDelete.attr('disabled', false);
+            toastr.error('An error occured! Try again later!');
+        });
+}
+
 function _isUrlValid(str) {
-    let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$','i');
+    let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$', 'i');
     return pattern.test(str);
 }
-export { getAll, getById, getCreatePage };
+export { getAll, getById, getCreatePage, getEditPage, flagNewsEntryAsDeleted };
