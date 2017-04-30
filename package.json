@@ -38,6 +38,7 @@
     "navigo": "^4.7.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
+    "prerender-node": "^2.7.1",
     "systemjs": "^0.20.12",
     "systemjs-plugin-babel": "0.0.21",
     "toastr": "^2.1.2"
