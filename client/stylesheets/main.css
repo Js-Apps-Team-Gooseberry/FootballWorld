@@ -266,6 +266,7 @@ nav a {
 .news-description {
     margin-bottom: 25px;
     line-height: 2.5rem;
+    text-align: justify;
 }
 
 .comment-box {

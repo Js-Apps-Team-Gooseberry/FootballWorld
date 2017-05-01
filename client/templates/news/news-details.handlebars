@@ -4,19 +4,19 @@
             <h1 class="bold news-main-heading">{{article.title}}</h1>
             <hr class="no-margin-bottom" />
             <div class="socials-container">
-                <div class="col-md-2 no-padding">
+                <div class="col-md-2 no-padding news-author-field">
                     <p class="no-margin-bottom">By <span class="bold">{{article.author}}</span></p>
                     <p class="italic small no-margin-bottom">{{#date article.createdOn}}{{/date}}</p>
                 </div>
                 <a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=https%3A%2F%2Ftsar-football.herokuapp.com%2Fnews%2F{{article._id}}%2F%23%2Fnews%2Fdetails%2F{{article._id}}&display=popup&ref=plugin&src=share_button">
                     <div class="col-md-3 no-padding field-facebook text-center">
                         <img class="icon-social" src="/public/assets/facebook-icon.png" alt="facebook">
-                        <span class="bold">&nbsp;&nbsp;Share to Facebook</span>
+                        <span class="bold news-field-text">&nbsp;&nbsp;Share to Facebook</span>
                     </div>
                 </a>
                 <div id="btn-comments-scroll" class="col-md-3 no-padding field-comments text-center">
                     <img class="icon-social" src="/public/assets/comments-icon.png" alt="comments">
-                    <span id="news-comments-count" class="bold">&nbsp;&nbsp;{{#commentsCount article.comments}}{{/commentsCount}}</span>
+                    <span id="news-comments-count" class="bold news-field-text">&nbsp;&nbsp;{{#commentsCount article.comments}}{{/commentsCount}}</span>
                 </div>
                 <div class="col-md-4 text-right tags-header">
                     {{#each article.tags}}

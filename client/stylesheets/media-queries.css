@@ -1,0 +1,40 @@
+@media only screen and (max-width: 991px) {
+    a {
+        text-decoration: none;
+    }
+    .news-author-field, .news-author-field p, .field-facebook, .field-comments, .tags-header, #btn-facebook-share {
+        display: inline-block;
+    }
+    .socials-container {
+        margin-bottom: 0;
+    }
+    .tags-header {
+        float: right;
+    }
+    .news-field-text {
+        display: none;
+    }
+    .comment-avatar, .comment-content {
+        display: inline-block;
+    }
+    .comment {
+        height: 110px;
+    }
+    .comment-avatar {
+        width: 19%;
+    }
+    .comment-content {
+        position: absolute;
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .news-main-heading {
+        font-size: 3rem;
+    }
+    .news-description {
+        font-size: 1.6rem;
+        ;
+    }
+}
