@@ -172,7 +172,7 @@ function _bindCommentButton(data) {
                         $newsCommentBox.append(html);
 
                         $('html, body').animate({
-                            scrollTop: $(`#${newCommentData._id}`).offset().top
+                            scrollTop: $(`#${newCommentData._id}`).offset().top - 55
                         }, 1000);
 
                         $btnNewsComment.addClass('hidden');
