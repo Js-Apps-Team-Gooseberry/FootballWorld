@@ -29,6 +29,7 @@
     "bootstrap": "^3.3.7",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
     "handlebars": "^4.0.6",
     "handlebars-paginate": "^0.1.0",
     "jquery": "^3.2.1",
@@ -38,7 +39,6 @@
     "navigo": "^4.7.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
-    "prerender-node": "^2.7.1",
     "systemjs": "^0.20.12",
     "systemjs-plugin-babel": "0.0.21",
     "toastr": "^2.1.2"

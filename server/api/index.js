@@ -10,7 +10,19 @@ module.exports = (app, data) => {
         .forEach(api => require(path.join(__dirname, api))(app, data));
 
     router.get('*', (req, res) => {
-        res.status(200).sendFile(path.join(__dirname + '/../../client/index.html'));
+        let userAgent = req.headers['user-agent'];
+
+        if (/^(facebookexternalhit)/gi.test(userAgent)) {
+            if (req.url.indexOf('news') > - 1) {
+                let id = req.url.split('/').map(x => x.trim()).filter(x => x != '')[1];
+                data.getNewsEntryById(id)
+                    .then(article => {
+                        res.render('bots', article);
+                    });
+            }
+        } else {
+            res.status(200).sendFile(path.join(__dirname + '/../../client/index.html'));
+        }
     });
 
     app.use(router);
