@@ -1,4 +1,4 @@
-import 'jquery';
+import $ from 'jquery';
 import 'bootstrap';
 import Navigo from 'navigo';
 import * as controllers from 'controllers';
@@ -13,7 +13,7 @@ router
     .on('/register', controllers.auth.register)
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
-    .on('/profile', controllers.auth.profile)    
+    .on('/profile', controllers.auth.profile)
     .on('/admin', controllers.admin.getMainAdminPage)
     .on('/news/create', controllers.news.getCreatePage)
     .on('/news/:page', controllers.news.getAll)
@@ -21,8 +21,11 @@ router
     .on('/news/delete/:id', controllers.news.flagNewsEntryAsDeleted)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
-	.on('/articles', controllers.articles.getAllArticles)
+    .on('/articles', controllers.articles.getAllArticles)
     .on('/articles/create', controllers.articles.getCreateArticlePage)
-	.on('*', controllers.home.get)   
-     .resolve();
+    .on('*', controllers.home.get)
+    .resolve();
 
+$('#navbar-main').on('click', 'ul li a', () => {
+    $('#navbar-main').collapse('hide');
+});

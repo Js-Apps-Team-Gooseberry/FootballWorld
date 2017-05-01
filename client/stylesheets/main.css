@@ -286,3 +286,11 @@ nav a {
     padding: 0;
     margin-top: -15px;
 }
+
+.navbar-brand{
+    padding: 0;
+}
+
+.navbar-logo {
+    max-height: 42px;
+}
