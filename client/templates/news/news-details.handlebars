@@ -1,12 +1,14 @@
 <div class="container">
     <div class="row news-container">
-        <div class="row news-header">
+        <header class="row news-header">
             <h1 class="bold news-main-heading">{{article.title}}</h1>
             <hr class="no-margin-bottom" />
             <div class="socials-container">
                 <div class="col-md-2 no-padding news-author-field">
                     <p class="no-margin-bottom">By <span class="bold">{{article.author}}</span></p>
-                    <p class="italic small no-margin-bottom">{{#date article.createdOn}}{{/date}}</p>
+                    <p class="italic small no-margin-bottom">
+                        <time>{{#date article.createdOn}}{{/date}}</time>
+                    </p>
                 </div>
                 <a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=https%3A%2F%2Ftsar-football.herokuapp.com%2Fnews%2F{{article._id}}%2F%23%2Fnews%2Fdetails%2F{{article._id}}&display=popup&ref=plugin&src=share_button">
                     <div class="col-md-3 no-padding field-facebook text-center">
@@ -24,7 +26,7 @@
                 </div>
             </div>
             <hr class="no-margin-top" />
-        </div>
+        </header>
         {{!--left side--}}
         <article class="col-md-8">
             <img src="{{article.imageUrl}}" class="img-news-details" alt="{{article.title}}">
