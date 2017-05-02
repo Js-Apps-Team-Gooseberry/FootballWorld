@@ -29,6 +29,22 @@ nav a {
     font-size: 1.5rem;
 }
 
+@font-face {
+    font-family: 'Charlemagne';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Charlemagne Std Bold'), url('CharlemagneStd-Bold.woff') format('woff');
+}
+
+.home-loader {
+    margin-top: 7%;
+}
+
+.home-loader-title {
+    font-family: Charlemagne;
+    font-size: 7rem;
+}
+
 .panel-credentials {
     padding: 0 15px;
     box-shadow: 0 0 10px lightgrey;
@@ -67,6 +83,7 @@ nav a {
     box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
     border: hidden;
 }
+
 .article-create-time {
     font-style: italic;
 }
@@ -83,7 +100,7 @@ nav a {
     color: black;
 }
 
-.news-entry:hover {    
+.news-entry:hover {
     box-shadow: 0 0 7px lightgrey;
 }
 
@@ -287,7 +304,7 @@ nav a {
     margin-top: -15px;
 }
 
-.navbar-brand{
+.navbar-brand {
     padding: 0;
 }
 

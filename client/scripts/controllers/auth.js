@@ -67,7 +67,7 @@ function login() {
                         localStorage.setItem('currentUser', JSON.stringify(response.user));
                         localStorage.setItem('token', response.token);
                         toastr.success('Login successful!');
-                        $(location).attr('href', '#/home');
+                        $(location).attr('href', '#!/home');
                         toggleButtonsIfLoggedIn();
                     })
                     .catch(error => {
@@ -97,7 +97,7 @@ function logout() {
 
     localStorage.clear();
     toggleButtonsIfLoggedIn();
-    $(location).attr('href', '#/home');
+    $(location).attr('href', '#!/home');
     toastr.success('Successfully logged out!');
 }
 
@@ -107,7 +107,7 @@ function profile() {
         compile('my-profile', user)
             .then(html => $mainContainer.html(html));
     } else {
-        $(location).attr('href', '#/login');
+        $(location).attr('href', '#!/login');
         toastr.error('You need to be logged in to view this page!');
     }
 }
@@ -220,7 +220,7 @@ function register() {
                         toastr.success(`User ${username} successfully registered!`);
                         localStorage.setItem('currentUser', JSON.stringify(response.user));
                         localStorage.setItem('token', response.token);
-                        $(location).attr('href', '#/home');
+                        $(location).attr('href', '#!/home');
                         toggleButtonsIfLoggedIn();
                     })
                     .catch(error => {

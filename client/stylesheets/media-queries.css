@@ -58,6 +58,9 @@
 }
 
 @media only screen and (max-width: 720px) {
+    .home-loader-title {
+        font-size: 6rem;
+    }
     .comment-avatar {
         padding: 0 5px;
     }
@@ -66,7 +69,13 @@
 @media only screen and (max-width: 650px) {
     .comment-avatar {
         padding: 10px 5px;
-    }    
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .home-loader-title {
+        font-size: 5rem;
+    }
 }
 
 @media only screen and (max-width: 550px) {
@@ -94,7 +103,7 @@
 
 @media only screen and (max-width: 450px) {
     .news-entry-image, .news-entry-info {
-        background-size: 500px;        
+        background-size: 500px;
     }
     .news-entry-info h2 {
         font-size: 2.5rem;

@@ -10,7 +10,7 @@
                         <time>{{#date article.createdOn}}{{/date}}</time>
                     </p>
                 </div>
-                <a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=https%3A%2F%2Ftsar-football.herokuapp.com%2Fnews%2F{{article._id}}%2F%23%2Fnews%2Fdetails%2F{{article._id}}&display=popup&ref=plugin&src=share_button">
+                <a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=https%3A%2F%2Ftsar-football.herokuapp.com%2Fnews%2F{{article._id}}%2F%23!%2Fnews%2Fdetails%2F{{article._id}}&display=popup&ref=plugin&src=share_button">
                     <div class="col-md-3 no-padding field-facebook text-center">
                         <img class="icon-social" src="/public/assets/facebook-icon.png" alt="facebook">
                         <span class="bold news-field-text">&nbsp;&nbsp;Share to Facebook</span>
@@ -70,7 +70,7 @@
             {{#if related}}
             <h4 class="aside-title">Related News</h4>
             {{/if}} {{#each related}}
-            <a href="#/news/details/{{_id}}">
+            <a href="#!/news/details/{{_id}}">
                 <div class="row aside-tab">
                     <div class="col-md-4 aside-photo">
                         <img src="{{imageUrl}}" class="img-responsive" alt="{{title}}">
@@ -83,7 +83,7 @@
             {{/each}}
             <h4 class="aside-title">Latest News</h4>
             {{#each latest}}
-            <a href="#/news/details/{{_id}}">
+            <a href="#!/news/details/{{_id}}">
                 <div class="row aside-tab">
                     <div class="col-md-4 aside-photo">
                         <img src="{{imageUrl}}" class="img-responsive" alt="{{title}}">
@@ -96,8 +96,8 @@
             {{/each}}
             <div class="text-right">
                 <h4 class="aside-title">Admin options</h4>
-                <a href="#/news/edit/{{article._id}}" class="btn btn-danger btn-black">Edit Article</a>
-                <a href="#/news/delete/{{article._id}}" id="btn-news-delete" onclick="return confirm('Do you really want to delete this article?')"
+                <a href="#!/news/edit/{{article._id}}" class="btn btn-danger btn-black">Edit Article</a>
+                <a href="#!/news/delete/{{article._id}}" id="btn-news-delete" onclick="return confirm('Do you really want to delete this article?')"
                     class="btn btn-danger btn-black">Delete Article</a>
             </div>
         </aside>

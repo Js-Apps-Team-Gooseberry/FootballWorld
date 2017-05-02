@@ -259,7 +259,7 @@ function getCreatePage() {
                     .then(response => {
                         console.log(response);
                         toastr.success('Article successfully added!');
-                        $(location).attr('href', '#/news');
+                        $(location).attr('href', '#!/news');
                     })
                     .catch(error => {
                         $btnNewsCreate.attr('disabled', false);
@@ -348,7 +348,7 @@ function getEditPage(params) {
                 newsService.editNewsEntry(params.id, title, description, imageUrl, content, tags)
                     .then(() => {
                         toastr.success('Article successfully altered!');
-                        $(location).attr('href', `#/news/details/${params.id}`);
+                        $(location).attr('href', `#!/news/details/${params.id}`);
                     })
                     .catch(error => {
                         $btnNewsEdit.attr('disabled', false);
@@ -371,7 +371,7 @@ function flagNewsEntryAsDeleted(params) {
         .then(response => {
             console.log(response);
             toastr.success('Article successfully flagged as deleted!');
-            $(location).attr('href', '#/news');
+            $(location).attr('href', '#!/news');
         })
         .catch(error => {
             console.log(error);

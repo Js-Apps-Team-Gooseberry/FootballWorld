@@ -6,7 +6,7 @@ import { toggleButtonsIfLoggedIn } from 'utils';
 
 toggleButtonsIfLoggedIn();
 
-const router = new Navigo(null, false);
+const router = new Navigo(null, true, '#!');
 
 router
     .on('/home', controllers.home.get)
