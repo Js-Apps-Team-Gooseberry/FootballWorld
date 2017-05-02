@@ -26,6 +26,21 @@ function getAllArticles(params) {
         .then(html => $mainContainer.html(html));
 }
 
+function getArticleById(params) {
+    if (!params || !params.id) {
+        // handle the 404
+    }
+
+    let id = params.id;
+
+    articlesService.getArticleById(id)
+        .then(articles => {
+            console.log(articles);
+            return compile('articles-details',articles);
+        })
+        .then(html => $mainContainer.html(html))
+}
+
 function getCreateArticlePage() {
     compile('articles-create')
         .then(html => $mainContainer.html(html))
@@ -68,6 +83,7 @@ function getCreateArticlePage() {
                 $btnArticleCreate.attr('disabled', true);
                 $btnArticleCreate.addClass('disabled');
 
+
                 let title = $articleCreateTitle.val(),
                     imageUrl = $articleCreateUrl.val(),
                     matchPrediction = $articleCreatePrediction.val(),
@@ -78,6 +94,7 @@ function getCreateArticlePage() {
                     injuredA = $articleCreateInjuredA.val(),
                     injuredB = $articleCreateInjuredB.val(),
                     content = $articleCreateContent.val();
+
 
                 articlesService.createNewArticle(title, imageUrl, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, content)
                     .then(response => {
@@ -123,4 +140,4 @@ function getCreateArticlePage() {
     }
 }
 
-export {getCreateArticlePage, getAllArticles};
+export {getCreateArticlePage, getAllArticles, getArticleById};

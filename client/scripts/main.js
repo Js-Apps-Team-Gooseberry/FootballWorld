@@ -20,7 +20,8 @@ router
     .on('/news/delete/:id', controllers.news.flagNewsEntryAsDeleted)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)
-    .on('/articles', controllers.articles.getAllArticles)
     .on('/articles/create', controllers.articles.getCreateArticlePage)
+    .on('/articles', controllers.articles.getAllArticles)
+    .on('/articles/details:id', controllers.articles.getArticleById)
     .resolve();
 

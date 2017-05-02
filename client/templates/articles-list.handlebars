@@ -2,18 +2,18 @@
 	<div class="row">
 		<div class="row">
 			<div class="col-md-8">
-				<h1>Latest Articles</h1>
+				<h1>Popular analisys and predictions</h1>
 			</div>
 			<div class="col-md-4 text-right">
-				<a href="#/articles/create" class="btn btn-primary btn-create">Write a New Article</a>
+				<a href="#/articles/create" class="btn btn-success btn-create">Write a New Article</a>
 			</div>
 		</div>
-		<hr></hr>
-		{{#each articles}}
+		<hr>
 		<div class="row">
+			{{#each articles}}
 			<div class="article col-lg-4 col-md-4 col-sm-6 col-xs-12">
 				<article class="article-entry panel">
-					<a href="#/articles/detail{{_id}}">
+					<a href="#/articles/details{{_id}}">
 						<div class="img-container">
 							<img class="img-responsive" alt=""
 								 src="{{imageUrl}}">
@@ -24,7 +24,7 @@
 						</div>
 						<div class="row">
 							<div class="article-create-time text-right col-xs-12">
-								<span>created on {{createdOn}}</span>
+								<span>created on {{#date createdOn}}{{/date}}</span>
 								<br>
 								<span>by Admin</span>
 							</div>
@@ -32,12 +32,12 @@
 					</a>
 				</article>
 			</div>
+			{{/each}}
 		</div>
-	{{/each}}
 		<div class="pager">
 			<ul class="pagination">
 				{{#paginate pagination type="previous"}}
-					<li {{#if disabled}}class="disabled" disabled="true" {{/if}}><a href="#/news/{{n}}">«</a></li>
+					<li {{#if disabled}}class="disabled" disabled="true" {{/if}}><a href="#/articles/{{n}}">«</a></li>
 				{{/paginate}} {{#paginate pagination type="middle" limit="5"}}
 				<li {{#if active}}class="active" {{/if}}><a href="#/articles/{{n}}">{{n}}</a></li>
 			{{/paginate}} {{#paginate pagination type="next"}}

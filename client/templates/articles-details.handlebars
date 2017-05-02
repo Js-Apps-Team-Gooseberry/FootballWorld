@@ -1,0 +1,92 @@
+<div class="container">
+	<div class="row">
+		<article class="col-md-8">
+			<header>
+				<div>
+					<h1 class="text-center article-details-title">{{sideA}} vs {{sideB}}</h1>
+					<h2>{{title}}</h2>
+				</div>
+				<div class="article-details-createOn text-right">
+					<h3>By Admin</h3>
+					<p>Last Update: {{#date createdOn}}{{/date}}{{createOn}}</p>
+				</div>
+				<div>
+					<iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button_count&size=large&mobile_iframe=true&width=105&height=28&appId"
+							width="200" height="28" style="border:none;overflow:hidden" scrolling="no"
+							frameborder="0"
+							allowTransparency="true"></iframe>
+				</div>
+				<img class="article-details-img" src="{{imageUrl}}" alt="">
+				<div>
+					<p class="article-detail-content">
+						{{content}}
+					</p>
+				</div>
+			</header>
+		</article>
+		<aside class="article-details-aside col-md-4">
+			<h3 class="text-center article-aside-lineups">STARTING LINE-UPS</h3>
+			<div class="row">
+				<div class="col-sm-6 text-center">
+					<span class="article-aside-team">{{sideA}}</span>
+					<ul class="text-left article-aside-team-list">
+						<li>
+							<span>{{lineupsA}}</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+					</ul>
+				</div>
+				<div class="col-sm-6 text-center">
+					<span class="article-aside-team">{{sideB}}</span>
+					<ul class="text-left article-aside-team-list">
+						<li>
+							<span>{{lineupsB}}</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<h3 class="article-aside-injured text-center">INJURED</h3>
+				<div class="col-sm-6">
+					<ul class="text-left article-aside-team-list">
+						<li>
+							<span>{{injuredA}}</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+					</ul>
+				</div>
+				<div class="col-sm-6">
+					<ul class="text-left article-aside-team-list">
+						<li>
+							<span>{{injuredB}}</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+						<li>
+							<span>dsdsd</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<h3 class="text-center article-aside-prediction">MATCH PREDICTION</h3>
+			<p class="text-center"><strong>{{matchPrediction}}</strong></p>
+		</aside>
+	</div>
+</div>
