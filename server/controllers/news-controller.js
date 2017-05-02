@@ -4,12 +4,14 @@ module.exports = (data) => {
     return {
         createNewNewsEntry(req, res) {
             let title = req.body.title;
+            let description = req.body.description;
+            let author = req.body.author;
             let imageUrl = req.body.imageUrl;
             let content = req.body.content;
             let tags = req.body.tags;
             let createdOn = req.body.createdOn;
 
-            data.createNewNewsEntry(title, imageUrl, content, tags, createdOn)
+            data.createNewNewsEntry(title, description, author, imageUrl, content, tags, createdOn)
                 .then(newArticle => {
                     return res.status(201).json(newArticle);
                 })
@@ -74,11 +76,12 @@ module.exports = (data) => {
         editNewsEntry(req, res) {
             let id = req.body.articleId;
             let title = req.body.title;
+            let description = req.body.description;
             let imageUrl = req.body.imageUrl;
             let content = req.body.content;
             let tags = req.body.tags;
 
-            data.editNewsEntry(id, title, imageUrl, content, tags)
+            data.editNewsEntry(id, title, description, imageUrl, content, tags)
                 .then((response) => {
                     return res.status(200).json(response);
                 })

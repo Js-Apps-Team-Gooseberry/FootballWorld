@@ -1,4 +1,4 @@
-import 'jquery';
+import $ from 'jquery';
 import 'bootstrap';
 import Navigo from 'navigo';
 import * as controllers from 'controllers';
@@ -6,7 +6,7 @@ import { toggleButtonsIfLoggedIn } from 'utils';
 
 toggleButtonsIfLoggedIn();
 
-const router = new Navigo(null, false);
+const router = new Navigo(null, true, '#!');
 
 router
     .on('/home', controllers.home.get)
@@ -14,6 +14,7 @@ router
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
     .on('/profile', controllers.auth.profile)
+    .on('/admin', controllers.admin.getMainAdminPage)
     .on('/news/create', controllers.news.getCreatePage)
     .on('/news/:page', controllers.news.getAll)
     .on('/news/edit/:id', controllers.news.getEditPage)
@@ -23,5 +24,9 @@ router
     .on('/articles/create', controllers.articles.getCreateArticlePage)
     .on('/articles', controllers.articles.getAllArticles)
     .on('/articles/details:id', controllers.articles.getArticleById)
+    .on('*', controllers.home.get)
     .resolve();
 
+$('#navbar-main').on('click', 'ul li a', () => {
+    $('#navbar-main').collapse('hide');
+});

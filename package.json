@@ -4,7 +4,7 @@
   "description": "SPA app on a football related theme. The name pretty much says it all.",
   "main": "server/server.js",
   "scripts": {
-    "start": "nodemon server/server.js",
+    "start": "node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,6 +29,7 @@
     "bootstrap": "^3.3.7",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
     "handlebars": "^4.0.6",
     "handlebars-paginate": "^0.1.0",
     "jquery": "^3.2.1",

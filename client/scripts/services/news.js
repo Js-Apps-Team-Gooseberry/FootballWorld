@@ -36,9 +36,11 @@ function getAsideLatest(articlesCount, currentArticleId) {
     return requester.postJSON('/api/news/get-aside-latest', body);
 }
 
-function createNewEntry(title, imageUrl, content, tags) {
+function createNewEntry(title, description, author, imageUrl, content, tags) {
     let body = {
         title,
+        description,
+        author,
         imageUrl,
         content,
         tags
@@ -47,10 +49,11 @@ function createNewEntry(title, imageUrl, content, tags) {
     return requester.postJSON('/api/news/create', body);
 }
 
-function editNewsEntry(articleId, title, imageUrl, content, tags) {
+function editNewsEntry(articleId, title, description, imageUrl, content, tags) {
     let body = {
         articleId,
         title,
+        description,
         imageUrl,
         content,
         tags

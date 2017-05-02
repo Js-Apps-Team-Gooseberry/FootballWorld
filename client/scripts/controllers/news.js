@@ -21,20 +21,32 @@ function getAll(params) {
                 pageCount: data.pagesCount,
                 page
             };
-            return compile('news-list', data);
+            return compile('news/news-list', data);
         })
-        .then(html => $mainContainer.html(html));
+        .then(html => $mainContainer.html(html))
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
+        })
+        .then(() => {
+            $('.pagination').on('click', 'a', () => {
+                $('html, body').animate({
+                    scrollTop: $('body').offset().top
+                }, 500);
+            });
+        });
 }
 
 function getById(params) {
-    if (!params || !params.id) {
-        // handle the 404
-    }
-
     let id = params.id;
     let data = {};
-    let relatedCount = 5;
-    let latestCount = 10;
+    let relatedCount = 6;
+    let latestCount = 12;
 
     newsService.getById(id)
         .then(article => {
@@ -53,10 +65,25 @@ function getById(params) {
                 data.user = currentUser;
             }
 
-            return compile('news-details', data);
+            return compile('news/news-details', data);
         })
         .then(html => $mainContainer.html(html))
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
+        })
         .then(() => {
+            $('html, body').animate({
+                scrollTop: $('body').offset().top
+            }, 500);
+
+            _bindFacebookShareButton();
+
             const $newCommentTextArea = $('#news-new-comment-content'),
                 $btnNewsComment = $('#btn-news-comment');
 
@@ -66,6 +93,12 @@ function getById(params) {
                 $btnNewsComment.removeClass('hidden');
             });
 
+            $('#btn-comments-scroll').on('click', () => {
+                $('html, body').animate({
+                    scrollTop: $('#news-comment-box').offset().top
+                }, 1000);
+            });
+
             _bindCommentButton(data);
         })
         .catch(error => {
@@ -73,10 +106,26 @@ function getById(params) {
         });
 }
 
+function _bindFacebookShareButton() {
+    let $btnFacebookShare = $('#btn-facebook-share');
+    $btnFacebookShare.click((ev) => {
+        ev.preventDefault();
+        window.open(
+            $btnFacebookShare.attr('href'),
+            'popupWindow',
+            'width=600,height=600'
+        );
+    });
+}
+
 function _bindDeleteButtons(data) {
     const $newsCommentBox = $('#news-comment-box');
 
     $newsCommentBox.on('click', '.btn-news-delete-comment', (ev) => {
+        if (ev.isDefaultPrevented()) {
+            return;
+        }
+
         let commentId = $(ev.target).parent().parent().attr('id');
         newsService.deleteComment(data.article._id, commentId)
             .then(() => {
@@ -122,6 +171,10 @@ function _bindCommentButton(data) {
 
                         $newsCommentBox.append(html);
 
+                        $('html, body').animate({
+                            scrollTop: $(`#${newCommentData._id}`).offset().top - 55
+                        }, 1000);
+
                         $btnNewsComment.addClass('hidden');
                         $btnNewsComment.removeClass('disabled');
                         $newCommentTextArea.val('');
@@ -141,16 +194,18 @@ function _bindCommentButton(data) {
 }
 
 function getCreatePage() {
-    compile('news-create')
+    compile('news/news-create')
         .then(html => $mainContainer.html(html))
         .then(() => {
             const $btnNewsCreate = $('#btn-news-create'),
                 $newsCreateTitle = $('#news-create-title'),
                 $newsCreateImageUrl = $('#news-create-image-url'),
                 $newsCreateTags = $('#news-create-tags'),
+                $newsCreateDescription = $('#news-create-description'),
                 $newsCreateContent = $('#news-create-content'),
                 $formNewsCreateTitle = $('#form-news-create-title'),
                 $formNewsCreateImageUrl = $('#form-news-create-image-url'),
+                $formNewsCreateDescription = $('#form-news-create-description'),
                 $formNewsCreateContent = $('#form-news-create-content');
 
             $btnNewsCreate.on('click', () => {
@@ -172,6 +227,15 @@ function getCreatePage() {
                     $formNewsCreateImageUrl.removeClass('has-error');
                 }
 
+                if ($newsCreateDescription.val().trim().length < 20 || $newsCreateDescription.val().trim().length > 1000) {
+                    toastr.error('Description length should be between 20 and 1000 symbols!');
+                    $formNewsCreateDescription.addClass('has-error');
+                    $newsCreateDescription.focus();
+                    return;
+                } else {
+                    $formNewsCreateDescription.removeClass('has-error');
+                }
+
                 if ($newsCreateContent.val().trim().length < 5 || $newsCreateContent.val().trim().length > 5000) {
                     toastr.error('Content length should be between 5 and 5000 symbols!');
                     $formNewsCreateContent.addClass('has-error');
@@ -185,15 +249,17 @@ function getCreatePage() {
                 $btnNewsCreate.addClass('disabled');
 
                 let title = $newsCreateTitle.val();
+                let description = $newsCreateDescription.val();
                 let imageUrl = $newsCreateImageUrl.val();
                 let tags = $newsCreateTags.val();
                 let content = $newsCreateContent.val();
+                let author = JSON.parse(localStorage.getItem('currentUser')).username;
 
-                newsService.createNewEntry(title, imageUrl, content, tags)
+                newsService.createNewEntry(title, description, author, imageUrl, content, tags)
                     .then(response => {
                         console.log(response);
                         toastr.success('Article successfully added!');
-                        $(location).attr('href', '#/news');
+                        $(location).attr('href', '#!/news');
                     })
                     .catch(error => {
                         $btnNewsCreate.attr('disabled', false);
@@ -206,14 +272,19 @@ function getCreatePage() {
 }
 
 function getEditPage(params) {
-    if (!params || !params.id) {
-        // handle the 404
-    }
-
     newsService.getById(params.id)
         .then(data => {
             data.tags = data.tags.join(', ');
-            return compile('news-edit', data);
+            return compile('news/news-edit', data);
+        })
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
         })
         .then(html => $mainContainer.html(html))
         .then(() => {
@@ -221,9 +292,11 @@ function getEditPage(params) {
                 $newsEditTitle = $('#news-edit-title'),
                 $newsEditImageUrl = $('#news-edit-image-url'),
                 $newsEditTags = $('#news-edit-tags'),
+                $newsEditDescription = $('#news-edit-description'),
                 $newsEditContent = $('#news-edit-content'),
                 $formNewsEditTitle = $('#form-news-edit-title'),
                 $formNewsEditImageUrl = $('#form-news-edit-image-url'),
+                $formNewsEditDescription = $('#form-news-edit-description'),
                 $formNewsEditContent = $('#form-news-edit-content');
 
             $btnNewsEdit.on('click', () => {
@@ -245,6 +318,15 @@ function getEditPage(params) {
                     $formNewsEditImageUrl.removeClass('has-error');
                 }
 
+                if ($newsEditDescription.val().trim().length < 20 || $newsEditDescription.val().trim().length > 1000) {
+                    toastr.error('Description length should be between 20 and 1000 symbols!');
+                    $formNewsEditDescription.addClass('has-error');
+                    $newsEditDescription.focus();
+                    return;
+                } else {
+                    $formNewsEditDescription.removeClass('has-error');
+                }
+
                 if ($newsEditContent.val().trim().length < 5 || $newsEditContent.val().trim().length > 5000) {
                     toastr.error('Content length should be between 5 and 5000 symbols!');
                     $formNewsEditContent.addClass('has-error');
@@ -259,18 +341,19 @@ function getEditPage(params) {
 
                 let title = $newsEditTitle.val();
                 let imageUrl = $newsEditImageUrl.val();
+                let description = $newsEditDescription.val();
                 let tags = $newsEditTags.val();
                 let content = $newsEditContent.val();
 
-                newsService.editNewsEntry(params.id, title, imageUrl, content, tags)
+                newsService.editNewsEntry(params.id, title, description, imageUrl, content, tags)
                     .then(() => {
                         toastr.success('Article successfully altered!');
-                        $(location).attr('href', `#/news/details/${params.id}`);
+                        $(location).attr('href', `#!/news/details/${params.id}`);
                     })
                     .catch(error => {
                         $btnNewsEdit.attr('disabled', false);
                         $btnNewsEdit.removeClass('disabled');
-                        toastr.error('Invalid data! Try again!');
+                        toastr.error('An error occured! Check if your data is correct or try again later!');
                         console.log(error);
                     });
             });
@@ -278,10 +361,6 @@ function getEditPage(params) {
 }
 
 function flagNewsEntryAsDeleted(params) {
-    if (!params || !params.id) {
-        // 404?
-    }
-
     let $btnNewsDelete = $('btn-news-delete');
     $btnNewsDelete.addClass('disabled');
     $btnNewsDelete.attr('disabled', true);
@@ -292,7 +371,7 @@ function flagNewsEntryAsDeleted(params) {
         .then(response => {
             console.log(response);
             toastr.success('Article successfully flagged as deleted!');
-            $(location).attr('href', '#/news');
+            $(location).attr('href', '#!/news');
         })
         .catch(error => {
             console.log(error);

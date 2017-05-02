@@ -8,7 +8,9 @@ module.exports = function (app, data) {
     router
         .post('/create', controllers.createNewArticle)
         .post('/get-all-not-deleted-articles', controllers.getNotDeletedArticlesByPage)
-        .post('/get-by-id', controllers.getArticleById);
+        .post('/get-by-id', controllers.getArticleById)
+        .post('/comment', controllers.commentArticle)
+        .delete('/delete-comment', controllers.deleteComment);
 
     app.use('/api/articles', router);
 };

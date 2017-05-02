@@ -23,7 +23,7 @@ let userSchema = new Schema({
     email: String,
     profilePicture: {
         type: String,
-        default: 'https://www.kirkleescollege.ac.uk/wp-content/uploads/2015/09/default-avatar.png'
+        default: '/public/assets/default-user-photo.png'
     },
     registeredOn: {
         type: Date,

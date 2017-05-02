@@ -8,15 +8,19 @@ module.exports = (models) => {
         User = models.User;
 
     return {
-        createNewNewsEntry(title, imageUrl, content, tagsStr, createdOn) {
+        createNewNewsEntry(title, description, author, imageUrl, content, tagsStr, createdOn) {
             return new Promise((resolve, reject) => {
                 if (createdOn == null) {
                     createdOn = new Date();
                 }
 
+                if (author == null) {
+                    author = 'Jack London';
+                }
+
                 let tags = tagsStr.split(',').filter(t => t.trim() !== '');
 
-                let newArticle = new NewsEntry({ title, imageUrl, content, tags, createdOn });
+                let newArticle = new NewsEntry({ title, description, author, imageUrl, content, tags, createdOn });
 
                 newArticle.save((error, dbArticle) => {
                     if (error) {
@@ -98,18 +102,30 @@ module.exports = (models) => {
                     });
             });
         },
-        editNewsEntry(id, title, imageUrl, content, tags) {
+        editNewsEntry(id, title, description, imageUrl, content, tags) {
             tags = tags.split(',')
                 .map(t => t.trim())
                 .filter(t => t !== '');
 
             return new Promise((resolve, reject) => {
-                NewsEntry.update({ _id: id }, { $set: { title: title, imageUrl: imageUrl, content: content, tags: tags } }, (error, result) => {
+                NewsEntry.findOne({ _id: id }, (error, entry) => {
                     if (error) {
                         return reject(error);
                     }
 
-                    return resolve(result);
+                    entry.title = title;
+                    entry.description = description;
+                    entry.imageUrl = imageUrl;
+                    entry.content = content;
+                    entry.tags = tags;
+
+                    entry.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(result);
+                    });
                 });
             });
         },

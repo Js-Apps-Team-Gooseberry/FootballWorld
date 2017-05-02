@@ -52,6 +52,30 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        commentArticle(req, res) {
+            let articleId = req.body.articleId;
+            let userId = req.body.userId;
+            let content = req.body.commentContent;
+
+            data.commentArticle(articleId, userId, content)
+                .then(response => {
+                    return res.status(201).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        deleteComment(req, res) {
+            let articleId = req.body.articleId;
+            let commentId = req.body.commentId;
+            data.deleteArticleComment(articleId, commentId)
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

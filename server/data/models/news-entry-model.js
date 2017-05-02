@@ -11,6 +11,16 @@ let newsEntrySchema = new Schema({
         minlength: 5,
         maxlength: 100
     },
+    description: {
+        type: String,
+        required: true,
+        maxlength: 1000
+    },
+    author: {
+        type: String,
+        required: true,
+        maxlength: 30
+    },
     imageUrl: {
         type: String,
         required: true

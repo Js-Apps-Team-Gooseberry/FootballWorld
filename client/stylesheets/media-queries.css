@@ -1,0 +1,125 @@
+@media only screen and (max-width: 991px) {
+    a {
+        text-decoration: none !important;
+    }
+    .news-author-field, .news-author-field p, .field-facebook, .field-comments, .tags-header, #btn-facebook-share {
+        display: inline-block;
+    }
+    .socials-container {
+        margin-bottom: 0;
+    }
+    .tags-header {
+        float: right;
+    }
+    .news-field-text {
+        display: none;
+    }
+    .comment-avatar, .comment-content {
+        display: inline-block;
+    }
+    .new-comment-box {
+        height: 135px;
+    }
+    .comment-avatar {
+        width: 19%;
+    }
+    .new-comment-box .comment-content {
+        position: absolute;
+        width: 80%;
+    }
+    #btn-news-comment {
+        display: initial !important;
+    }
+    .aside-photo, .aside-article {
+        display: inline-block;
+    }
+    .aside-photo {
+        width: 35%;
+    }
+    .aside-article {
+        width: 64%;
+        font-size: 2rem;
+        vertical-align: top;
+    }
+    .comment .comment-content {
+        width: 79%;
+        vertical-align: top;
+    }
+    .news-entry-image, .news-entry-info {
+        display: inline-block;
+    }
+    .news-entry-image {
+        width: 33%;
+    }
+    .news-entry-info {
+        vertical-align: top;
+        width: 66%;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .home-loader-title {
+        font-size: 6rem;
+    }
+    .comment-avatar {
+        padding: 0 5px;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .comment-avatar {
+        padding: 10px 5px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .home-loader-title {
+        font-size: 5rem;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .news-main-heading {
+        font-size: 3rem;
+    }
+    .news-description {
+        font-size: 1.6rem;
+    }
+    .panel-credentials {
+        padding: 0;
+    }
+    .news-entry-image, .news-entry-info {
+        display: block;
+        width: 100%;
+        background-size: 600px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .news-entry-image, .news-entry-info {
+        background-size: 550px;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .news-entry-image, .news-entry-info {
+        background-size: 500px;
+    }
+    .news-entry-info h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media only screen and (max-width: 405px) {
+    .aside-photo {
+        width: 33%;
+    }
+    .aside-article {
+        width: 64%;
+        font-size: 2rem;
+        vertical-align: top;
+    }
+    .news-entry-image, .news-entry-info {
+        background-size: 450px;
+    }
+}

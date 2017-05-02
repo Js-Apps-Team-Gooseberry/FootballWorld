@@ -33,19 +33,19 @@ let articleSchema = new Schema({
         required: true
     },
     injuredA: {
-        type: String,
+        type: [String],
         required: true
     },
     injuredB: {
-        type: String,
+        type: [String],
         required: true
     },
     lineupsA: {
-        type: String,
+        type: [String],
         required: true
     },
     lineupsB: {
-        type: String,
+        type: [String],
         required: true
     },
     isDeleted: {
