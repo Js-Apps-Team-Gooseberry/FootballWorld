@@ -21,36 +21,42 @@
 </head>
 
 <body>
-				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">				<span class="icon-bar"></span>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#!/home" class="navbar-brand"><img src="/public/assets/logo-main.png" class="navbar-logo" alt="tsar-football"></a>
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
+			</div>
+			<div class="navbar-collapse collapse" id="navbar-main">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="#!/home">Home</a>
+					</li>
+					<li>
+						<a href="#!/news">News</a>
+					</li>
+					<li>
+						<a href="#!/articles">Articles</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right logged-out hidden">
+					<li><a href="#!/login">Sign In</a></li>
+					<li><a href="#!/register">Register</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right logged-in hidden">
+					<li><a href="#!/admin">Admin</a></li>
+					<li><a href="#!/profile">Profile</a></li>
+					<li><a href="#!/logout">Sign Out</a></li>
+				</ul>
+			</div>
 		</div>
-		<div class="navbar-collapse collapse" id="navbar-main">
-			<ul class="nav navbar-nav">
-				<li>
-					<a href="#/home">Home</a>
-				</li>
-				<li>
-					<a href="#/news">News</a>
-				</li>
-				<li>
-					<a href="#/articles">Articles</a>
-				</li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right logged-out hidden">
-				<li><a href="#/login">Sign In</a></li>
-				<li><a href="#/register">Register</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right logged-in hidden">
-				<li><a href="#/profile">Profile</a></li>
-				<li><a href="#/logout">Sign Out</a></li>
-			</ul>
-		</div>
-	</div>
-</nav>
+	</nav>
 
-<main id="main-container">
+	<main id="main-container">
 		<div class="container-fluid">
 			<div class="col-md-8 col-md-offset-2 text-center">
 				<div class="home-loader text-center">
@@ -59,13 +65,13 @@
 				</div>
 			</div>
 		</div>
-</main>
+	</main>
 
-<script src="/libs/systemjs/dist/system.js"></script>
-<script src="/public/scripts/config/system-config.js"></script>
-<script>
-    System.import('main');
-</script>
+	<script src="/libs/systemjs/dist/system.js"></script>
+	<script src="/public/scripts/config/system-config.js"></script>
+	<script>
+		System.import('main');
+	</script>
 </body>
 
 </html>
