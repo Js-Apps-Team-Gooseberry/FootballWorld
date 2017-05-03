@@ -167,12 +167,13 @@ nav a {
 .news-entry {
     cursor: pointer;
     border: 1px solid lightgrey;
+    border-right: 4px solid black;
     overflow: hidden;
     color: black;
 }
 
 .news-entry:hover {
-    box-shadow: 0 0 7px lightgrey;
+    border-right: 4px solid #43AC6A;
 }
 
 .news-entry-image {
@@ -415,6 +416,18 @@ nav a {
 .forum-link {
     text-decoration: none;
     color: black;
+}
+
+.forum-link:hover, .forum-link:active, .forum-link:focus, .forum-link:focus {
+    color: black;
+}
+
+.forum-section {
+    border-right: 4px solid black;
+}
+
+.forum-link:hover .forum-section {
+    border-right: 4px solid #43AC6A;
 }
 
 .forum-stats {
