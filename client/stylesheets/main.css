@@ -403,3 +403,25 @@ nav a {
 .image-error {
     max-width: 60%;
 }
+
+.forum-main-image {
+    height: 100px;
+    overflow: hidden;
+    background-position: center center;
+    background-size: 200px;
+    background-repeat: no-repeat;
+}
+
+.forum-link {
+    text-decoration: none;
+    color: black;
+}
+
+.forum-stats {
+    margin-top: 22px;
+}
+
+.forum-last-post {
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
