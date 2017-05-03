@@ -18,6 +18,14 @@ Handlebars.registerHelper('commentsCount', comments => {
     }
 });
 
+Handlebars.registerHelper('deleteCommentBtn', (user, commentAuthorId, options) => {
+    if ((user && user._id == commentAuthorId) || (user && user.admin)) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+
 Handlebars.registerHelper('paginate', paginate);
 
 const cachedTemplates = {};
