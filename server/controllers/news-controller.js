@@ -1,17 +1,28 @@
-/* globals module */
+/* globals module require */
 
 module.exports = (data) => {
+    const routeGuards = require('../utils/route-guards')(data);
+
     return {
         createNewNewsEntry(req, res) {
-            let title = req.body.title;
-            let description = req.body.description;
-            let author = req.body.author;
-            let imageUrl = req.body.imageUrl;
-            let content = req.body.content;
-            let tags = req.body.tags;
-            let createdOn = req.body.createdOn;
+            let token = req.headers.authorization;
 
-            data.createNewNewsEntry(title, description, author, imageUrl, content, tags, createdOn)
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then((user) => {
+                    let title = req.body.title;
+                    let description = req.body.description;
+                    let author = user.username;
+                    let imageUrl = req.body.imageUrl;
+                    let content = req.body.content;
+                    let tags = req.body.tags;
+                    let createdOn = req.body.createdOn;
+
+                    return data.createNewNewsEntry(title, description, author, imageUrl, content, tags, createdOn);
+                })
                 .then(newArticle => {
                     return res.status(201).json(newArticle);
                 })
@@ -74,14 +85,23 @@ module.exports = (data) => {
                 });
         },
         editNewsEntry(req, res) {
-            let id = req.body.articleId;
-            let title = req.body.title;
-            let description = req.body.description;
-            let imageUrl = req.body.imageUrl;
-            let content = req.body.content;
-            let tags = req.body.tags;
+            let token = req.headers.authorization;
 
-            data.editNewsEntry(id, title, description, imageUrl, content, tags)
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    let id = req.body.articleId;
+                    let title = req.body.title;
+                    let description = req.body.description;
+                    let imageUrl = req.body.imageUrl;
+                    let content = req.body.content;
+                    let tags = req.body.tags;
+
+                    return data.editNewsEntry(id, title, description, imageUrl, content, tags);
+                })
                 .then((response) => {
                     return res.status(200).json(response);
                 })
@@ -90,9 +110,18 @@ module.exports = (data) => {
                 });
         },
         flagNewsEntryAsDeleted(req, res) {
-            let id = req.body.articleId;
+            let token = req.headers.authorization;
 
-            data.flagNewsEntryAsDeleted(id)
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    let id = req.body.articleId;
+
+                    return data.flagNewsEntryAsDeleted(id);
+                })
                 .then(response => {
                     return res.status(200).json(response);
                 })
@@ -114,10 +143,33 @@ module.exports = (data) => {
                 });
         },
         deleteNewsEntryComment(req, res) {
+            let token = req.headers.authorization;
             let newsEntryId = req.body.newsEntryId;
             let commentId = req.body.commentId;
 
-            data.deleteNewsEntryComment(newsEntryId, commentId)
+            data.getNewsEntryById(newsEntryId)
+                .then(newsEntry => {
+                    if (!newsEntry) {
+                        res.status(400).json('No such article found!');
+                        return Promise.reject(new Error('No such article found!'));
+                    }
+
+                    let comment = newsEntry.comments.find(c => c._id.toString() == commentId);
+                    if (!comment) {
+                        res.status(400).json('No such comment found!');
+                        return Promise.reject(new Error('No such comment found!'));
+                    }
+
+                    let targetUserId = comment.author.userId;
+                    return routeGuards.isAuthorized(token, targetUserId);
+                })
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.deleteNewsEntryComment(newsEntryId, commentId);
+                })            
                 .then(response => {
                     return res.status(200).json(response);
                 })

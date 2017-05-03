@@ -7,7 +7,7 @@ const mongoose = require('mongoose'),
 let userSchema = new Schema({
     username: {
         type: String,
-        minlength: 6,
+        minlength: 5,
         maxlength: 15,
         unique: true,
         required: true

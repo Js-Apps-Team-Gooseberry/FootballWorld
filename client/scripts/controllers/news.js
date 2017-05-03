@@ -2,6 +2,7 @@ import { compile } from 'templates-compiler';
 import $ from 'jquery';
 import * as newsService from 'news-service';
 import * as toastr from 'toastr';
+import { isAdmin, isLoggedIn } from 'utils';
 
 const $mainContainer = $('#main-container');
 
@@ -146,6 +147,11 @@ function _bindCommentButton(data) {
         $newsCommentBox = $('#news-comment-box');
 
     $btnNewsComment.on('click', () => {
+        if (!isLoggedIn()) {
+            toastr.error('You need to be logged in to comment!');
+            return;
+        }
+
         if ($newCommentTextArea.val().length < 3 || $newCommentTextArea.val().length > 500) {
             toastr.error('The comments\' length must be between 3 and 500 symbols!');
             $formNewsNewComment.addClass('has-error');
@@ -194,6 +200,12 @@ function _bindCommentButton(data) {
 }
 
 function getCreatePage() {
+    if (!isAdmin()) {
+        $(location).attr('href', '#!/home');
+        toastr.error('Unauthorized!');
+        return;
+    }
+
     compile('news/news-create')
         .then(html => $mainContainer.html(html))
         .then(() => {
@@ -253,9 +265,8 @@ function getCreatePage() {
                 let imageUrl = $newsCreateImageUrl.val();
                 let tags = $newsCreateTags.val();
                 let content = $newsCreateContent.val();
-                let author = JSON.parse(localStorage.getItem('currentUser')).username;
 
-                newsService.createNewEntry(title, description, author, imageUrl, content, tags)
+                newsService.createNewEntry(title, description, imageUrl, content, tags)
                     .then(response => {
                         console.log(response);
                         toastr.success('Article successfully added!');
@@ -272,6 +283,12 @@ function getCreatePage() {
 }
 
 function getEditPage(params) {
+    if (!isAdmin()) {
+        $(location).attr('href', '#!/home');
+        toastr.error('Unauthorized!');
+        return;
+    }
+
     newsService.getById(params.id)
         .then(data => {
             data.tags = data.tags.join(', ');
@@ -361,15 +378,20 @@ function getEditPage(params) {
 }
 
 function flagNewsEntryAsDeleted(params) {
+    let id = params.id;
+
+    if (!isAdmin()) {
+        $(location).attr('href', `#!/news/details/${params.id}`);
+        toastr.error('Unauthorized!');
+        return;
+    }
+
     let $btnNewsDelete = $('btn-news-delete');
     $btnNewsDelete.addClass('disabled');
     $btnNewsDelete.attr('disabled', true);
 
-    let id = params.id;
-
     newsService.flagNewsEntryAsDeleted(id)
-        .then(response => {
-            console.log(response);
+        .then(() => {
             toastr.success('Article successfully flagged as deleted!');
             $(location).attr('href', '#!/news');
         })

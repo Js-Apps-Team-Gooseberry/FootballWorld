@@ -2,17 +2,13 @@ import { compile } from 'templates-compiler';
 import * as authService from 'auth-service';
 import * as toastr from 'toastr';
 import $ from 'jquery';
-import { toggleButtonsIfLoggedIn } from 'utils';
+import { toggleButtonsIfLoggedIn, isLoggedIn } from 'utils';
 
 const $mainContainer = $('#main-container');
 
 function validateEmail(email) {
     var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regex.test(email);
-}
-
-function isLoggedIn() {
-    return !!localStorage.getItem('currentUser');
 }
 
 function login() {
@@ -129,12 +125,12 @@ function register() {
                 let $registerUsername = $('#register-username');
                 let $formRegisterUsername = $('#form-register-username');
                 let username = $registerUsername.val();
-                if (!username || username.trim().length < 6 || username.trim().length > 15) {
+                if (!username || username.trim().length < 5 || username.trim().length > 15) {
                     $formRegisterUsername.addClass('has-error');
                     $registerUsername.focus();
                     $btnRegister.removeClass('disabled');
                     $btnRegister.attr('disabled', false);
-                    toastr.error('Username length should be between 6 and 15 symbols!');
+                    toastr.error('Username length should be between 5 and 15 symbols!');
                     return;
                 } else {
                     $formRegisterUsername.removeClass('has-error').addClass('has-success');
