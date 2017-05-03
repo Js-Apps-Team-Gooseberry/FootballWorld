@@ -377,3 +377,20 @@ nav a {
 .navbar-logo {
     max-height: 42px;
 }
+
+.tabs-admin {
+    text-align: center;
+}
+
+.tabs-admin li {
+    display: inline-block;
+    float: none;
+}
+
+.admin-operations {
+    margin-top: 21px;
+}
+
+.admin-news-title {
+    color: black;
+}

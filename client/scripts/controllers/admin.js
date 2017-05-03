@@ -1,11 +1,93 @@
 import { compile } from 'templates-compiler';
 import $ from 'jquery';
+import * as adminService from 'admin-service';
+import * as toastr from 'toastr';
+import { isAdmin } from 'utils';
 
 const $mainContainer = $('#main-container');
 
-function getMainAdminPage() {
-    compile('admin')
+function getNewsPage(params, query) {
+    if (!isAdmin()) {
+        toastr.error('Unauthorized!');
+        $(location).attr('href', '#!/home');
+        return;
+    }
+
+    let queryDictionary = {};
+    if (query) {
+        let queryArr = query.split('&').map(x => x.trim()).filter(x => x != '');
+        for (let queryPair of queryArr) {
+            let key = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[0];
+            let value = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[1];
+            queryDictionary[key] = value;
+        }
+    }
+
+    let page = +queryDictionary.page || 1;
+    let searchQuery = queryDictionary.query || '!-!';
+    let sort = queryDictionary.sort || 'date';
+
+    adminService.getAllNews(page, searchQuery, sort)
+        .then(data => {
+            data.query = searchQuery;
+            data.sort = sort;
+            data.pagination = {
+                pageCount: data.pagesCount,
+                page
+            };
+
+            return compile('admin/news', data);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $newsSearch = $('#admin-news-search');
+            $newsSearch.on('change', () => {
+                $(location).attr('href', `#!/admin/news?query=${$newsSearch.val()}&sort=${sort}`);
+            });
+            let queryVal = searchQuery != '!-!' ? searchQuery : '';
+            $newsSearch.val(queryVal);
+
+            const $newsStatus = $('#admin-news-status');
+            $newsStatus.on('change', () => {
+                $(location).attr('href', `#!/admin/news?query=${queryVal}&sort=${$newsStatus[0].selectedOptions[0].value}`);
+            });
+
+            $(`option[value='${sort}']`).attr('selected', 'selected');
+
+            $('.btn-news-delete-premanently').on('click', (ev) => {
+                if (ev.isDefaultPrevented()) {
+                    return;
+                }
+
+                $(ev.target).addClass('disabled');
+                $(ev.target).attr('disabled', true);
+
+                let id = $(ev.target).parent().parent().attr('id');
+                adminService.deltePermanentlyNewsEntry(id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('Article permanently deleted!');
+                        $(`#${id}`).remove();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+
+                        $(ev.target).addClass('disabled');
+                        $(ev.target).attr('disabled', true);
+                    });
+            });
+        });
+}
+
+function getArticlesPage() {
+    compile('admin/articles')
         .then(html => $mainContainer.html(html));
 }
 
-export { getMainAdminPage };
+function getUsersPage() {
+    compile('admin/users')
+        .then(html => $mainContainer.html(html));
+}
+
+export { getNewsPage, getArticlesPage, getUsersPage };

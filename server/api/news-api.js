@@ -15,7 +15,10 @@ module.exports = function (app, data) {
         .put('/edit', controllers.editNewsEntry)
         .put('/flag-delete', controllers.flagNewsEntryAsDeleted)
         .post('/comment', passport.authenticate('jwt'), controllers.commentNewsEntry)
-        .delete('/delete-comment', controllers.deleteNewsEntryComment);
+        .delete('/delete-comment', controllers.deleteNewsEntryComment)
+        .delete('/delete-entry/:id', controllers.deleteEntryPermanently)
+        .get('/get-all-admin/:page/:query/:sort', controllers.getNewsForAdmins)
+        .put('/flag-active/:id', controllers.flagNewsEntryAsActive);
 
     app.use('/api/news', router);
 };

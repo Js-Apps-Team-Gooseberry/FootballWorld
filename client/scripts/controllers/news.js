@@ -299,6 +299,7 @@ function getEditPage(params) {
                 compile('errors/server-error')
                     .then(html => $mainContainer.html(html));
             } else if (error.status == 404) {
+
                 compile('errors/not-found')
                     .then(html => $mainContainer.html(html));
             }
@@ -372,6 +373,25 @@ function getEditPage(params) {
                         $btnNewsEdit.removeClass('disabled');
                         toastr.error('An error occured! Check if your data is correct or try again later!');
                         console.log(error);
+                    });
+            });
+
+            let $btnRestore = $('#btn-restore-news-entry');
+            $btnRestore.on('click', () => {
+                $btnRestore.addClass('disabled');
+                $btnRestore.attr('disabled', true);
+
+                newsService.flagNewsEntryAsActive(params.id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('Article restored');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+
+                        $btnRestore.removeClass('disabled');
+                        $btnRestore.attr('disabled', false);
                     });
             });
         });

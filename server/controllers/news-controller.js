@@ -46,11 +46,19 @@ module.exports = (data) => {
                 });
         },
         getNewsEntryById(req, res) {
+            let token = req.headers.authorization;
             let id = req.body.newsEntryId;
+            let isAdmin = false;
 
-            data.getNewsEntryById(id)
+            routeGuards.isAdmin(token)
+                .then(() => isAdmin = true)
+                .catch(() => isAdmin = false)
+                .then(() => {
+                    return data.getNewsEntryById(id);
+                })
                 .then(newsEntry => {
-                    if (!newsEntry || newsEntry.isDeleted) {
+                    let predicate = isAdmin ? !newsEntry : (!newsEntry || newsEntry.isDeleted);
+                    if (predicate) {
                         return res.status(404).json({ message: 'Not found!' });
                     }
 
@@ -169,7 +177,66 @@ module.exports = (data) => {
                 })
                 .then(() => {
                     return data.deleteNewsEntryComment(newsEntryId, commentId);
-                })            
+                })
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        getNewsForAdmins(req, res) {
+            let token = req.headers.authorization;
+            let page = +req.params.page;
+            let query = req.params.query == '!-!' ? '' : req.params.query;
+            let sort = req.params.sort;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.getAllNews(page, query, sort);
+                })
+                .then(newsEntries => {
+                    return res.status(200).json(newsEntries);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        flagNewsEntryAsActive(req, res) {
+            let token = req.headers.authorization;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    let id = req.params.id;
+                    return data.flagNewsEntryAsActive(id);
+                })
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        deleteEntryPermanently(req, res) {
+            let token = req.headers.authorization;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    let id = req.params.id;
+                    return data.deleteNewsEntry(id);
+                })
                 .then(response => {
                     return res.status(200).json(response);
                 })

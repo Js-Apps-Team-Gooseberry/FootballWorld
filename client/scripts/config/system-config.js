@@ -18,6 +18,7 @@ SystemJS.config({
         'auth-service': '/public/scripts/services/auth.js',
         'news-service': '/public/scripts/services/news.js',
         'articles-service': '/public/scripts/services/articles.js',
+        'admin-service': '/public/scripts/services/admin.js',
 
         // controllers
         'controllers': '/public/scripts/controllers/index.js',
