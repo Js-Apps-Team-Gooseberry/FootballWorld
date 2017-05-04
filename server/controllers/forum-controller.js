@@ -123,6 +123,169 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        flagThreadAsDeleted(req, res) {
+            let id = req.params.id;
+
+            data.getThreadByIdWithoutRecordingViews(id)
+                .then(thread => {
+                    let token = req.headers.token;
+
+                    return routeGuards.isAuthorized(token, thread.author.userId);
+                })
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.flagThreadAsDeleted(id);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        flagThreadAsActive(req, res) {
+            let id = req.params.id;
+            let token = req.headers.token;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.flagThreadAsActive(id);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        deleteThread(req, res) {
+            let id = req.params.id;
+            let token = req.headers.authorization;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.deleteThread(id);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        editPost(req, res) {
+            let threadId = req.params.threadId;
+            let postId = req.params.postId;
+            let content = req.body.content;
+
+            data.getThreadByIdWithoutRecordingViews(threadId)
+                .then(thread => {
+                    if (!thread) {
+                        return res.status(404).json('No such thread found!');
+                    } else if (!thread.posts || !thread.find(x => x.postId)) {
+                        return res.status(404).json('No such post found!');
+                    }
+
+                    let post = thread.posts.find(x => x.postId);
+                    let token = req.headers.authorization;
+
+                    return routeGuards.isAuthorized(token, post.author.userId);
+                })
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.editPost(threadId, postId, content);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        deletePost(req, res) {
+            let threadId = req.params.threadId;
+            let postId = req.params.postId;
+
+            data.getThreadByIdWithoutRecordingViews(threadId)
+                .then(thread => {
+                    if (!thread) {
+                        return res.status(404).json('No such thread found!');
+                    } else if (!thread.posts || !thread.find(x => x.postId)) {
+                        return res.status(404).json('No such post found!');
+                    }
+
+                    let post = thread.posts.find(x => x.postId);
+                    let token = req.headers.authorization;
+
+                    return routeGuards.isAuthorized(token, post.author.userId);
+                })
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.deletePost(threadId, postId);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        toggleLikeThread(req, res) {
+            let threadId = req.params.id;
+            let token = req.headers.authorization;
+
+            routeGuards.isAuthenticated(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(user => {
+                    return data.toggleLikeThread(threadId, user.username);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        toggleLikePost(req, res) {
+            let threadId = req.params.threadId;
+            let postId = req.params.postId;
+            let token = req.headers.authorization;
+
+            routeGuards.isAuthenticated(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(user => {
+                    return data.toggleLikePost(threadId, postId, user.username);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

@@ -10,7 +10,14 @@ module.exports = function (app, data) {
         .get('/get-by-id/:id', controllers.getThreadById)
         .post('/create', controllers.createNewThread)
         .put('/edit-thread/:id', controllers.editThread)
-        .post('/create-post/:id', controllers.createNewPost);
+        .post('/create-post/:id', controllers.createNewPost)
+        .put('/flag-active/:id', controllers.flagThreadAsActive)
+        .put('/flag-delete/:id', controllers.flagThreadAsDeleted)
+        .delete('/delete-thread/:id', controllers.deleteThread)
+        .put('/edit-post/:threadId/:postId', controllers.editPost)
+        .delete('/delete-post/:threadId/:postId', controllers.deleteThread)
+        .put('/like-dislike-thread/:id', controllers.toggleLikeThread)
+        .put('/like-dislike-post/:threadId/:postId', controllers.toggleLikePost);
 
     app.use('/api/forum', router);
 };

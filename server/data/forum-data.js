@@ -146,28 +146,6 @@ module.exports = (models) => {
                 });
             });
         },
-        flagThreadAsLocked(threadId) {
-            return new Promise((resolve, reject) => {
-                Thread.update({ _id: threadId }, { $set: { isLocked: true } }, (error, result) => {
-                    if (error) {
-                        return reject(error);
-                    }
-
-                    return resolve(result);
-                });
-            });
-        },
-        flagThreadAsUnlocked(threadId) {
-            return new Promise((resolve, reject) => {
-                Thread.update({ _id: threadId }, { $set: { isLocked: false } }, (error, result) => {
-                    if (error) {
-                        return reject(error);
-                    }
-
-                    return resolve(result);
-                });
-            });
-        },
         deleteThread(threadId) {
             return new Promise((resolve, reject) => {
                 Thread.findOneAndRemove({ _id: threadId }, (error, result) => {
