@@ -4,13 +4,13 @@
         <hr />
     </div>
     <div class="forum-section panel panel-default row">
-        <div class="col-md-2 text-center">
-            <img src="{{author.userAvatar}}" class="img-responsive img-circle" alt="{{author.username}}">
+        <div class="col-md-3 text-center">
+            <img src="{{imageUrl}}" class="img-responsive img-thread-header" alt="{{author.username}}">
             <hr class="post-picture-hr" />
-            <p class="bold no-margin-bottom">{{author.username}}</p>
+            <p class="bold no-margin-bottom">By {{author.username}}</p>
             <p class="small italic">Posted on: {{#date createdOn}}{{/date}}</p>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div class="row">
                 <div class="col-md-10">
                     <h2 class="thread-title">{{title}}</h2>
@@ -20,48 +20,57 @@
                     <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-down"></span><span class="dislikes-count">&nbsp;&nbsp;{{dislikes.length}}</span></span>
                 </div>
             </div>
-            <p class="thread-post-content">{{content}}</p>
-            <hr class="post-picture-hr" />
+            <p class="thread-post-content pre-wrap">{{content}}</p>
             <div class="text-right post-options">
-                <button class="btn btn-xs btn-danger btn-black">Edit</button>
-                <button class="btn btn-xs btn-danger btn-black">Delete</button>
-                <button class="btn btn-xs btn-danger btn-black">Report</button>
+                {{#if updatedOn}}
+                <span class="small grey-text italic">Last updated on: {{#date updatedOn}}{{/date}}</span> {{/if}}
+                <span>&nbsp;&nbsp;</span>
+                <a class="small grey-text" href="">Edit</a>
+                <span>&nbsp;</span>
+                <a class="small grey-text" href="">Delete</a>
             </div>
         </div>
     </div>
-    {{#each posts}}
-    <div class="forum-section panel panel-default row">
-        <div class="col-md-2 text-center">
-            <img src="{{author.userAvatar}}" class="img-responsive img-circle" alt="{{author.username}}">
-            <hr class="post-picture-hr" />
-            <p class="bold no-margin-bottom">{{author.username}}</p>
-            <p class="small italic">Posted on: {{#date createdOn}}{{/date}}</p>
-        </div>
-        <div class="col-md-10">              
-            <p class="thread-post-content">{{content}}</p>
-            <hr class="post-picture-hr" />
-            <div class="text-right post-options">
-                 <div class="inliine-block like-icons">
-                    <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-up"></span><span class="likes-count">&nbsp;&nbsp;{{likes.length}}&nbsp;&nbsp;</span></span>
-                    <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-down"></span><span class="dislikes-count">&nbsp;&nbsp;{{dislikes.length}}</span></span>
+    <div id="posts-container">
+        {{#each posts}}
+        <div class="forum-section forum-post panel panel-default row">
+            <div class="col-md-1 text-center post-avatar">
+                <img src="{{author.userAvatar}}" class="img-responsive img-circle" alt="{{author.username}}">
+            </div>
+            <div class="col-md-11 post-content">
+                <p class="thread-post-content pre-wrap">{{content}}</p>
+                <hr class="post-picture-hr" />
+                <div class="post-options row">
+                    <div class="col-md-10 no-padding">
+                        <span class="bold">{{author.username}}</span>
+                        <span class="small italic">Posted on: {{#date createdOn}}{{/date}}</span> {{#if updatedOn}}
+                        <span class="small italic"> | Last updated on: {{#date updatedOn}}{{/date}}</span> {{/if}}
+                        <span>&nbsp;&nbsp;</span>
+                        <a class="small grey-text" href="">Edit</a>
+                        <span>&nbsp;</span>
+                        <a class="small grey-text" href="">Delete</a>
+                    </div>
+                    <div class="col-md-2 text-right no-padding">
+                        <div class="inline-block like-icons-post">
+                            <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-up"></span><span class="likes-count">&nbsp;&nbsp;{{likes.length}}&nbsp;&nbsp;</span></span>
+                            <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-down"></span><span class="dislikes-count">&nbsp;&nbsp;{{dislikes.length}}</span></span>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn btn-xs btn-danger btn-black">Edit</button>
-                <button class="btn btn-xs btn-danger btn-black">Delete</button>
-                <button class="btn btn-xs btn-danger btn-black">Report</button>
             </div>
         </div>
+        {{/each}}
     </div>
-    {{/each}}
     <div class="forum-section new-post-panel panel panel-default row">
-        <div class="col-md-1 text-center new-post-avatar">
+        <div class="col-md-1 text-center post-avatar">
             <img src="{{author.userAvatar}}" class="img-responsive img-circle" alt="{{author.username}}">
-            <hr class="post-picture-hr" />
-            <p class="bold no-margin-bottom">{{author.username}}</p>
         </div>
-        <div class="col-md-11">              
-            <textarea name="new-post-input" id="new-post-input" cols="30" rows="3" class="form-control"></textarea>
+        <div class="col-md-11 new-post-col">
+            <div id="form-new-post">
+                <textarea name="new-post-input" id="new-post-input" placeholder="Type your post content here..." cols="30" rows="3" class="form-control"></textarea>
+            </div>
             <div class="text-right post-options">
-                <button class="btn btn-xs btn-success">Submit</button>
+                <button id="btn-new-post" class="btn btn-xs btn-success">Submit</button>
             </div>
         </div>
     </div>

@@ -66,6 +66,27 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        createNewPost(req, res) {
+            let token = req.headers.authorization;
+            let id = req.params.id;
+            let content = req.body.content;
+
+            routeGuards.isAuthenticated(token)
+                .catch(error => {
+                    res.status(401).json(error);
+                    return Promise.reject(error);
+                })
+                .then(user => {
+                    return data.createNewPost(id, content, user.username, user._id, user.profilePicture);
+                })
+                .then(response => {
+                    return res.status(201).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+
         }
     };
 };

@@ -20,4 +20,12 @@ function getById(id) {
     return requester.getJSON(`/api/forum/get-by-id/${id}`);
 }
 
-export { getAllNotDeletedThreadsByCategory, createThread, getById };
+function createNewPost(id, content) {
+    let body = {
+        content
+    };
+
+    return requester.postJSON(`/api/forum/create-post/${id}`, body);
+}
+
+export { getAllNotDeletedThreadsByCategory, createThread, getById, createNewPost };

@@ -1,9 +1,9 @@
 /* globals require module */
 
 const mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-
-let categories = require('../../utils/constants').forumCategories;
+    Schema = mongoose.Schema,
+    postSchema = require('./post-model').postSchema,
+    categories = require('../../utils/constants').forumCategories;
 
 let threadSchema = new Schema({
     title: {
@@ -55,7 +55,7 @@ let threadSchema = new Schema({
         default: new Date
     },
     posts: {
-        type: []
+        type: [postSchema]
     },
     likes: {
         type: [String]
@@ -69,6 +69,9 @@ let threadSchema = new Schema({
         userAvatar: String
     },
     lastPostCreatedOn: {
+        type: Date
+    },
+    updatedOn: {
         type: Date
     },
     views: {

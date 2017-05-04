@@ -477,7 +477,7 @@ nav a {
 }
 
 .post-options {
-    margin: 10px 0;
+    margin: 10px 0 10px 0;
 }
 
 .like-icon-post:hover {
@@ -491,4 +491,29 @@ nav a {
 
 .new-post-avatar {
     padding: 0 0 5px 8px;
+}
+
+.post-content {
+    padding: 15px 10px 0 0;
+}
+
+.post-avatar {
+    padding: 5px 10px 5px 5px;
+}
+
+.thread-header {
+    padding: 0 15px;
+}
+
+.img-thread-header {
+    margin-top: 15px;
+    border-radius: 3%;
+}
+
+.new-post-col {
+    padding-left: 0;
+}
+
+.pre-wrap {
+    white-space: pre-wrap;
 }

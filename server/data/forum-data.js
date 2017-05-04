@@ -1,7 +1,8 @@
 /* globals module */
 
 module.exports = (models) => {
-    const Thread = models.Thread;
+    const Thread = models.Thread,
+        Post = models.Post;
 
     return {
         createNewThread(title, content, imageUrl, category, tagsStr, authorId, authorUsername, authorAvatar) {
@@ -52,8 +53,36 @@ module.exports = (models) => {
 
                     thread.views += 1;
                     thread.save();
-                    
+
                     return resolve(thread);
+                });
+            });
+        },
+        createNewPost(threadId, content, username, userId, userAvatar) {
+            return new Promise((resolve, reject) => {
+                let createdOn = new Date();
+                let author = {
+                    username,
+                    userAvatar,
+                    userId
+                };
+
+                let post = new Post({ content, author, createdOn });
+                Thread.findOne({ _id: threadId }, (error, thread) => {
+                    if (error) {
+                        return reject(error);
+                    } else if(!thread) {
+                        return reject(new Error('No such thread'));
+                    }
+                    
+                    thread.posts.push(post);
+                    thread.save((error, success) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(success);
+                    });
                 });
             });
         }

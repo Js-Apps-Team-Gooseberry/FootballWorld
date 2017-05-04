@@ -153,6 +153,46 @@ function getThread(params) {
             return compile('forum/details', data);
         })
         .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $btnNewPost = $('#btn-new-post'),
+                $newPostContent = $('#new-post-input'),
+                $formNewPost = $('#form-new-post');
+
+            $btnNewPost.on('click', () => {
+                if (!$newPostContent.val().trim() || $newPostContent.val().trim().length < 5 || $newPostContent.val().trim().length > 1400) {
+                    toastr.error('Post content length should be between 5 and 1400 symbols!');
+                    $newPostContent.focus();
+                    $formNewPost.addClass('has-error');
+                    return;
+                } else {
+                    $formNewPost.removeClass('has-error');
+                }
+
+                $newPostContent.attr('disabled', true);
+                $btnNewPost.attr('disabled', true);
+
+                let content = $newPostContent.val().trim();
+
+                forumService.createNewPost(id, content)
+                    .then(result => {
+                        let post = result.posts[result.posts.length - 1];
+                        return compile('forum/post', post);
+                    })
+                    .then(html => {
+                        $('#posts-container').append(html);
+                        toastr.success('Post successfully created!');
+                        $newPostContent.val('');
+                        $newPostContent.attr('disabled', false);
+                        $btnNewPost.attr('disabled', false);
+                    })
+                    .catch(error => {
+                        toastr.error('An error occured!');
+                        console.log(error);
+                        $newPostContent.attr('disabled', false);
+                        $btnNewPost.attr('disabled', false);
+                    });
+            });
+        })
         .catch(error => {
             console.log(error);
             toastr.error('An error occured!');
