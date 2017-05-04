@@ -33,7 +33,7 @@ module.exports = (data) => {
             let page = +req.params.page;
             let category = req.params.category.trim();
             if (categories.every(c => c != category)) {
-                return res.status(400).json('No such category');
+                return res.status(404).json('No such category');
             }
 
             data.getNotDeletedThreadsByCategory(category, page)
@@ -86,7 +86,43 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        editThread(req, res) {
+            let threadId = req.params.id;
 
+            data.getThreadByIdWithoutRecordingViews(threadId)
+                .then(thread => {
+                    if (!thread) {
+                        return res.status(404).json('No such thread found!');
+                    }
+
+                    let token = req.headers.authorization;
+
+                    return routeGuards.isAuthorized(token, thread.author.userId);
+                })
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    let title = req.body.title;
+                    let content = req.body.content;
+                    let imageUrl = req.body.imageUrl;
+                    let category = req.body.category;
+                    let tags = req.body.tags;
+
+                    if (!categories.includes(category)) {
+                        return res.status(404).json('No such category found!');
+                    }
+
+                    return data.editThread(threadId, title, content, imageUrl, category, tags);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

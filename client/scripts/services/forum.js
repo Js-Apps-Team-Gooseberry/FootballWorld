@@ -28,4 +28,16 @@ function createNewPost(id, content) {
     return requester.postJSON(`/api/forum/create-post/${id}`, body);
 }
 
-export { getAllNotDeletedThreadsByCategory, createThread, getById, createNewPost };
+function editThread(id, title, content, imageUrl, category, tags) {
+    let body = {
+        title,
+        content,
+        imageUrl,
+        category,
+        tags
+    };
+
+    return requester.putJSON(`/api/forum/edit-thread/${id}`, body);
+}
+
+export { getAllNotDeletedThreadsByCategory, createThread, getById, createNewPost, editThread };

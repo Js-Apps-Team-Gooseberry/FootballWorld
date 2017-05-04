@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default panel-credentials">
+                <div class="panel-body">
+                    <h2 class="text-center">Edit Thread</h2>
+                    <hr />
+                    <div id="form-edit-thread-title" class="form-group">
+                        <input type="text" placeholder="Title" id="edit-thread-title" value="{{title}}" class="form-control">
+                    </div>
+                    <div id="form-edit-thread-image-url" class="form-group">
+                        <input type="text" placeholder="Image Url" id="edit-thread-image-url" value="{{imageUrl}}" class="form-control">
+                    </div>
+                    <div id="form-edit-thread-tags" class="form-group">
+                        <input type="text" placeholder="Tags (separeted by commas)" id="edit-thread-tags" value="{{tags}}" class="form-control">
+                    </div>
+                    <div id="form-thread-category" class="form-group">
+                        <label class="grey-text" for="edit-thread-category">Thread Category:</label>
+                       <select name="edit-thread-category" id="edit-thread-category" class="form-control">
+                           <option value="Free Zone">Free Zone</option>
+                           <option value="Games">Premier League Games</option>
+                           <option value="Teams">Teams</option>
+                           <option value="Media Watch">Media Watch</option>
+                           <option value="Website">Website</option>
+                       </select>
+                    </div>
+                    <div id="form-edit-thread-content" class="form-group">
+                        <textarea id="edit-thread-content" placeholder="Type thread content here..." cols="30" rows="10" class="form-control">{{content}}</textarea>
+                    </div>
+                    <div class="text-center">
+                        <button id="btn-thread-edit" type="button" class="btn btn-success">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ module.exports = function (app, data) {
         .get('/get-all-for-users/:category/:page', controllers.getNotDeletedThreadsByCategory)
         .get('/get-by-id/:id', controllers.getThreadById)
         .post('/create', controllers.createNewThread)
+        .put('/edit-thread/:id', controllers.editThread)
         .post('/create-post/:id', controllers.createNewPost);
 
     app.use('/api/forum', router);

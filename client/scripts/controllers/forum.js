@@ -200,4 +200,100 @@ function getThread(params) {
         });
 }
 
-export { getMainPage, getCreatePage, getCategoryPage, getThread };
+function getEditThreadPage(params) {
+    let id = params.id;
+    let data = {};
+
+    forumService.getById(id)
+        .then(thread => {
+            thread.tags = thread.tags.join(', ');
+            data = thread;
+
+            return compile('forum/edit-thread', thread);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            $(() => {
+                $('#edit-thread-category').val(data.category);
+            });
+
+            const $btnEditThread = $('#btn-thread-edit');
+
+            const $threadEditTitle = $('#edit-thread-title');
+            const $threadEditContent = $('#edit-thread-content');
+            const $threadEditImageUrl = $('#edit-thread-image-url');
+            const $threadEditTags = $('#edit-thread-tags');
+            const $threadEditCategory = $('#edit-thread-category');
+
+            const $formThreadEditTitle = $('#form-edit-thread-title');
+            const $formThreadEditContent = $('#form-edit-thread-content');
+            const $formThreadEditImageUrl = $('#form-edit-thread-image-url');
+            const $formThreadEditTags = $('#form-edit-thread-tags');
+
+            $btnEditThread.on('click', () => {
+                if (!$threadEditTitle.val().trim() || $threadEditTitle.val().trim().length < 5 || $threadEditTitle.val().trim().length > 50) {
+                    toastr.error('Thread title length must be between 5 and 50 symbols!');
+                    $formThreadEditTitle.addClass('has-error');
+                    !$threadEditTitle.focus();
+                    return;
+                } else {
+                    $formThreadEditTitle.removeClass('has-error');
+                }
+
+                if (!$threadEditImageUrl.val().trim() || $threadEditImageUrl.val().trim().length < 5) {
+                    toastr.error('Please enter a valid URL!');
+                    $formThreadEditImageUrl.addClass('has-error');
+                    !$threadEditImageUrl.focus();
+                    return;
+                } else {
+                    $formThreadEditImageUrl.removeClass('has-error');
+                }
+
+                if (!$threadEditTags.val().trim()) {
+                    toastr.error('Please enter at least one tag! Helps with searching the threads!');
+                    $formThreadEditTags.addClass('has-error');
+                    !$threadEditTags.focus();
+                    return;
+                } else {
+                    $formThreadEditTags.removeClass('has-error');
+                }
+
+                if (!$threadEditContent.val().trim()) {
+                    toastr.error('Thread content length must be between 5 and 2000 symbols!');
+                    $formThreadEditContent.addClass('has-error');
+                    !$threadEditContent.focus();
+                    return;
+                } else {
+                    $formThreadEditContent.removeClass('has-error');
+                }
+
+                $btnEditThread.addClass('diasabled');
+                $btnEditThread.attr('diasabled', true);
+
+                let title = $threadEditTitle.val();
+                let content = $threadEditContent.val();
+                let imageUrl = $threadEditImageUrl.val();
+                let tags = $threadEditTags.val();
+                let category = $threadEditCategory.val();
+
+                forumService.editThread(id, title, content, imageUrl, category, tags)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('Thread successfully edited!');
+                        $(location).attr('href', `#!/forum/details/${id}`);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured! Check if your data is valid or try again later!');
+                        $btnEditThread.removeClass('diasabled');
+                        $btnEditThread.attr('diasabled', false);
+                    });
+            });
+        })
+        .catch(error => {
+            console.log(error);
+            toastr.error('An error occured!');
+        });
+}
+
+export { getMainPage, getCreatePage, getCategoryPage, getThread, getEditThreadPage };

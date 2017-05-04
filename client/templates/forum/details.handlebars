@@ -25,7 +25,7 @@
                 {{#if updatedOn}}
                 <span class="small grey-text italic">Last updated on: {{#date updatedOn}}{{/date}}</span> {{/if}}
                 <span>&nbsp;&nbsp;</span>
-                <a class="small grey-text" href="">Edit</a>
+                <a class="small grey-text" href="#!/forum/edit/{{_id}}">Edit</a>
                 <span>&nbsp;</span>
                 <a class="small grey-text" href="">Delete</a>
             </div>
@@ -33,7 +33,7 @@
     </div>
     <div id="posts-container">
         {{#each posts}}
-        <div class="forum-section forum-post panel panel-default row">
+        <div id="{{_id}}" class="forum-section forum-post panel panel-default row">
             <div class="col-md-1 text-center post-avatar">
                 <img src="{{author.userAvatar}}" class="img-responsive img-circle" alt="{{author.username}}">
             </div>
