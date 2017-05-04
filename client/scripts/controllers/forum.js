@@ -138,11 +138,26 @@ function getCategoryPage(params) {
                 category: category,
                 threads: response
             };
-            
+
             return compile('forum/category', data);
         })
         .then(html => $mainContainer.html(html))
         .catch(console.log);
 }
 
-export { getMainPage, getCreatePage, getCategoryPage };
+function getThread(params) {
+    let id = params.id;
+
+    forumService.getById(id)
+        .then(data => {
+            return compile('forum/details', data);
+        })
+        .then(html => $mainContainer.html(html))
+        .catch(error => {
+            console.log(error);
+            toastr.error('An error occured!');
+            $(location).attr('href', '#!/forum');
+        });
+}
+
+export { getMainPage, getCreatePage, getCategoryPage, getThread };

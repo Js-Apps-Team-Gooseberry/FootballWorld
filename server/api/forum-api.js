@@ -7,6 +7,7 @@ module.exports = function (app, data) {
 
     router
         .get('/get-all-for-users/:category/:page', controllers.getNotDeletedThreadsByCategory)
+        .get('/get-by-id/:id', controllers.getThreadById)
         .post('/create', controllers.createNewThread);
 
     app.use('/api/forum', router);

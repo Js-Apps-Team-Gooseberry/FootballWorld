@@ -444,7 +444,7 @@ nav a {
 }
 
 .list-threads-content {
-   text-align: justify;
+    text-align: justify;
     height: 4.6rem;
     line-height: 2.3rem;
     overflow: hidden;
@@ -453,4 +453,42 @@ nav a {
 
 .threads-list-title {
     margin: 10px 0 5px 0;
+}
+
+.like-icons {
+    font-size: 2rem;
+}
+
+.thread-title {
+    margin-top: 10px;
+}
+
+.like-icons {
+    padding-top: 12px;
+}
+
+.post-picture-hr {
+    margin: 10px 0 5px 0;
+}
+
+.thread-post-content {
+    text-align: justify;
+    line-height: 2.4rem;
+}
+
+.post-options {
+    margin: 10px 0;
+}
+
+.like-icon-post:hover {
+    color: #43AC6A;
+    cursor: pointer;
+}
+
+.new-post-panel {
+    padding-top: 10px;
+}
+
+.new-post-avatar {
+    padding: 0 0 5px 8px;
 }

@@ -16,4 +16,8 @@ function createThread(title, content, imageUrl, category, tags) {
     return requester.postJSON('/api/forum/create', body);
 }
 
-export { getAllNotDeletedThreadsByCategory, createThread };
+function getById(id) {
+    return requester.getJSON(`/api/forum/get-by-id/${id}`);
+}
+
+export { getAllNotDeletedThreadsByCategory, createThread, getById };

@@ -27,7 +27,7 @@ module.exports = (models) => {
         },
         getNotDeletedThreadsByCategory(category, page) {
             const pageSize = 10;
-            
+
             return new Promise((resolve, reject) => {
                 Thread.find({ category: category })
                     .where({ isDeleted: false })
@@ -41,6 +41,20 @@ module.exports = (models) => {
 
                         return resolve(threads);
                     });
+            });
+        },
+        getThreadById(id) {
+            return new Promise((resolve, reject) => {
+                Thread.findOne({ _id: id }, (error, thread) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    thread.views += 1;
+                    thread.save();
+                    
+                    return resolve(thread);
+                });
             });
         }
     };

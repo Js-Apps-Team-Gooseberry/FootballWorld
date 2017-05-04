@@ -43,6 +43,29 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        getThreadById(req, res) {
+            let token = req.headers.authorization;
+            let id = req.params.id;
+            let isAdmin = false;
+
+            routeGuards.isAdmin(token)
+                .then(() => isAdmin = true)
+                .catch(() => isAdmin = false)
+                .then(() => {
+                    return data.getThreadById(id);
+                })
+                .then(thread => {
+                    let predicate = isAdmin ? !thread : (!thread || thread.isDeleted);
+                    if (predicate) {
+                        return res.status(404).json('No such thread!');
+                    }
+
+                    return res.status(200).json(thread);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };
