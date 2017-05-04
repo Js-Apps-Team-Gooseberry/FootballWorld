@@ -15,6 +15,7 @@ let threadSchema = new Schema({
     content: {
         type: String,
         required: true,
+        minlength: 5,
         maxlength: 2000
     },
     author: {

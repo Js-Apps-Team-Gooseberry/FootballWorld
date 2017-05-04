@@ -23,6 +23,8 @@ router
     .on('/news/delete/:id', controllers.news.flagNewsEntryAsDeleted)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)    
+    .on('/forum/create', controllers.forum.getCreatePage)
+    .on('/forum/:category/:page', controllers.forum.getMainPage)
     .on('/forum/:category', controllers.forum.getMainPage)
     .on('/forum', controllers.forum.getMainPage)
     .on('/articles/create', controllers.articles.getCreateArticlePage)

@@ -1,21 +1,16 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-10">
-            <h1>Premier League Forum</h1>
-        </div>
-        <div class="col-md-2">
-            <a href="#!/forum/create" class="btn btn-success">Create a new Thread</a>
-        </div>
+        <h1>Category</h1>
         <hr />
     </div>
-    {{#each sections}}
-    <a class="forum-link" href="#!/forum/{{link}}">
+    {{#each threads}}
+    <a class="forum-link">
         <div class="forum-section panel panel-default row">
             <div class="col-md-2 forum-main-image" style="background-image: url('{{imageUrl}}');">
             </div>
             <div class="col-md-5">
                 <h3>{{title}}</h3>
-                <p class="small italic">{{description}}</p>
+                <p class="small italic">{{content}}</p>
             </div>
             <div class="col-md-3 forum-stats forum-last-post italic">
                 <p>Last thread something</p>
