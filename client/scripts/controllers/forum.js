@@ -296,4 +296,19 @@ function getEditThreadPage(params) {
         });
 }
 
-export { getMainPage, getCreatePage, getCategoryPage, getThread, getEditThreadPage };
+function flagDeleteThread(params) {
+    let id = params.id;
+
+    forumService.flagThreadAsDeleted(id)
+        .then(response => {
+            console.log(response);
+            toastr.success('Thread deleted!');
+            $(location).attr('href', '#!/forum');
+        })
+        .catch(error => {
+            console.log(error);
+            toastr.error('An error occured!');
+        });
+}
+
+export { getMainPage, getCreatePage, getCategoryPage, getThread, getEditThreadPage, flagDeleteThread };

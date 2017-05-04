@@ -126,11 +126,10 @@ module.exports = (data) => {
         },
         flagThreadAsDeleted(req, res) {
             let id = req.params.id;
+            let token = req.headers.authorization;
 
             data.getThreadByIdWithoutRecordingViews(id)
                 .then(thread => {
-                    let token = req.headers.token;
-
                     return routeGuards.isAuthorized(token, thread.author.userId);
                 })
                 .catch(error => {
@@ -149,7 +148,7 @@ module.exports = (data) => {
         },
         flagThreadAsActive(req, res) {
             let id = req.params.id;
-            let token = req.headers.token;
+            let token = req.headers.authorization;
 
             routeGuards.isAdmin(token)
                 .catch(error => {
@@ -267,6 +266,25 @@ module.exports = (data) => {
                     return res.status(500).json(error);
                 });
         },
+        toggleDislikeThread(req, res) {
+            let threadId = req.params.id;
+            let token = req.headers.authorization;
+
+            routeGuards.isAuthenticated(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(user => {
+                    return data.toggleDislikeThread(threadId, user.username);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
         toggleLikePost(req, res) {
             let threadId = req.params.threadId;
             let postId = req.params.postId;
@@ -279,6 +297,26 @@ module.exports = (data) => {
                 })
                 .then(user => {
                     return data.toggleLikePost(threadId, postId, user.username);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        toggleDisikePost(req, res) {
+            let threadId = req.params.threadId;
+            let postId = req.params.postId;
+            let token = req.headers.authorization;
+
+            routeGuards.isAuthenticated(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized');
+                    return Promise.reject(error);
+                })
+                .then(user => {
+                    return data.toggleDisikePost(threadId, postId, user.username);
                 })
                 .then(result => {
                     return res.status(200).json(result);

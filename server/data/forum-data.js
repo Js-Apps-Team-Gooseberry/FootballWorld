@@ -245,6 +245,37 @@ module.exports = (models) => {
                 });
             });
         },
+        toggleDislikeThread(threadId, username) {
+            return new Promise((resolve, reject) => {
+                Thread.findOne({ _id: threadId }, (error, thread) => {
+                    if (error) {
+                        return reject(error);
+                    } else if (!thread) {
+                        return reject('No such thread found!');
+                    }
+
+                    if (!thread.dislikes || !thread.dislikes.includes(username)) {
+                        thread.likes.push(username);
+
+                        if (thread.likes && thread.likes.includes(username)) {
+                            let index = thread.likes.indexOf(username);
+                            thread.likes.splice(index, 1);
+                        }
+                    } else {
+                        let index = thread.dislikes.indexOf(l => l == username);
+                        thread.dislikes.splice(index, 1);
+                    }
+
+                    thread.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(result);
+                    });
+                });
+            });
+        },
         toggleLikePost(threadId, postId, username) {
             return new Promise((resolve, reject) => {
                 Thread.findOne({ _id: threadId }, (error, thread) => {
@@ -271,6 +302,44 @@ module.exports = (models) => {
                     } else {
                         let index = post.likes.indexOf(l => l == username);
                         post.likes.splice(index, 1);
+                    }
+
+                    thread.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(result);
+                    });
+                });
+            });
+        },
+        toggleDislikePost(threadId, postId, username) {
+            return new Promise((resolve, reject) => {
+                Thread.findOne({ _id: threadId }, (error, thread) => {
+                    if (error) {
+                        return reject(error);
+                    } else if (!thread) {
+                        return reject('No such thread found!');
+                    } else if (!thread.posts) {
+                        return reject('No such post found!');
+                    }
+
+                    let post = thread.posts.find(p => p._id.toString() == postId);
+                    if (!post) {
+                        return reject('No such post found!');
+                    }
+
+                    if (!post.dislikes || !post.dislikes.includes(username)) {
+                        thread.dislikes.push(username);
+
+                        if (post.likes && post.likes.includes(username)) {
+                            let index = post.likes.indexOf(username);
+                            post.likes.splice(index, 1);
+                        }
+                    } else {
+                        let index = post.dislikes.indexOf(l => l == username);
+                        post.dislikes.splice(index, 1);
                     }
 
                     thread.save((error, result) => {

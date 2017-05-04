@@ -16,8 +16,10 @@ module.exports = function (app, data) {
         .delete('/delete-thread/:id', controllers.deleteThread)
         .put('/edit-post/:threadId/:postId', controllers.editPost)
         .delete('/delete-post/:threadId/:postId', controllers.deleteThread)
-        .put('/like-dislike-thread/:id', controllers.toggleLikeThread)
-        .put('/like-dislike-post/:threadId/:postId', controllers.toggleLikePost);
+        .put('/like-thread/:id', controllers.toggleLikeThread)
+        .put('/like-post/:threadId/:postId', controllers.toggleLikePost)
+        .put('/dislike-thread/:id', controllers.toggleDislikeThread)
+        .put('/dislike-post/:threadId/:postId', controllers.toggleDisikePost);
 
     app.use('/api/forum', router);
 };
