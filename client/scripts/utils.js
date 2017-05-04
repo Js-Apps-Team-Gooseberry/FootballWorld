@@ -48,7 +48,7 @@ function formatDate(date) {
     let hours = _formatNumber(date.getHours());
     let minutes = _formatNumber(date.getMinutes());
 
-    return `${hours}:${minutes}, ${day} ${monthNames[monthIndex]} ${year}`;
+    return `${day} ${monthNames[monthIndex]} ${year}, ${hours}:${minutes}`;
 }
 
 function _formatNumber(number) {

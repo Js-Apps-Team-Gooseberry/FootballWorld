@@ -70,6 +70,10 @@ let threadSchema = new Schema({
     },
     lastPostCreatedOn: {
         type: Date
+    },
+    views: {
+        type: Number,
+        default: 0
     }
 });
 

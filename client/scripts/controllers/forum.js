@@ -12,31 +12,31 @@ function getMainPage() {
                 title: 'TsarFootball',
                 description: 'Forum rules, issue reports, requests, feedback, etc.',
                 imageUrl: '/public/assets/logo-page.png',
-                link: 'site'
+                link: 'Website'
             },
             {
                 title: 'Teams',
                 description: 'Let your opinion be heard amongst other supporters of your favourite team.',
                 imageUrl: '/public/assets/forum-teams.jpg',
-                link: 'teams'
+                link: 'Teams'
             },
             {
                 title: 'Premier League Games',
                 description: 'Upcoming games, results or just classic games.',
                 imageUrl: '/public/assets/forum-games.jpg',
-                link: 'games'
+                link: 'Games'
             },
             {
                 title: 'Media Watch',
                 description: 'News, transfers, interviews - discuss or share what you know.',
                 imageUrl: '/public/assets/forum-media.jpg',
-                link: 'media'
+                link: 'Media Watch'
             },
             {
                 title: 'Free Zone',
                 description: 'Free discussions zone. Whatever doesn\'t fit other sections fits here.',
                 imageUrl: '/public/assets/forum-free-zone.jpg',
-                link: 'free'
+                link: 'Free Zone'
             }
         ]
     };
@@ -112,7 +112,7 @@ function getCreatePage() {
                     .then(response => {
                         console.log(response);
                         toastr.success('Thread successfully created!');
-                        $(location).attr('href', `#!/forum/${category.toLowerCase()}`);
+                        $(location).attr('href', `#!/forum/${category}`);
                     })
                     .catch(error => {
                         console.log(error);
@@ -128,4 +128,21 @@ function getCreatePage() {
         });
 }
 
-export { getMainPage, getCreatePage };
+function getCategoryPage(params) {
+    let category = params.category;
+    let page = params.page || 1;
+
+    forumService.getAllNotDeletedThreadsByCategory(category, page)
+        .then(response => {
+            let data = {
+                category: category,
+                threads: response
+            };
+            
+            return compile('forum/category', data);
+        })
+        .then(html => $mainContainer.html(html))
+        .catch(console.log);
+}
+
+export { getMainPage, getCreatePage, getCategoryPage };
