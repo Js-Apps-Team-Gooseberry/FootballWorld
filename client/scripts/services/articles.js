@@ -11,7 +11,7 @@ function getNotDeletedArticlesByPage(page, pageSize) {
 
 function getArticleById(id) {
     let body = {
-        articleId : id
+        articleId: id
     };
 
     return requester.postJSON('/api/articles/get-by-id', body)
@@ -35,14 +35,14 @@ function createNewArticle(title, imageUrl, matchPrediction, sideA, sideB, lineup
     return requester.postJSON('/api/articles/create', body)
 }
 
-function commentArticle(commentId, userId, commentContent) {
+function commentArticle(articleId, userId, commentContent) {
     let body = {
-        commentId,
+        articleId,
         userId,
         commentContent
     };
-    console.log(body);
-    return requester.postJSON('/api/articles/comment')
+
+    return requester.postJSON('/api/articles/comment', body);
 }
 
-export { createNewArticle, getNotDeletedArticlesByPage, getArticleById, commentArticle}
+export { createNewArticle, getNotDeletedArticlesByPage, getArticleById, commentArticle }

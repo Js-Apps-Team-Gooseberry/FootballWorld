@@ -55,7 +55,6 @@ function getArticleById(params) {
         .then(articles => {
             data.articles = articles;
             data.user = JSON.parse(localStorage.getItem('currentUser'));
-            console.log(data);
             return compile('articles-details', data);
         })
         .catch(error => {
