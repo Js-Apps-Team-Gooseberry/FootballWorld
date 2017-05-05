@@ -180,7 +180,7 @@ module.exports = (models) => {
                             return reject(error);
                         }
 
-                        return resolve(result);
+                        return resolve(post);
                     });
                 });
             });

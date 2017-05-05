@@ -44,8 +44,12 @@ function flagThreadAsDeleted(id) {
     return requester.putJSON(`/api/forum/flag-delete/${id}`);
 }
 
-function editPost(threadId, postId) {
-    return requester.putJSON(`/api/forum/edit-post/${threadId}/${postId}`);
+function editPost(threadId, postId, content) {
+    let body = {
+        content
+    };
+
+    return requester.putJSON(`/api/forum/edit-post/${threadId}/${postId}`, body);
 }
 
 function deletePost(threadId, postId) {

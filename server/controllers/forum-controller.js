@@ -193,11 +193,11 @@ module.exports = (data) => {
                 .then(thread => {
                     if (!thread) {
                         return res.status(404).json('No such thread found!');
-                    } else if (!thread.posts || !thread.find(x => x.postId)) {
+                    } else if (!thread.posts || !thread.posts.find(x => x._id.toString() == postId)) {
                         return res.status(404).json('No such post found!');
                     }
 
-                    let post = thread.posts.find(x => x.postId);
+                    let post = thread.posts.find(x => x._id.toString() == postId);
                     let token = req.headers.authorization;
 
                     return routeGuards.isAuthorized(token, post.author.userId);

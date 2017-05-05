@@ -159,6 +159,7 @@ function getThread(params) {
             _bindLikePostButton(id);
             _bindDislikePostButton(id);
             _bindDeletePostButton(id);
+            _bindEditPostButton(id);
             _bindCreateNewPostEvent(id);
         })
         .catch(error => {
@@ -168,14 +169,64 @@ function getThread(params) {
         });
 }
 
+function _bindEditPostButton(threadId) {
+    $('#posts-container').on('click', '.btn-edit-post', (ev) => {
+        let postId = $(ev.target).parents('.forum-post').attr('id');
+
+        $(`#${postId} .post-preview-state`).addClass('hidden');
+        $(`#${postId} .post-edit-state`).removeClass('hidden');
+    });
+
+    $('#posts-container').on('click', '.btn-cancel-edit-post', (ev) => {
+        let postId = $(ev.target).parents('.forum-post').attr('id');
+
+        $(`#${postId} .post-edit-state`).addClass('hidden');
+        $(`#${postId} .post-preview-state`).removeClass('hidden');
+    });
+
+
+    $('#posts-container').on('click', '.btn-submit-edit-post', (ev) => {
+        let postId = $(ev.target).parents('.forum-post').attr('id');
+        let $content = $(`#${postId} .edit-post-input`);
+        let $formContent = $(`#${postId} .form-edit-post`);
+        if (!$content.val().trim() || $content.val().trim().length < 5 || $content.val().trim().length > 1400) {
+            toastr.error('Post content length should be between 5 and 1400 symbols!');
+            $content.focus();
+            $formContent.addClass('has-error');
+            return;
+        } else {
+            $formContent.removeClass('has-error');
+        }
+
+        $content.attr('disabled', true);
+        $('.btn-submit-edit-post').attr('disabled', true);
+
+        forumService.editPost(threadId, postId, $content.val().trim())
+            .then(post => {
+                toastr.success('Post successfully edited!');
+                $(`#${postId} .thread-post-content`).html(post.content);
+                $(`#${postId} .post-edit-state`).addClass('hidden');
+                $(`#${postId} .post-preview-state`).removeClass('hidden');
+                $content.attr('disabled', false);
+                $('.btn-submit-edit-post').attr('disabled', false);
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occured!');
+                $content.attr('disabled', false);
+                $('.btn-submit-edit-post').attr('disabled', false);
+            });
+    });
+}
+
 function _bindDeletePostButton(threadId) {
-    $('.forum-post').on('click', '.btn-delete-post', (ev) => {
+    $('#posts-container').on('click', '.btn-delete-post', (ev) => {
         if (ev.isDefaultPrevented()) {
             return;
         }
 
         let postId = $(ev.target).parents('.forum-post').attr('id');
-        
+
         forumService.deletePost(threadId, postId)
             .then(() => {
                 $(`#${postId}`).remove();
@@ -189,7 +240,7 @@ function _bindDeletePostButton(threadId) {
 }
 
 function _bindLikePostButton(threadId) {
-    $('.forum-post').on('click', '.btn-like-post', (ev) => {
+    $('#posts-container').on('click', '.btn-like-post', (ev) => {
         let postId = $(ev.target).parents('.forum-post').attr('id');
 
         forumService.toggleLikePost(threadId, postId)
@@ -206,7 +257,7 @@ function _bindLikePostButton(threadId) {
 }
 
 function _bindDislikePostButton(threadId) {
-    $('.forum-post').on('click', '.btn-dislike-post', (ev) => {
+    $('#posts-container').on('click', '.btn-dislike-post', (ev) => {
         let postId = $(ev.target).parents('.forum-post').attr('id');
 
         forumService.toggleDislikePost(threadId, postId)
