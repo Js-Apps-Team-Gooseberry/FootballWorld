@@ -164,7 +164,6 @@ function _bindCommentButton(data) {
 
                 let newCommentData = response.comments[response.comments.length - 1];
                 newCommentData.author = data.user;
-
                 compile('comment', newCommentData)
                     .then(html => {
                         toastr.success('Comment submitted!');
