@@ -33,7 +33,8 @@ let forumCategorySchema = new Schema({
     posts: {
         type: Number,
         default: 0
-    }
+    },
+    createdOn: Date
 });
 
 mongoose.model('forum-category', forumCategorySchema);
