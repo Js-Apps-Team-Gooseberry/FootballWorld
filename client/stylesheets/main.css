@@ -178,7 +178,7 @@ nav a {
 .article-comments-box {
     border: 1px solid #00ac77;
     border-radius: 5px;
-    margin:5px 5px;
+    margin: 5px 5px;
 }
 
 .news-entry {
@@ -388,9 +388,10 @@ nav a {
     pointer-events: none;
 }
 
-.banner-news {
+.banner {
     padding: 0;
     margin-top: -15px;
+    margin-bottom: 20px;
 }
 
 .navbar-brand {
@@ -525,6 +526,7 @@ nav a {
 .img-thread-header {
     margin-top: 15px;
     border-radius: 3%;
+    cursor: pointer;
 }
 
 .new-post-col {
@@ -554,4 +556,51 @@ nav a {
 
 #new-post-reveal {
     margin-right: -15px;
+}
+
+.pager-forum-thread {
+    margin: 0;
+}
+
+.pager-forum-thread ul {
+    margin: 5px 0 0 0;
+}
+
+.no-threads-heading {
+    font-family: Charlemagne;
+}
+
+.modal-img-articles {
+    width: 100%;
+}
+
+.icon-close {
+    color: white;
+    position: absolute;
+    top: 1.5%;
+    right: 1%;
+    font-size: 2.5rem;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.modal-dialog {
+    width: 80%;
+}
+
+.modal-content {
+    border: 2px solid white;
+    border-radius: 1%;
+}
+
+.modal-content img {
+    border-radius: 1%;
+}
+
+.thread-container {
+    margin-bottom: 50px;
 }

@@ -2,6 +2,7 @@ import { compile } from 'templates-compiler';
 import * as forumService from 'forum-service';
 import * as toastr from 'toastr';
 import $ from 'jquery';
+import { isLoggedIn, isAuthorized } from 'utils';
 
 const $mainContainer = $('#main-container');
 
@@ -46,6 +47,12 @@ function getMainPage() {
 }
 
 function getCreatePage() {
+    if (!isLoggedIn()) {
+        toastr.error('You need to be logged in to create forum threads!');
+        $(location).attr('href', '#!/forum');
+        return;
+    }
+
     compile('forum/create')
         .then(html => $mainContainer.html(html))
         .then(() => {
@@ -146,18 +153,29 @@ function getCategoryPage(params) {
                 pagination
             };
 
-            console.log(data);
-
             return compile('forum/category', data);
         })
         .then(html => $mainContainer.html(html))
-        .catch(console.log);
+        .catch(error => {
+            if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => {
+                        $mainContainer.html(html);
+                    });
+            } else if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => {
+                        $mainContainer.html(html);
+                    });
+            }
+        });
 }
 
 function getThread(params) {
     let id = params.id;
     let page = params.page || 1;
     let pageSize = 10;
+    let data = {};
     let user = JSON.parse(localStorage.getItem('currentUser'));
 
     forumService.getById(id)
@@ -172,12 +190,12 @@ function getThread(params) {
                 response.posts = response.posts.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize);
             }
 
-            let data = {
+            data = {
                 thread: response,
                 pagination,
                 user
             };
-
+            console.log(data);
             return compile('forum/details', data);
         })
         .then(html => $mainContainer.html(html))
@@ -188,7 +206,7 @@ function getThread(params) {
             _bindDislikePostButton(id);
             _bindDeletePostButton(id);
             _bindEditPostButton(id);
-            _bindCreateNewPostEvent(id);
+            _bindCreateNewPostEvent(id, data.pagination.pageCount);
         })
         .catch(error => {
             console.log(error);
@@ -278,6 +296,11 @@ function _bindLikePostButton(threadId) {
                 toastr.success('Vote submitted!');
             })
             .catch(error => {
+                if (error.status == 401) {
+                    toastr.error('You need to sign in to do that!');
+                    return;
+                }
+
                 console.log(error);
                 toastr.error('An error occured!');
             });
@@ -295,6 +318,11 @@ function _bindDislikePostButton(threadId) {
                 toastr.success('Vote submitted!');
             })
             .catch(error => {
+                if (error.status == 401) {
+                    toastr.error('You need to sign in to do that!');
+                    return;
+                }
+
                 console.log(error);
                 toastr.error('An error occured!');
             });
@@ -310,6 +338,11 @@ function _bindLikeThreadButton(threadId) {
                 toastr.success('Vote submitted!');
             })
             .catch(error => {
+                if (error.status == 401) {
+                    toastr.error('You need to sign in to do that!');
+                    return;
+                }
+
                 console.log(error);
                 toastr.error('An error occured!');
             });
@@ -325,13 +358,18 @@ function _bindDislikeThreadButton(threadId) {
                 toastr.success('Vote submitted!');
             })
             .catch(error => {
+                if (error.status == 401) {
+                    toastr.error('You need to sign in to do that!');
+                    return;
+                }
+
                 console.log(error);
                 toastr.error('An error occured!');
             });
     });
 }
 
-function _bindCreateNewPostEvent(threadId) {
+function _bindCreateNewPostEvent(threadId, pagesCount) {
     const $btnNewPost = $('#btn-new-post'),
         $newPostContent = $('#new-post-input'),
         $formNewPost = $('#form-new-post');
@@ -339,6 +377,9 @@ function _bindCreateNewPostEvent(threadId) {
     $('#btn-reveal-new-post').on('click', () => {
         $('#new-post-reveal').addClass('hidden');
         $('#new-post-preview').removeClass('hidden');
+        $('html, body').animate({
+            scrollTop: $('#new-post-preview').offset().top - 55
+        }, 1000);
     });
 
     $('#btn-hide-new-post').on('click', () => {
@@ -361,20 +402,33 @@ function _bindCreateNewPostEvent(threadId) {
         $btnNewPost.attr('disabled', true);
 
         let content = $newPostContent.val().trim();
+        let post;
 
         forumService.createNewPost(threadId, content)
             .then(result => {
-                let post = result.posts[result.posts.length - 1];
+                post = result.posts[result.posts.length - 1];
                 return compile('forum/post', post);
             })
             .then(html => {
+                $(location).attr('href', `#/forum/details/${threadId}/${pagesCount}`);
                 $('#posts-container').append(html);
+                $('html, body').animate({
+                    scrollTop: $(`#${post._id}`).offset().top - 55
+                }, 1000);
+
                 toastr.success('Post successfully created!');
+                $('#new-post-preview').addClass('hidden');
+                $('#new-post-reveal').removeClass('hidden');
                 $newPostContent.val('');
                 $newPostContent.attr('disabled', false);
                 $btnNewPost.attr('disabled', false);
             })
             .catch(error => {
+                if (error.status == 401) {
+                    toastr.error('You need to sign in to do that!');
+                    return;
+                }
+
                 toastr.error('An error occured!');
                 console.log(error);
                 $newPostContent.attr('disabled', false);
@@ -391,6 +445,12 @@ function getEditThreadPage(params) {
         .then(thread => {
             thread.tags = thread.tags.join(', ');
             data = thread;
+
+            if (!isAuthorized(thread.author.userId)) {
+                toastr.error('You are not authorized to do that!');
+                $(location).attr('href', '#!/forum');
+                return;
+            }
 
             return compile('forum/edit-thread', thread);
         })

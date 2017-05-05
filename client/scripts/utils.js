@@ -24,8 +24,20 @@ function isAdmin() {
     }
 
     let user = JSON.parse(localStorage.getItem('currentUser'));
-
     if (!user.admin) {
+        return false;
+    }
+
+    return true;
+}
+
+function isAuthorized(authorId) {
+    if (!localStorage.getItem('currentUser')) {
+        return false;
+    }
+
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user.admin || user._id != authorId) {
         return false;
     }
 
@@ -55,4 +67,4 @@ function _formatNumber(number) {
     return number.toString().length < 2 ? `0${number}` : number;
 }
 
-export { toggleButtonsIfLoggedIn, formatDate, isLoggedIn, isAdmin };
+export { toggleButtonsIfLoggedIn, formatDate, isLoggedIn, isAdmin, isAuthorized };

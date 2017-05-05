@@ -1,16 +1,7 @@
-<div class="container-fluid banner-news">
+<div class="container-fluid banner">
     <img src="/public/assets/banner-news.png" class="img-responsive" alt="banner">
 </div>
 <div class="container">
-    <div class="row hidden">
-        <div class="col-md-8">
-            <h1>Latest News</h1>
-        </div>
-        <div class="col-md-4 text-right">
-            <a href="#!/news/create" class="btn btn-success btn-create">Write a New Article</a>
-        </div>
-    </div>
-    <hr class="no-margin-top" />
     <div class="row">
         {{#each newsEntries}}
         <a href="#!/news/details/{{_id}}">
@@ -20,7 +11,9 @@
                 <div class="col-md-9 news-entry-info">
                     <h2 class="news-entry-title">{{title}}</h2>
                     <p class="news-entry-date">By <span class="bold">{{author}}</span></p>
-                    <p class="news-entry-date"><time class="small italic">{{#date createdOn}}{{/date}}</time></p>
+                    <p class="news-entry-date">
+                        <time class="small italic">{{#date createdOn}}{{/date}}</time>
+                    </p>
                     <p class="news-entry-content">{{description}}</p>
                 </div>
             </div>

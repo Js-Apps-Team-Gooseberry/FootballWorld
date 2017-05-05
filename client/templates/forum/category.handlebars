@@ -1,8 +1,7 @@
-<div class="container">
-    <div class="row">
-        <h1>{{category}}</h1>
-        <hr />
-    </div>
+<div class="container-fluid banner">
+    <img src="/public/assets/banner-forum.png" alt="forum-tsar-football" class="img-responsive">
+</div>
+<div class="container">    
     {{#each threads}}
     <a class="forum-link" href="#!/forum/details/{{_id}}">
         <div class="forum-section panel panel-default row">
@@ -27,6 +26,10 @@
         </div>
     </a>
     {{/each}}
+    {{#unless threads}}
+    <h2 class="no-threads-heading text-center">No threads in this section yet...</h2>
+    {{/unless}}
+    {{#if threads}}
     <div class="pager">
         <ul class="pagination">
             {{#paginate pagination type="previous"}}
@@ -38,4 +41,5 @@
             {{/paginate}}
         </ul>
     </div>
+    {{/if}}
 </div>
