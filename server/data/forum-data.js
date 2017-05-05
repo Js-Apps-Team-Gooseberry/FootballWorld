@@ -255,7 +255,7 @@ module.exports = (models) => {
                     }
 
                     if (!thread.dislikes || !thread.dislikes.includes(username)) {
-                        thread.likes.push(username);
+                        thread.dislikes.push(username);
 
                         if (thread.likes && thread.likes.includes(username)) {
                             let index = thread.likes.indexOf(username);

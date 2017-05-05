@@ -517,3 +517,16 @@ nav a {
 .pre-wrap {
     white-space: pre-wrap;
 }
+
+.likes-count, .dislikes-count {
+    margin-left: 10px;
+    user-select: none;
+}
+
+.likes-count {
+    margin-right: 10px;
+}
+
+.like-icons {
+    user-select: none;
+}

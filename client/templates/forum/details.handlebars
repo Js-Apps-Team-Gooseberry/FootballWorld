@@ -16,8 +16,8 @@
                     <h2 class="thread-title">{{title}}</h2>
                 </div>
                 <div class="col-md-2 text-right like-icons">
-                    <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-up"></span><span class="likes-count">&nbsp;&nbsp;{{likes.length}}&nbsp;&nbsp;</span></span>
-                    <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-down"></span><span class="dislikes-count">&nbsp;&nbsp;{{dislikes.length}}</span></span>
+                    <span id="btn-thread-like" class="like-icon-post"><span class="glyphicon glyphicon-thumbs-up"></span><span id="likes-count" class="likes-count">{{likes.length}}</span></span>
+                    <span id="btn-thread-dislike" class="like-icon-post"><span class="glyphicon glyphicon-thumbs-down"></span><span id="dislikes-count" class="dislikes-count">{{dislikes.length}}</span></span>
                 </div>
             </div>
             <p class="thread-post-content pre-wrap">{{content}}</p>
@@ -52,8 +52,8 @@
                     </div>
                     <div class="col-md-2 text-right no-padding">
                         <div class="inline-block like-icons-post">
-                            <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-up"></span><span class="likes-count">&nbsp;&nbsp;{{likes.length}}&nbsp;&nbsp;</span></span>
-                            <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-down"></span><span class="dislikes-count">&nbsp;&nbsp;{{dislikes.length}}</span></span>
+                            <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-up"></span><span class="likes-count">{{likes.length}}</span></span>
+                            <span class="like-icon-post"><span class="glyphicon glyphicon-thumbs-down"></span><span class="dislikes-count">{{dislikes.length}}</span></span>
                         </div>
                     </div>
                 </div>
