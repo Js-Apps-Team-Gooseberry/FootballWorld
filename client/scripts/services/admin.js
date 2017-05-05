@@ -8,4 +8,15 @@ function deltePermanentlyNewsEntry(newsEntryId) {
     return requester.deleteJSON(`/api/news/delete-entry/${newsEntryId}`);
 }
 
-export { getAllNews, deltePermanentlyNewsEntry };
+function createNewCategory(title, description, linkName, imageUrl) {
+    let body = {
+        title,
+        description,
+        imageUrl,
+        linkName
+    };
+
+    return requester.postJSON('/api/forum/create-category', body);
+}
+
+export { getAllNews, deltePermanentlyNewsEntry, createNewCategory };

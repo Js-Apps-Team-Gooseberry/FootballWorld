@@ -6,6 +6,8 @@ module.exports = function (app, data) {
     const controllers = require('../controllers/forum-controller')(data);
 
     router
+        .get('/get-all-categories', controllers.getAllCategories)
+        .post('/create-category', controllers.createNewCategory)
         .get('/get-all-for-users/:category/:page', controllers.getNotDeletedThreadsByCategory)
         .get('/get-by-id/:id', controllers.getThreadById)
         .post('/create', controllers.createNewThread)

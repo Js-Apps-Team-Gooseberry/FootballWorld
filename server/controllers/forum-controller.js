@@ -230,7 +230,7 @@ module.exports = (data) => {
 
                     let post = thread.posts.find(x => x._id.toString() == postId);
                     let token = req.headers.authorization;
-                    
+
                     return routeGuards.isAuthorized(token, post.author.userId);
                 })
                 .catch(error => {
@@ -321,6 +321,37 @@ module.exports = (data) => {
                 })
                 .then(result => {
                     return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        createNewCategory(req, res) {
+            let token = req.headers.authorization;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauhtorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    let title = req.body.title;
+                    let description = req.body.description;
+                    let linkName = req.body.linkName;
+                    let imageUrl = req.body.imageUrl;
+                    return data.createForumCategory(title, description, linkName, imageUrl);
+                })
+                .then(response => {
+                    return res.status(201).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        getAllCategories(req, res) {
+            data.getAllCategories()
+                .then(categories => {
+                    return res.status(200).json(categories);
                 })
                 .catch(error => {
                     return res.status(500).json(error);

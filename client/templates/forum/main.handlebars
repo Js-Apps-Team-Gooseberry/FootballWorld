@@ -2,8 +2,8 @@
     <img src="/public/assets/banner-forum.png" alt="forum-tsar-football" class="img-responsive">
 </div>
 <div class="container">
-    {{#each sections}}
-    <a class="forum-link" href="#!/forum/{{link}}">
+    {{#each this}}
+    <a class="forum-link" href="#!/forum/{{linkName}}">
         <div class="forum-section panel panel-default row">
             <div class="col-md-2 forum-main-image" style="background-image: url('{{imageUrl}}');">
             </div>
@@ -12,12 +12,17 @@
                 <p class="small italic">{{description}}</p>
             </div>
             <div class="col-md-3 forum-stats forum-last-post italic">
-                <p>Last thread something</p>
-                <p class="no-margin-bottom">Posted by someone</p>
+                {{#if lastPost}}
+                <p>Last post in <b>{{lastPost.thread}}</b></p>
+                <p class="no-margin-bottom">By <b>{{lastPost.author}} on {{#date lastPost.createdOn}}{{/date}}</b></p>
+                {{else}}
+                <p>No opened threads as of yet...</p>
+                <p class="no-margin-bottom">Start a discussion now!</p>
+                {{/if}}
             </div>
             <div class="col-md-2 forum-stats italic">
-                <p class="text-center">5 Threads</p>
-                <p class="text-center">300 posts</p>
+                <p class="text-center">{{threads}} Threads</p>
+                <p class="text-center">{{posts}} posts</p>
             </div>
         </div>
     </a>

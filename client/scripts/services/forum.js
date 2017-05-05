@@ -28,6 +28,10 @@ function createNewPost(id, content) {
     return requester.postJSON(`/api/forum/create-post/${id}`, body);
 }
 
+function getCategories() {
+    return requester.getJSON('/api/forum/get-all-categories');
+}
+
 function editThread(id, title, content, imageUrl, category, tags) {
     let body = {
         title,
@@ -84,5 +88,6 @@ export {
     toggleLikePost,
     toggleDislikePost,
     toggleLikeThread,
-    toggleDislikeThread
+    toggleDislikeThread,
+    getCategories
 };

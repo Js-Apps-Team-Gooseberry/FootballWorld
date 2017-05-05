@@ -90,4 +90,47 @@ function getUsersPage() {
         .then(html => $mainContainer.html(html));
 }
 
-export { getNewsPage, getArticlesPage, getUsersPage };
+function getForumPage() {
+    compile('admin/forum')
+        .then(html => $mainContainer.html(html));
+}
+
+function getCreateCategoryPage() {
+    if (!isAdmin()) {
+        toastr.error('Unauthorized!');
+        $(location).attr('href', '#!/home');
+        return;
+    }
+
+    compile('forum/create-category')
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            $('#btn-category-create').on('click', () => {
+                const categoryTitle = $('#create-category-title').val().trim(),
+                    categoryDescription = $('#create-category-description').val().trim(),
+                    categoryLinkName = $('#create-category-link-name').val().trim(),
+                    categoryImageUrl = $('#create-category-image-url').val().trim();
+
+                if (!categoryTitle || !categoryDescription || !categoryLinkName || !categoryImageUrl) {
+                    toastr.error('All fields are required!');
+                    return;
+                }
+
+                adminService.createNewCategory(categoryTitle, categoryDescription, categoryLinkName, categoryImageUrl)
+                    .then(() => {
+                        toastr.success('Category successfully created!');
+                        $(location).attr('href', '#!/forum');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+                    });
+            });
+        })
+        .catch(error => {
+            console.log(error);
+            toastr.error('An error occured!');
+        });
+}
+
+export { getNewsPage, getArticlesPage, getUsersPage, getForumPage, getCreateCategoryPage };

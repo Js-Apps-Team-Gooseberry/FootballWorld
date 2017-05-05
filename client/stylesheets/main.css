@@ -604,3 +604,7 @@ nav a {
 .thread-container {
     margin-bottom: 50px;
 }
+
+.btn-new-thread-bottom {
+    margin: 0 -15px 0 0;
+}
