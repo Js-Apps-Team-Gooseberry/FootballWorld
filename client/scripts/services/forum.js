@@ -64,7 +64,7 @@ function toggleLikePost(threadId, postId) {
     return requester.putJSON(`/api/forum/like-post/${threadId}/${postId}`);
 }
 
-function toggleDisikePost(threadId, postId) {
+function toggleDislikePost(threadId, postId) {
     return requester.putJSON(`/api/forum/dislike-post/${threadId}/${postId}`);
 }
 
@@ -78,7 +78,7 @@ export {
     editPost,
     deletePost,
     toggleLikePost,
-    toggleDisikePost,
+    toggleDislikePost,
     toggleLikeThread,
     toggleDislikeThread
 };

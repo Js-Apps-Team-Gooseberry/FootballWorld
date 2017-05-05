@@ -293,7 +293,7 @@ module.exports = (models) => {
                     }
 
                     if (!post.likes || !post.likes.includes(username)) {
-                        thread.likes.push(username);
+                        post.likes.push(username);
 
                         if (post.dislikes && post.dislikes.includes(username)) {
                             let index = post.dislikes.indexOf(username);
@@ -309,7 +309,7 @@ module.exports = (models) => {
                             return reject(error);
                         }
 
-                        return resolve(result);
+                        return resolve(post);
                     });
                 });
             });
@@ -331,7 +331,7 @@ module.exports = (models) => {
                     }
 
                     if (!post.dislikes || !post.dislikes.includes(username)) {
-                        thread.dislikes.push(username);
+                        post.dislikes.push(username);
 
                         if (post.likes && post.likes.includes(username)) {
                             let index = post.likes.indexOf(username);
@@ -347,7 +347,7 @@ module.exports = (models) => {
                             return reject(error);
                         }
 
-                        return resolve(result);
+                        return resolve(post);
                     });
                 });
             });

@@ -156,6 +156,9 @@ function getThread(params) {
         .then(() => {
             _bindLikeThreadButton(id);
             _bindDislikeThreadButton(id);
+            _bindLikePostButton(id);
+            _bindDislikePostButton(id);
+            _bindDeletePostButton(id);
             _bindCreateNewPostEvent(id);
         })
         .catch(error => {
@@ -165,10 +168,62 @@ function getThread(params) {
         });
 }
 
-function _bindLikeThreadButton(threadId) {
-    const $btnLikeThread = $('#btn-thread-like');
+function _bindDeletePostButton(threadId) {
+    $('.forum-post').on('click', '.btn-delete-post', (ev) => {
+        if (ev.isDefaultPrevented()) {
+            return;
+        }
 
-    $btnLikeThread.on('click', () => {
+        let postId = $(ev.target).parents('.forum-post').attr('id');
+        
+        forumService.deletePost(threadId, postId)
+            .then(() => {
+                $(`#${postId}`).remove();
+                toastr.success('Post removed!');
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occured!');
+            });
+    });
+}
+
+function _bindLikePostButton(threadId) {
+    $('.forum-post').on('click', '.btn-like-post', (ev) => {
+        let postId = $(ev.target).parents('.forum-post').attr('id');
+
+        forumService.toggleLikePost(threadId, postId)
+            .then(post => {
+                $(`#${postId} .likes-count`).html(post.likes.length);
+                $(`#${postId} .dislikes-count`).html(post.dislikes.length);
+                toastr.success('Vote submitted!');
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occured!');
+            });
+    });
+}
+
+function _bindDislikePostButton(threadId) {
+    $('.forum-post').on('click', '.btn-dislike-post', (ev) => {
+        let postId = $(ev.target).parents('.forum-post').attr('id');
+
+        forumService.toggleDislikePost(threadId, postId)
+            .then(post => {
+                $(`#${postId} .likes-count`).html(post.likes.length);
+                $(`#${postId} .dislikes-count`).html(post.dislikes.length);
+                toastr.success('Vote submitted!');
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occured!');
+            });
+    });
+}
+
+function _bindLikeThreadButton(threadId) {
+    $('#btn-thread-like').on('click', () => {
         forumService.toggleLikeThread(threadId)
             .then(response => {
                 $('#likes-count').html(response.likes.length);
@@ -183,11 +238,9 @@ function _bindLikeThreadButton(threadId) {
 }
 
 function _bindDislikeThreadButton(threadId) {
-    const $btnDislikeThread = $('#btn-thread-dislike');
-
-    $btnDislikeThread.on('click', () => {
+    $('#btn-thread-dislike').on('click', () => {
         forumService.toggleDislikeThread(threadId)
-            .then(response => {       
+            .then(response => {
                 $('#likes-count').html(response.likes.length);
                 $('#dislikes-count').html(response.dislikes.length);
                 toastr.success('Vote submitted!');

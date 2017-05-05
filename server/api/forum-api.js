@@ -15,7 +15,7 @@ module.exports = function (app, data) {
         .put('/flag-delete/:id', controllers.flagThreadAsDeleted)
         .delete('/delete-thread/:id', controllers.deleteThread)
         .put('/edit-post/:threadId/:postId', controllers.editPost)
-        .delete('/delete-post/:threadId/:postId', controllers.deleteThread)
+        .delete('/delete-post/:threadId/:postId', controllers.deletePost)
         .put('/like-thread/:id', controllers.toggleLikeThread)
         .put('/like-post/:threadId/:postId', controllers.toggleLikePost)
         .put('/dislike-thread/:id', controllers.toggleDislikeThread)

@@ -530,3 +530,7 @@ nav a {
 .like-icons {
     user-select: none;
 }
+
+.btn-edit-post, .btn-delete-post {
+    cursor: pointer;
+}
