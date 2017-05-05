@@ -13,8 +13,8 @@
             </div>
             <div class="col-md-3 forum-stats forum-last-post italic">
                 {{#if lastPost}}
-                <p>Last post in <b>{{lastPost.thread}}</b></p>
-                <p class="no-margin-bottom">By <b>{{lastPost.author}} on {{#date lastPost.createdOn}}{{/date}}</b></p>
+                <p class="ellipsis">Last post in <b>{{lastPost.thread}}</b></p>
+                <p class="ellipsis small no-margin-bottom">By <b>{{lastPost.author}}</b> on {{#date lastPost.createdOn}}{{/date}}</p>
                 {{else}}
                 <p>No opened threads as of yet...</p>
                 <p class="no-margin-bottom">Start a discussion now!</p>

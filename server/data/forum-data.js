@@ -3,6 +3,7 @@
 module.exports = (models) => {
     const Thread = models.Thread,
         Post = models.Post,
+        Category = models.ForumCategory,
         pageCalculator = require('../utils/page-calculator');
 
     return {
@@ -22,6 +23,17 @@ module.exports = (models) => {
                     if (error) {
                         return reject(error);
                     }
+
+                    Category.findOne({ linkName: category }, (error, category) => {
+                        category.lastPost = {
+                            author: author.username,
+                            createdOn: new Date(),
+                            thread: title
+                        };
+
+                        category.threads += 1;
+                        category.save();
+                    });
 
                     return resolve(dbThread);
                 });
@@ -100,10 +112,26 @@ module.exports = (models) => {
                     }
 
                     thread.posts.push(post);
+
+                    thread.lastPost.author = post.author.username;
+                    thread.lastPost.userId = post.author.userId;
+                    thread.lastPostCreatedOn = post.createdOn;
+
                     thread.save((error, success) => {
                         if (error) {
                             return reject(error);
                         }
+
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            category.lastPost = {
+                                author: author.username,
+                                createdOn: new Date(),
+                                thread: thread.title
+                            };
+
+                            category.posts += 1;
+                            category.save();
+                        });
 
                         return resolve(success);
                     });
@@ -139,23 +167,50 @@ module.exports = (models) => {
         },
         flagThreadAsDeleted(threadId) {
             return new Promise((resolve, reject) => {
-                Thread.update({ _id: threadId }, { $set: { isDeleted: true } }, (error, result) => {
+                Thread.findOne({ _id: threadId }, (error, thread) => {
                     if (error) {
+                        console.log(error);
                         return reject(error);
                     }
 
-                    return resolve(result);
+                    thread.isDeleted = true;
+                    thread.save((error, success) => {
+                        if (error) {
+                            console.log(error);
+                            return reject(error);
+                        }
+                        console.log('here');
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            console.log(error);
+                            category.threads -= 1;
+                            category.save();
+                        });
+
+                        return resolve(success);
+                    });
                 });
             });
         },
         flagThreadAsActive(threadId) {
             return new Promise((resolve, reject) => {
-                Thread.update({ _id: threadId }, { $set: { isDeleted: false } }, (error, result) => {
+                Thread.findOne({ _id: threadId }, (error, thread) => {
                     if (error) {
                         return reject(error);
                     }
 
-                    return resolve(result);
+                    thread.isDeleted = false;
+                    thread.save((error, success) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            category.threads += 1;
+                            category.save();
+                        });
+
+                        return resolve(success);
+                    });
                 });
             });
         },
@@ -217,10 +272,25 @@ module.exports = (models) => {
                     let index = thread.posts.indexOf(post);
                     thread.posts.splice(index, 1);
 
+                    if (thread.posts.length) {
+                        let lastPost = thread.posts[thread.posts.length - 1];
+                        thread.lastPost.author = lastPost.author.username;
+                        thread.lastPost.userId = lastPost.author.userId;
+                        thread.lastPostCreatedOn = lastPost.createdOn;
+                    } else {
+                        thread.lastPost = null;
+                        thread.lastPostCreatedOn = thread.createdOn;
+                    }
+
                     thread.save((error, result) => {
                         if (error) {
                             return reject(error);
                         }
+
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            category.posts -= 1;
+                            category.save();
+                        });
 
                         return resolve(result);
                     });

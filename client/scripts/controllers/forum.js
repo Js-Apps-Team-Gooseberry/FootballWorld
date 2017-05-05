@@ -9,7 +9,6 @@ const $mainContainer = $('#main-container');
 function getMainPage() {
     forumService.getCategories()
         .then(categories => {
-            console.log(categories);
             return compile('forum/main', categories);
         })    
         .then(html => $mainContainer.html(html));
@@ -86,7 +85,6 @@ function getCreatePage() {
 
                 forumService.createThread(title, content, imageUrl, category, tags)
                     .then(response => {
-                        console.log(response);
                         toastr.success('Thread successfully created!');
                         $(location).attr('href', `#!/forum/${category}`);
                     })
@@ -111,7 +109,6 @@ function getCategoryPage(params) {
 
     forumService.getAllNotDeletedThreadsByCategory(category, page)
         .then(response => {
-            console.log(response);
             let pagination = {
                 pageCount: response.pagesCount,
                 page
@@ -157,7 +154,7 @@ function getThread(params) {
             };
 
             if (response.posts) {
-                pagination.pageCount = Math.ceil(response.posts.length / pageSize);
+                pagination.pageCount = Math.ceil(response.posts.length / pageSize) || 1;
                 response.posts = response.posts.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize);
             }
 
