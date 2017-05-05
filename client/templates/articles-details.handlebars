@@ -3,12 +3,12 @@
 		<article class="col-md-8">
 			<header>
 				<div>
-					<h1 class="text-center article-details-title">{{sideA}} vs {{sideB}}</h1>
-					<h2>{{title}}</h2>
+					<h1 class="text-center article-details-title">{{articles.sideA}} vs {{articles.sideB}}</h1>
+					<h2>{{articles.title}}</h2>
 				</div>
 				<div class="article-details-createOn text-right">
-					<h3>By Admin</h3>
-					<p>Last Update: {{#date createdOn}}{{/date}}{{createOn}}</p>
+					<h3>By {{user.name}}</h3>
+					<p>Last Update: {{#date articles.createdOn}}{{/date}}</p>
 				</div>
 				<div>
 					<iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button_count&size=large&mobile_iframe=true&width=105&height=28&appId"
@@ -16,10 +16,10 @@
 							frameborder="0"
 							allowTransparency="true"></iframe>
 				</div>
-				<img class="article-details-img" src="{{imageUrl}}" alt="">
+				<img class="article-details-img" src="{{articles.imageUrl}}" alt="">
 				<div>
 					<p class="article-detail-content">
-						{{content}}
+						{{articles.content}}
 					</p>
 				</div>
 			</header>
@@ -28,65 +28,72 @@
 			<h3 class="text-center article-aside-lineups">STARTING LINE-UPS</h3>
 			<div class="row">
 				<div class="col-sm-6 text-center">
-					<span class="article-aside-team">{{sideA}}</span>
-					<ul class="text-left article-aside-team-list">
-						<li>
-							<span>{{lineupsA}}</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-					</ul>
+					<span class="article-aside-team">{{articles.sideA}}</span>
+					{{#each articles.lineupsA}}
+						<ul class="text-center article-aside-team-list">
+							<li>
+								<span>{{this}}</span>
+							</li>
+						</ul>
+					{{/each}}
 				</div>
 				<div class="col-sm-6 text-center">
-					<span class="article-aside-team">{{sideB}}</span>
-					<ul class="text-left article-aside-team-list">
-						<li>
-							<span>{{lineupsB}}</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-					</ul>
+					<span class="article-aside-team">{{articles.sideB}}</span>
+					{{#each articles.lineupsB}}
+						<ul class="text-center article-aside-team-list">
+							<li>
+								<span>{{this}}</span>
+							</li>
+						</ul>
+					{{/each}}
 				</div>
 			</div>
 			<div class="row">
 				<h3 class="article-aside-injured text-center">INJURED</h3>
 				<div class="col-sm-6">
-					<ul class="text-left article-aside-team-list">
-						<li>
-							<span>{{injuredA}}</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-					</ul>
+					{{#each articles.injuredA}}
+						<ul class="text-center article-aside-team-list">
+							<li>
+								<span>{{this}}</span>
+							</li>
+						</ul>
+					{{/each}}
 				</div>
 				<div class="col-sm-6">
-					<ul class="text-left article-aside-team-list">
-						<li>
-							<span>{{injuredB}}</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-						<li>
-							<span>dsdsd</span>
-						</li>
-					</ul>
+					{{#each articles.injuredB}}
+						<ul class="text-center article-aside-team-list">
+							<li>
+								<span>{{this}}</span>
+							</li>
+						</ul>
+					{{/each}}
 				</div>
 			</div>
 			<h3 class="text-center article-aside-prediction">MATCH PREDICTION</h3>
-			<p class="text-center"><strong>{{matchPrediction}}</strong></p>
+			<p class="text-center"><strong>{{articles.matchPrediction}}</strong></p>
+			<div>
+				<h3 class="text-center article-comments-border">Comments</h3>
+			</div>
+			<div class="row">
+				<div id="article-comment-box" class="article-comments-box">
+					<div class="col-sm-2">
+						<img src="{{user.profilePicture}}" alt="" class="img-responsive">
+					</div>
+					<div class="col-sm-10 text-right">
+						<p><strong>{{user.username}}</strong></p>
+						<p>{{#date createdOn}}{{/date}}</p>
+					</div>
+					<div class="col-12">
+						<div id="article-comment-form">
+						<textarea id="article-comment-content" cols="10" rows="3" placeholder="Type your comment here..."
+								  class="form-control"></textarea>
+						</div>
+						<div class="text-right">
+							<button class="btn btn-success btn-xs" id="btn-article-comment">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</aside>
 	</div>
 </div>

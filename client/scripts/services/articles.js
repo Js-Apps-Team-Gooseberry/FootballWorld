@@ -35,4 +35,14 @@ function createNewArticle(title, imageUrl, matchPrediction, sideA, sideB, lineup
     return requester.postJSON('/api/articles/create', body)
 }
 
-export { createNewArticle, getNotDeletedArticlesByPage, getArticleById}
+function commentArticle(commentId, userId, commentContent) {
+    let body = {
+        commentId,
+        userId,
+        commentContent
+    };
+    console.log(body);
+    return requester.postJSON('/api/articles/comment')
+}
+
+export { createNewArticle, getNotDeletedArticlesByPage, getArticleById, commentArticle}

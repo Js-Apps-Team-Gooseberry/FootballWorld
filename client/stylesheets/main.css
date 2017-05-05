@@ -70,22 +70,24 @@ nav a {
     text-decoration: none;
 }
 
-.article-content h3 {
+.article-list-content h3 {
     color: #00ac77;
 }
 
-.article-content p {
+.article-content {
     color: #333333;
     overflow: hidden;
     height: 10rem;
     line-height: 2rem;
 }
 
-.article:hover .article-entry {
-    -webkit-box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
-    -moz-box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
-    box-shadow: 3px 3px 14px 0px rgba(50, 50, 50, 0.71);
-    border: hidden;
+.article-entry:hover .img-container img {
+    opacity: 0.5;
+}
+
+.article-list-content {
+    height: 200px;
+    overflow: hidden;
 }
 
 .article-create-time {
@@ -155,6 +157,7 @@ nav a {
 
 .article-aside-team {
     font-weight: bold;
+    text-decoration: underline;
 }
 
 .article-aside-prediction {
@@ -162,6 +165,20 @@ nav a {
     border-bottom: 2px solid #00ac77;
     border-radius: 10px;
     padding: 5px 0 5px 0;
+    margin-top: 0;
+}
+
+.article-comments-border {
+    border-top: 2px solid #00ac77;
+    border-bottom: 2px solid #00ac77;
+    border-radius: 10px;
+    padding: 5px 0 5px 0;
+}
+
+.article-comments-box {
+    border: 1px solid #00ac77;
+    border-radius: 5px;
+    margin:5px 5px;
 }
 
 .news-entry {

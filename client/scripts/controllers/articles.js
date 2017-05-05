@@ -1,4 +1,4 @@
-import {compile} from 'templates-compiler';
+import { compile } from 'templates-compiler';
 import $ from 'jquery';
 import * as articlesService from 'articles-service';
 import * as toastr from 'toastr';
@@ -21,9 +21,26 @@ function getAllArticles(params) {
                 pageCount: data.pagesCount,
                 page
             };
+            console.log(data);
             return compile('articles-list', data);
         })
-        .then(html => $mainContainer.html(html));
+        .then(html => $mainContainer.html(html))
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
+        })
+        .then(() => {
+            $('.pagination').on('click', 'a', () => {
+                $('html, body').animate({
+                    scrollTop: $('body').offset().top
+                }, 500);
+            });
+        });
 }
 
 function getArticleById(params) {
@@ -32,13 +49,74 @@ function getArticleById(params) {
     }
 
     let id = params.id;
+    let data = {};
 
     articlesService.getArticleById(id)
         .then(articles => {
-            console.log(articles);
-            return compile('articles-details',articles);
+            data.articles = articles;
+            data.user = JSON.parse(localStorage.getItem('currentUser'));
+            console.log(data);
+            return compile('articles-details', data);
+        })
+        .catch(error => {
+            if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            }
         })
         .then(html => $mainContainer.html(html))
+        .then(()=>{
+            getArticleComment(data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+
+function getArticleComment(data) {
+    const $articleCommentContent = $('#article-comment-content'),
+        $btnArticleComment = $('#btn-article-comment'),
+        $articleCommentForm = $('#article-comment-form'),
+        $articleCommentBox = $('#article-comment-box');
+
+    $btnArticleComment.on('click', ()=>{
+        if ($articleCommentContent.val().length < 3 || $articleCommentContent.val().length > 500) {
+            toastr.error('The comments\' length must be between 3 and 500 symbols!');
+            $articleCommentForm.addClass('has-error');
+            $articleCommentContent.focus();
+            return;
+        } else {
+            $articleCommentForm.removeClass('has-error');
+        }
+
+        $btnArticleComment.addClass('disabled');
+        $articleCommentContent.attr('disabled', true);
+        $btnArticleComment.attr('disabled', true);
+
+
+        let articleContent = $articleCommentContent.val();
+
+        articlesService.commentArticle(data.articles._id, data.user._id ,articleContent)
+            .then(response => {
+                console.log(response);
+                compile('article-comments' ,response)
+                    .then(html=> {
+                        toastr.success('Comment submitted!');
+
+                        $articleCommentBox.append(html);
+
+                        $btnArticleComment.addClass('hidden');
+                        $btnArticleComment.removeClass('disabled');
+                        $articleCommentContent.val('');
+                        $articleCommentContent.attr('disabled', false);
+                        $btnArticleComment.attr('disabled', false);
+                    });
+            })
+    })
 }
 
 function getCreateArticlePage() {
@@ -100,7 +178,7 @@ function getCreateArticlePage() {
                     .then(response => {
                         console.log(response);
                         toastr.success('Article successfully added!');
-                        $(location).attr('href', '#/articles');
+                        $(location).attr('href', '#!/articles');
                     })
                     .catch(error => {
                         $btnArticleCreate.attr('disabled', false);
