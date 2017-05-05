@@ -1,8 +1,9 @@
-/* globals module */
+/* globals module require */
 
 module.exports = (models) => {
     const Thread = models.Thread,
-        Post = models.Post;
+        Post = models.Post,
+        pageCalculator = require('../utils/page-calculator');
 
     return {
         createNewThread(title, content, imageUrl, category, tagsStr, authorId, authorUsername, authorAvatar) {
@@ -27,7 +28,7 @@ module.exports = (models) => {
             });
         },
         getNotDeletedThreadsByCategory(category, page) {
-            const pageSize = 10;
+            const pageSize = 8;
 
             return new Promise((resolve, reject) => {
                 Thread.find({ category: category })
@@ -40,7 +41,19 @@ module.exports = (models) => {
                             return reject(error);
                         }
 
-                        return resolve(threads);
+                        Thread.count({ category: category }, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let data = {
+                                threads,
+                                pagesCount
+                            };
+
+                            return resolve(data);
+                        });
                     });
             });
         },

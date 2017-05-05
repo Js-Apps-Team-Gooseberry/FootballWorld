@@ -534,3 +534,7 @@ nav a {
 .btn-edit-post, .btn-delete-post {
     cursor: pointer;
 }
+
+#new-post-reveal {
+    margin-right: -15px;
+}

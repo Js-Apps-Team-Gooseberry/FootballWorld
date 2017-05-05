@@ -23,6 +23,7 @@ router
     .on('/news/delete/:id', controllers.news.flagNewsEntryAsDeleted)
     .on('/news/details/:id', controllers.news.getById)
     .on('/news', controllers.news.getAll)   
+    .on('/forum/details/:id/:page', controllers.forum.getThread)
     .on('/forum/details/:id', controllers.forum.getThread)
     .on('/forum/delete/:id', controllers.forum.flagDeleteThread)
     .on('/forum/edit/:id', controllers.forum.getEditThreadPage)

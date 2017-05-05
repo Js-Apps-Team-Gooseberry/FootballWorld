@@ -134,10 +134,19 @@ function getCategoryPage(params) {
 
     forumService.getAllNotDeletedThreadsByCategory(category, page)
         .then(response => {
+            console.log(response);
+            let pagination = {
+                pageCount: response.pagesCount,
+                page
+            };
+
             let data = {
                 category: category,
-                threads: response
+                threads: response.threads,
+                pagination
             };
+
+            console.log(data);
 
             return compile('forum/category', data);
         })
@@ -147,9 +156,28 @@ function getCategoryPage(params) {
 
 function getThread(params) {
     let id = params.id;
+    let page = params.page || 1;
+    let pageSize = 10;
+    let user = JSON.parse(localStorage.getItem('currentUser'));
 
     forumService.getById(id)
-        .then(data => {
+        .then(response => {
+            let pagination = {
+                pageCount: 1,
+                page
+            };
+
+            if (response.posts) {
+                pagination.pageCount = Math.ceil(response.posts.length / pageSize);
+                response.posts = response.posts.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize);
+            }
+
+            let data = {
+                thread: response,
+                pagination,
+                user
+            };
+
             return compile('forum/details', data);
         })
         .then(html => $mainContainer.html(html))
@@ -307,6 +335,17 @@ function _bindCreateNewPostEvent(threadId) {
     const $btnNewPost = $('#btn-new-post'),
         $newPostContent = $('#new-post-input'),
         $formNewPost = $('#form-new-post');
+
+    $('#btn-reveal-new-post').on('click', () => {
+        $('#new-post-reveal').addClass('hidden');
+        $('#new-post-preview').removeClass('hidden');
+    });
+
+    $('#btn-hide-new-post').on('click', () => {
+        $newPostContent.val('');
+        $('#new-post-preview').addClass('hidden');
+        $('#new-post-reveal').removeClass('hidden');
+    });
 
     $btnNewPost.on('click', () => {
         if (!$newPostContent.val().trim() || $newPostContent.val().trim().length < 5 || $newPostContent.val().trim().length > 1400) {
