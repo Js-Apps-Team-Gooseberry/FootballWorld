@@ -196,6 +196,60 @@ module.exports = (models) => {
                     });
                 });
             });
+        },
+        getAllNews(page, query, sort) {
+            let pageSize = 10;
+
+            let sortMethod = sort == 'status' ? { isDeleted: -1, createdOn: -1 } : { createdOn: -1 };
+            let queryObj = query.trim() ? { title: { '$regex': query.trim(), '$options': 'i' } } : {};
+
+            return new Promise((resolve, reject) => {
+                NewsEntry.find(queryObj)
+                    .sort(sortMethod)
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec((error, newsEntries) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        NewsEntry.count(queryObj, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let news = {
+                                newsEntries,
+                                pagesCount
+                            };
+
+                            return resolve(news);
+                        });
+                    });
+            });
+        },
+        deleteNewsEntry(newsEntryId) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.findOneAndRemove({ _id: newsEntryId }, (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(result);
+                });
+            });
+        },
+        flagNewsEntryAsActive(newsEntryId) {
+            return new Promise((resolve, reject) => {
+                NewsEntry.update({ _id: newsEntryId }, { $set: { isDeleted: false } }, (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(result);
+                });
+            });
         }
     };
 };

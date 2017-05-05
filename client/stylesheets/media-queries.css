@@ -93,6 +93,10 @@
         width: 100%;
         background-size: 600px;
     }
+
+    .news-entry, .news-entry:hover {
+        border: 1px solid lightgrey;
+    }
 }
 
 @media only screen and (max-width: 500px) {

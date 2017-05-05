@@ -36,11 +36,10 @@ function getAsideLatest(articlesCount, currentArticleId) {
     return requester.postJSON('/api/news/get-aside-latest', body);
 }
 
-function createNewEntry(title, description, author, imageUrl, content, tags) {
+function createNewEntry(title, description, imageUrl, content, tags) {
     let body = {
         title,
         description,
-        author,
         imageUrl,
         content,
         tags
@@ -89,6 +88,10 @@ function deleteComment(newsEntryId, commentId) {
     return requester.deleteJSON('/api/news/delete-comment', body);
 }
 
+function flagNewsEntryAsActive(articleId) {
+    return requester.putJSON(`/api/news/flag-active/${articleId}`);
+}
+
 export {
     getNotDeletedArticlesByPage,
     getById,
@@ -98,5 +101,6 @@ export {
     editNewsEntry,
     flagNewsEntryAsDeleted,
     comment,
-    deleteComment
+    deleteComment,
+    flagNewsEntryAsActive
 };

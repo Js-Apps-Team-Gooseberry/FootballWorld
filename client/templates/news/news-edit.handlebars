@@ -22,6 +22,9 @@
                     </div>
                     <div class="text-center">
                         <button id="btn-news-edit" type="button" class="btn btn-success">Submit</button>
+                        {{#if isDeleted}}
+                        <button id="btn-restore-news-entry" type="button" class="btn btn-danger btn-black">Restore</button>
+                        {{/if}}
                     </div>
                 </div>
             </div>

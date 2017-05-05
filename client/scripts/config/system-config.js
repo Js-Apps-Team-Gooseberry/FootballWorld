@@ -18,6 +18,8 @@ SystemJS.config({
         'auth-service': '/public/scripts/services/auth.js',
         'news-service': '/public/scripts/services/news.js',
         'articles-service': '/public/scripts/services/articles.js',
+        'admin-service': '/public/scripts/services/admin.js',
+        'forum-service': '/public/scripts/services/forum.js',
 
         // controllers
         'controllers': '/public/scripts/controllers/index.js',
@@ -26,6 +28,7 @@ SystemJS.config({
         'news-controller': '/public/scripts/controllers/news.js',
         'articles-controller': '/public/scripts/controllers/articles.js',
         'admin-controller': '/public/scripts/controllers/admin.js',
+        'forum-controller': '/public/scripts/controllers/forum.js',
 
         // libs
         'jquery': '/libs/jquery/dist/jquery.js',

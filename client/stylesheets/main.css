@@ -45,6 +45,10 @@ nav a {
     font-size: 7rem;
 }
 
+.error-message {
+    font-family: Charlemagne;
+}
+
 .panel-credentials {
     padding: 0 15px;
     box-shadow: 0 0 10px lightgrey;
@@ -120,6 +124,7 @@ nav a {
     font-size: 1.7rem;
     font-style: italic;
 }
+
 .article-details-createOn p {
     color: #a3a3a3;
     font-style: italic;
@@ -142,7 +147,7 @@ nav a {
     -webkit-padding-start: 0;
 }
 
-.article-aside-injured{
+.article-aside-injured {
     border-top: 2px solid #00ac77;
     border-bottom: 2px solid #00ac77;
     border-radius: 10px;
@@ -179,12 +184,13 @@ nav a {
 .news-entry {
     cursor: pointer;
     border: 1px solid lightgrey;
+    border-right: 4px solid black;
     overflow: hidden;
     color: black;
 }
 
 .news-entry:hover {
-    box-shadow: 0 0 7px lightgrey;
+    border-right: 4px solid #43AC6A;
 }
 
 .news-entry-image {
@@ -393,4 +399,59 @@ nav a {
 
 .navbar-logo {
     max-height: 42px;
+}
+
+.tabs-admin {
+    text-align: center;
+}
+
+.tabs-admin li {
+    display: inline-block;
+    float: none;
+}
+
+.admin-operations {
+    margin-top: 21px;
+}
+
+.admin-news-title {
+    color: black;
+}
+
+.image-error {
+    max-width: 60%;
+}
+
+.forum-main-image {
+    height: 100px;
+    overflow: hidden;
+    background-position: center center;
+    background-size: 200px;
+    background-repeat: no-repeat;
+}
+
+.forum-link {
+    text-decoration: none;
+    color: black;
+}
+
+.forum-link:hover, .forum-link:active, .forum-link:focus, .forum-link:focus {
+    color: black;
+}
+
+.forum-section {
+    border-right: 4px solid black;
+}
+
+.forum-link:hover .forum-section {
+    border-right: 4px solid #43AC6A;
+}
+
+.forum-stats {
+    margin-top: 22px;
+}
+
+.forum-last-post {
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
 }

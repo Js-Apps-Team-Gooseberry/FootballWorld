@@ -10,6 +10,28 @@ function toggleButtonsIfLoggedIn() {
     }
 }
 
+function isLoggedIn() {
+    if (!localStorage.getItem('currentUser')) {
+        return false;
+    }
+
+    return true;
+}
+
+function isAdmin() {
+    if (!localStorage.getItem('currentUser')) {
+        return false;
+    }
+
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (!user.admin) {
+        return false;
+    }
+
+    return true;
+}
+
 function formatDate(date) {
     let monthNames = [
         'January', 'February', 'March',
@@ -33,4 +55,4 @@ function _formatNumber(number) {
     return number.toString().length < 2 ? `0${number}` : number;
 }
 
-export { toggleButtonsIfLoggedIn, formatDate };
+export { toggleButtonsIfLoggedIn, formatDate, isLoggedIn, isAdmin };
