@@ -1,20 +1,18 @@
+<div class="banner-articles">
+	<img src="/public/assets/banner-articles.png" class="img-responsive" alt="banner">
+</div>
 <div class="container">
-	<div class="row">
-		<div class="row">
-			<div class="col-md-8">
-				<h1>Popular analisys and predictions</h1>
-			</div>
-			<div class="col-md-4 text-right">
-				<a href="#!/articles/create" class="btn btn-success btn-create">Write a New Article</a>
-			</div>
+	<div class="row hidden">
+		<div class="col-md-4 text-right">
+			<a href="#!/articles/create" class="btn btn-success btn-create">Write a New Article</a>
 		</div>
 	</div>
-	<hr>
+	<hr class="no-margin-top">
 	<div class="row">
 		{{#each articles}}
-		<a href="#!/articles/details{{_id}}">
-			<div class="article col-lg-4 col-md-4 col-sm-6 col-xs-12">
-				<article class="article-entry panel">
+			<a href="#!/articles/details{{_id}}">
+				<div class="article col-lg-4 col-md-4 col-sm-6 col-xs-12">
+					<article class="article-entry panel">
 						<div class="img-container">
 							<img class="img-responsive" alt=""
 								 src="{{imageUrl}}">
@@ -30,9 +28,9 @@
 								<span>by Admin</span>
 							</div>
 						</div>
-				</article>
-			</div>
-		</a>
+					</article>
+				</div>
+			</a>
 		{{/each}}
 		<div class="pager">
 			<ul class="pagination">

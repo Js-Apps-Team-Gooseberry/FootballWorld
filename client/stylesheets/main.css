@@ -175,11 +175,11 @@ nav a {
     padding: 5px 0 5px 0;
 }
 
-.article-comments-box {
-    border: 1px solid #00ac77;
-    border-radius: 5px;
-    margin: 5px 5px;
-}
+
+.banner-articles {
+    padding: 0;
+    margin-top: -15px;}
+
 
 .news-entry {
     cursor: pointer;
