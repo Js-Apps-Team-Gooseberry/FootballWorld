@@ -1,4 +1,4 @@
-import { compile } from 'templates-compiler';
+import {compile} from 'templates-compiler';
 import $ from 'jquery';
 import * as articlesService from 'articles-service';
 import * as toastr from 'toastr';
@@ -55,6 +55,7 @@ function getArticleById(params) {
         .then(articles => {
             data.articles = articles;
             data.user = JSON.parse(localStorage.getItem('currentUser'));
+
             return compile('articles-details', data);
         })
         .catch(error => {
@@ -67,7 +68,8 @@ function getArticleById(params) {
             }
         })
         .then(html => $mainContainer.html(html))
-        .then(()=>{
+        .then(() => {
+
             getArticleComment(data);
         })
         .catch(error => {
@@ -82,7 +84,7 @@ function getArticleComment(data) {
         $articleCommentForm = $('#article-comment-form'),
         $articleCommentBox = $('#article-comment-box');
 
-    $btnArticleComment.on('click', ()=>{
+    $btnArticleComment.on('click', () => {
         if ($articleCommentContent.val().length < 3 || $articleCommentContent.val().length > 500) {
             toastr.error('The comments\' length must be between 3 and 500 symbols!');
             $articleCommentForm.addClass('has-error');
@@ -99,14 +101,22 @@ function getArticleComment(data) {
 
         let articleContent = $articleCommentContent.val();
 
-        articlesService.commentArticle(data.articles._id, data.user._id ,articleContent)
+        articlesService.commentArticle(data.articles._id, data.user._id, articleContent)
             .then(response => {
-                console.log(response);
-                compile('article-comments' ,response)
-                    .then(html=> {
+
+                let newCommentArticleData = response.comments[response.comments.length - 1];
+                newCommentArticleData.author = data.user;
+                console.log(newCommentArticleData);
+
+                compile('comment', newCommentArticleData)
+                    .then(html => {
                         toastr.success('Comment submitted!');
 
                         $articleCommentBox.append(html);
+
+                        $('html, body').animate({
+                            scrollTop: $(`#${newCommentArticleData._id}`).offset().top - 55
+                        }, 1000);
 
                         $btnArticleComment.addClass('hidden');
                         $btnArticleComment.removeClass('disabled');
@@ -114,7 +124,16 @@ function getArticleComment(data) {
                         $articleCommentContent.attr('disabled', false);
                         $btnArticleComment.attr('disabled', false);
                     });
+
             })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occured!');
+
+                $btnArticleComment.removeClass('disabled');
+                $articleCommentContent.attr('disabled', false);
+                $btnArticleComment.attr('disabled', false);
+            });
     })
 }
 
