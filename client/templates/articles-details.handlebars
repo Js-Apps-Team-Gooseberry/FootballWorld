@@ -1,21 +1,30 @@
 <div class="container">
 	<div class="row">
 		<article class="col-md-8">
-			<header>
 				<div>
 					<h1 class="text-center article-details-title">{{articles.sideA}} vs {{articles.sideB}}</h1>
 					<h2>{{articles.title}}</h2>
 				</div>
-				<div class="article-details-createOn text-right">
-					<h3>By {{user.name}}</h3>
-					<p>Last Update: {{#date articles.createdOn}}{{/date}}</p>
+				<hr class="no-margin-bottom">
+				<div class="socials-container">
+					<div class="col-md-4 no-padding news-author-field">
+						<p class="no-margin-bottom">By <span class="bold">{{user.name}}</span></p>
+						<p class="italic small no-margin-bottom">
+							<time>{{#date articles.createdOn}}{{/date}}</time>
+						</p>
+					</div>
+					<a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=https%3A%2F%2Ftsar-football.herokuapp.com%2Fnews%2F{{articles._id}}%2F%23!%2Fnews%2Fdetails%2F{{articles._id}}&display=popup&ref=plugin&src=share_button">
+						<div class="col-md-4 no-padding field-facebook text-center">
+							<img class="icon-social" src="/public/assets/facebook-icon.png" alt="facebook">
+							<span class="bold news-field-text">&nbsp;&nbsp;Share to Facebook</span>
+						</div>
+					</a>
+					<div id="btn-comments-scroll" class="col-md-4 no-padding field-comments text-center">
+						<img class="icon-social" src="/public/assets/comments-icon.png" alt="comments">
+						<span id="news-comments-count" class="bold news-field-text">&nbsp;&nbsp;{{#commentsCount article.comments}}{{/commentsCount}}</span>
+					</div>
 				</div>
-				<div>
-					<iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button_count&size=large&mobile_iframe=true&width=105&height=28&appId"
-							width="200" height="28" style="border:none;overflow:hidden" scrolling="no"
-							frameborder="0"
-							allowTransparency="true"></iframe>
-				</div>
+				<hr class="no-margin-bottom">
 				<img class="article-details-img" src="{{articles.imageUrl}}" alt="">
 				<div>
 					<p class="article-detail-content">
@@ -25,18 +34,16 @@
 				<div>
 					<h3 class="text-center article-comments-border"><strong>Comments</strong></h3>
 				</div>
-				<div id="news-comment-box" class="comment-box">
+				<div id="articles-comment-box" class="comment-box">
 					{{#each articles.comments}}
 						<div class="row comment" id="{{_id}}">
 							<div class="col-md-2 comment-avatar">
-								<img src="{{author.userAvatar}}" alt="{{author.username}}"
-									 class="img-responsive img-circle">
+								<img src="{{author.userAvatar}}" alt="{{author.username}}" class="img-responsive img-circle">
 							</div>
 							<div class="col-md-10 comment-content">
-								<p class="inline-block"><span class="bold">{{author.username}}</span> <span
-										class="italic small">{{#date createdOn}}{{/date}}</span></p>
+								<p class="inline-block"><span class="bold">{{author.username}}</span> <span class="italic small">{{#date createdOn}}{{/date}}</span></p>
 								{{#deleteCommentBtn ../user author.userId}}
-									<p class="btn-news-delete-comment inline-block pull-right small btn-comment-delete"
+									<p class="btn-article-delete-comment inline-block pull-right small btn-comment-delete"
 									   onclick="return confirm('Are you sure you want to delete this comment?')">
 										Delete
 									</p>
@@ -58,13 +65,12 @@
 							</div>
 						</div>
 						<div class="text-right">
-							<button class="btn btn-success btn-xs" id="btn-article-comment">Submit</button>
+							<button class="btn btn-success btn-xs btn-news-comment hidden" id="btn-article-comment">Submit</button>
 						</div>
 					</div>
 				{{else}} {{#unless articles.comments.length}}
 					<h4 class="text-center bold">No comments yet! Sign in and be the first to comment...</h4>
 				{{/unless}} {{/if}}
-			</header>
 		</article>
 		<aside class="article-details-aside col-md-4">
 			<h4 class="text-center article-aside-lineups"><strong>STARTING LINE-UPS</strong></h4>
