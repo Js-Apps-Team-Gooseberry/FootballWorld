@@ -1,15 +1,15 @@
 <div class="container">
     <div class="row">
         <h1 class="text-center">Admin Panel</h1>
-        <ul class="nav nav-tabs tabs-admin" role="tablist">
+        <ul class="nav nav-tabs tabs-admin" role="tablist">            
+            <li role="presentation">
+                <a href="#!/admin/users" class="tab-admin">Users</a>
+            </li>
             <li role="presentation" class="active">
                 <a href="#!/admin/news" class="tab-admin">News</a>
             </li>
             <li role="presentation">
                 <a href="#!/admin/articles" class="tab-admin">Articles</a>
-            </li>
-            <li role="presentation">
-                <a href="#!/admin/users" class="tab-admin">Users</a>
             </li>
             <li role="presentation">
                 <a href="#!/admin/forum" class="tab-admin">Forum</a>
@@ -51,7 +51,7 @@
                             <h5>{{title}}</h5>
                         </a>
                     </td>
-                    <td>{{author}}</td>
+                    <td><a class="black-text" href="#!/profile/{{author}}">{{author}}</a></td>
                     <td>{{#date createdOn}}{{/date}}</td>
                     <td>{{#if isDeleted}}Flagged as deleted{{else}}Active{{/if}}</td>
                     <td class=text-center><a href="#!/news/edit/{{_id}}" class="btn btn-danger btn-black btn-xs">Edit</a></td>

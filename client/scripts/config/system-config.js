@@ -20,6 +20,7 @@ SystemJS.config({
         'articles-service': '/public/scripts/services/articles.js',
         'admin-service': '/public/scripts/services/admin.js',
         'forum-service': '/public/scripts/services/forum.js',
+        'stats-service': '/public/scripts/services/stats.js',
 
         // controllers
         'controllers': '/public/scripts/controllers/index.js',

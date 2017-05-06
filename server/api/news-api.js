@@ -1,7 +1,6 @@
 /* globals module require */
 
-const router = require('express').Router(),
-    passport = require('passport');
+const router = require('express').Router();
 
 module.exports = function (app, data) {
     const controllers = require('../controllers/news-controller')(data);
@@ -14,7 +13,7 @@ module.exports = function (app, data) {
         .post('/get-by-tag', controllers.getNewsByTags)
         .put('/edit', controllers.editNewsEntry)
         .put('/flag-delete', controllers.flagNewsEntryAsDeleted)
-        .post('/comment', passport.authenticate('jwt'), controllers.commentNewsEntry)
+        .post('/comment', controllers.commentNewsEntry)
         .delete('/delete-comment', controllers.deleteNewsEntryComment)
         .delete('/delete-entry/:id', controllers.deleteEntryPermanently)
         .get('/get-all-admin/:page/:query/:sort', controllers.getNewsForAdmins)

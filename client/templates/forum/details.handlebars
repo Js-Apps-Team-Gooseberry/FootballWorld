@@ -4,7 +4,7 @@
             <img src="{{thread.imageUrl}}" data-target="#details-photo" data-toggle="modal" class="img-responsive img-thread-header"
                 alt="{{author.username}}">
             <hr class="post-picture-hr" />
-            <p class="bold no-margin-bottom">By {{thread.author.username}}</p>
+            <p class="bold no-margin-bottom">By <a class="black-text" href="#!/profile/{{thread.author.username}}">{{thread.author.username}}</a></p>
             <p class="small italic">Posted on: {{#date thread.createdOn}}{{/date}}</p>
         </div>
         <div class="col-md-9 thread-content-placeholder">
@@ -43,7 +43,7 @@
                     <hr class="post-picture-hr" />
                     <div class="post-options row">
                         <div class="col-md-10 no-padding">
-                            <span class="bold">{{author.username}}</span>
+                            <span class="bold"><a class="black-text" href="#!/profile/{{author.username}}">{{author.username}}</a></span>
                             <span class="small italic">Posted on: {{#date createdOn}}{{/date}}</span> {{#if updatedOn}}
                             <span class="small italic"> | Last updated on: {{#date updatedOn}}{{/date}}</span> {{/if}} {{#isAuthorized
                             ../user author.userId}}

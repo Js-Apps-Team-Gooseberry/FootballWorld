@@ -618,7 +618,7 @@ nav a {
 }
 
 .no-padding-left {
-    padding-left: 0;
+    padding-left: 0 !important;
 }
 
 .category-container {
@@ -654,4 +654,43 @@ nav a {
 
 .profile-picture {
     border: 1px solid grey;
+}
+
+.black-text {
+    color: black;
+}
+
+.league-standings, .league-standings iframe {
+    height: 1050px;
+}
+
+.league-standings  div {
+    display: none;
+}
+
+.header {
+    background: blue !important;
+    background-color: blue !important;
+}
+
+.standings-team-badge {
+    height: 15px;
+}
+
+.standings {
+    width: 320px;
+}
+
+.no-padding-sides {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.no-padding-right {
+    padding-right: 0 !important;
+}
+
+.standings-team-cell {
+    width: 90px;
+    display: block;
 }

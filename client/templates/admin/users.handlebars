@@ -2,15 +2,15 @@
     <div class="row">
         <h1 class="text-center">Admin Panel</h1>
         <ul class="nav nav-tabs tabs-admin" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#!/admin/users" class="tab-admin">Users</a>
+            </li>
             <li role="presentation">
                 <a href="#!/admin/news" class="tab-admin">News</a>
             </li>
             <li role="presentation">
                 <a href="#!/admin/articles" class="tab-admin">Articles</a>
-            </li>
-            <li role="presentation" class="active">
-                <a href="#!/admin/users" class="tab-admin">Users</a>
-            </li>
+            </li>            
             <li role="presentation">
                 <a href="#!/admin/forum" class="tab-admin">Forum</a>
             </li>
@@ -46,7 +46,7 @@
                 <tr id="{{_id}}">
                     <td>
                         <a class="admin-news-title" href="#!/forum/details/{{_id}}">
-                            <h5>{{username}}</h5>
+                            <h5><a class="black-text" href="#!/profile/{{username}}">{{username}}</a></h5>
                         </a>
                     </td>
                     <td>{{email}}</td>

@@ -1,10 +1,15 @@
 import { compile } from 'templates-compiler';
 import $ from 'jquery';
+import * as statsService from 'stats-service';
 
 const $mainContainer = $('#main-container');
 
 function get() {
-    compile('home')
+    statsService.getStandings()
+        .then(standings => {
+            console.log(standings);
+            return compile('home', standings);
+        })    
         .then(html => $mainContainer.html(html));
 }
 

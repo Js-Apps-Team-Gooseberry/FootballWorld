@@ -11,6 +11,20 @@ function get(url) {
     });
 }
 
+function apiGetJSON(url, headers = {}) {
+    headers['X-Auth-Token'] = 'd0063ff1d3264556a92143db04f9b24a';
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url,
+            method: 'GET',
+            headers: headers
+        })
+            .done(resolve)
+            .fail(reject);
+    });
+}
+
 function getJSON(url, headers = {}) {
     headers.authorization = localStorage.getItem('token');
 
@@ -28,7 +42,7 @@ function getJSON(url, headers = {}) {
 
 function putJSON(url, body, headers = {}) {
     headers.authorization = localStorage.getItem('token');
-    
+
     return new Promise((resolve, reject) => {
         $.ajax({
             url,
@@ -44,7 +58,7 @@ function putJSON(url, body, headers = {}) {
 
 function postJSON(url, body, headers = {}) {
     headers.authorization = localStorage.getItem('token');
-    
+
     return new Promise((resolve, reject) => {
         $.ajax({
             url,
@@ -60,7 +74,7 @@ function postJSON(url, body, headers = {}) {
 
 function deleteJSON(url, body, headers = {}) {
     headers.authorization = localStorage.getItem('token');
-    
+
     return new Promise((resolve, reject) => {
         $.ajax({
             url,
@@ -74,4 +88,4 @@ function deleteJSON(url, body, headers = {}) {
     });
 }
 
-export { get, getJSON, postJSON, putJSON, deleteJSON };
+export { get, getJSON, postJSON, putJSON, deleteJSON, apiGetJSON };

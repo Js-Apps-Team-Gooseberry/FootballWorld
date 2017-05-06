@@ -1,1 +1,30 @@
-<h1 class="text-center" >You are home...</h1>
+<h1 class="text-center">You are home...</h1>
+
+<table class="table table responsive standings">
+    <thead>
+        <th></th>
+        <th></th>
+        <th>Team</th>
+        <th>GP</th>
+        <th>GD</th>
+        <th>W</th>
+        <th>D</th>
+        <th>L</th>
+        <th class="no-padding-right">Points</th>
+    </thead>
+    <tbody>
+        {{#each standing}}
+        <tr>
+            <td class="no-padding-right">{{position}}.</td>
+            <td class="text-center no-padding-sides"><img src="{{crestURI}}" class="standings-team-badge" alt="{{teamName}}"></td>
+            <td class="no-padding-right ellipsis standings-team-cell">{{teamName}}</td>
+            <td>{{playedGames}}</td>
+            <td>{{goalDifference}}</td>
+            <td>{{wins}}</td>
+            <td>{{draws}}</td>
+            <td>{{losses}}</td>
+            <td class="no-padding-right">{{points}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

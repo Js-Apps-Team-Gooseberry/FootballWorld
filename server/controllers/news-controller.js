@@ -141,8 +141,16 @@ module.exports = (data) => {
             let newsEntryId = req.body.newsEntryId;
             let userId = req.body.userId;
             let content = req.body.commentContent;
+            let token = req.headers.authorization;
 
-            data.commentNewsEntry(newsEntryId, userId, content)
+            routeGuards.isAuthenticated(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.commentNewsEntry(newsEntryId, userId, content);
+                })
                 .then(response => {
                     return res.status(201).json(response);
                 })

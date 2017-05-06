@@ -8,7 +8,7 @@
             <hr class="post-picture-hr" />
             <div class="post-options row">
                 <div class="col-md-10 no-padding">
-                    <span class="bold">{{author.username}}</span>
+                    <span class="bold"><a class="black-text" href="#!/profile/{{author.username}}">{{author.username}}</a></span>
                     <span class="small italic">Posted on: {{#date createdOn}}{{/date}}</span> {{#if updatedOn}}
                     <span class="small italic"> | Last updated on: {{#date updatedOn}}{{/date}}</span> {{/if}}
                     <span class="btn-edit-post small grey-text">Edit</span>
