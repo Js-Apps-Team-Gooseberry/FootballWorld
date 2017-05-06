@@ -8,4 +8,18 @@ function login(user) {
     return requester.putJSON('/api/auth/login', user);
 }
 
-export { register, login };
+function getById(id) {
+    return requester.getJSON(`/api/auth/get-by-id/${id}`);
+}
+
+function updateUserInfo(id, username, email, isAdmin) {
+    let body = {
+        username,
+        email,
+        isAdmin
+    };
+
+    return requester.putJSON(`/api/auth/update-user-info/${id}`, body);
+}
+
+export { register, login, getById, updateUserInfo };

@@ -29,7 +29,7 @@ module.exports = (models) => {
                     });
             });
         },
-        createUser(username, password, name, email, profilePicture) {
+        createUser(username, password, email, profilePicture) {
             let salt = encryptor.generateSalt(),
                 passHash = encryptor.generateHashedPassword(salt, password);
 
@@ -39,7 +39,6 @@ module.exports = (models) => {
 
             let userObject = {
                 username,
-                name,
                 email,
                 salt,
                 passHash,
@@ -55,6 +54,38 @@ module.exports = (models) => {
                     }
 
                     return resolve(dbUser);
+                });
+            });
+        },
+        getUserById(userId) {
+            return new Promise((resolve, reject) => {
+                User.findOne({ _id: userId }, (error, user) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(user);
+                });
+            });
+        },
+        updateUserInfo(userId, username, email, isAdmin) {
+            console.log(isAdmin);
+            return new Promise((resolve, reject) => {
+                User.findOne({ _id: userId }, (error, user) => {
+                    if (error) {
+                        return reject(error);
+                    }  
+
+                    user.username = username;
+                    user.email = email;
+                    user.admin = isAdmin;
+                    user.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(result);
+                    });
                 });
             });
         }

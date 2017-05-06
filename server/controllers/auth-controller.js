@@ -16,10 +16,12 @@ function cloneUser(user) {
     delete userToReturn.passHash;
     delete userToReturn.salt;
 
-    return user;
+    return userToReturn;
 }
 
 module.exports = (data) => {
+    const routeGuards = require('../utils/route-guards')(data);
+
     return {
         register(req, res) {
             if (!req.body) {
@@ -37,7 +39,7 @@ module.exports = (data) => {
                         return res.status(409).json({ message: 'User already exist!' });
                     }
 
-                    data.createUser(req.body.username, req.body.password, req.body.name, req.body.email, req.body.profilePicture)
+                    data.createUser(req.body.username, req.body.password, req.body.email, req.body.profilePicture)
                         .then(newUser => {
                             let token = getJwtToken(newUser, config.jwtSecretKey);
                             let userToReturn = cloneUser(newUser);
@@ -82,47 +84,66 @@ module.exports = (data) => {
                 })
                 .catch(error => res.status(500).json(error));
         },
-        checkLogin(req, res) {
-            const token = req.headers.authorization;
+        getById(req, res) {
+            let id = req.params.id;
+            let token = req.headers.authorization;
+            let isAdmin = false;
 
-            if (token) {
-                let decoded = jwt.decode(token.split(' ')[1], config.jwtSecretKey);
-                const user = decoded._doc;
-                data.findUserById(user._id)
-                    .then((resUser) => {
-                        res.status(200).json(resUser);
-                    })
-                    .catch(err => {
-                        res.status(500).json(err);
-                    });
-            } else {
-                res.status(401).json({
-                    message: 'Token auth failed!'
+            routeGuards.isAdmin(token)
+                .then(() => isAdmin = true)
+                .catch(() => isAdmin = false)
+                .then(() => {
+                    return data.getUserById(id);
+                })
+                .then(user => {
+                    let predicate = isAdmin ? !user : (!user || user.isDeleted);
+                    if (predicate) {
+                        return res.status(404).json('No such user found!');
+                    }
+
+                    let clonedUser = cloneUser(user);
+
+                    return res.status(200).json(clonedUser);
+                })
+                .catch(error => {
+                    console.log(error);
+                    return res.status(500).json(error);
                 });
-            }
         },
-        checkIfAdmin(req, res) {
-            const token = req.headers.authorization;
+        updateUserInfo(req, res) {
+            let id = req.params.id;
+            let username = req.body.username;
+            let email = req.body.email;
+            let isAdmin = req.body.isAdmin;
 
-            if (token) {
-                let decoded = jwt.decode(token.split(' ')[1], config.jwtSecretKey);
-                const user = decoded._doc;
-                data.findUserById(user._id)
-                    .then((resUser) => {
-                        if (resUser && resUser.admin) {
-                            return res.status(200).json(resUser);
-                        }
+            data.getUserById(id)
+                .then(user => {
+                    if (!user) {
+                        res.status(404).json('No such user found!');
+                        return Promise.reject(new Error('No such user found!'));
+                    }
 
-                        res.status(401).json({ message: 'No such user or not an admin!' });
-                    })
-                    .catch(err => {
-                        res.status(500).json(err);
-                    });
-            } else {
-                res.status(401).json({
-                    message: 'Token auth failed!'
+                    let token = req.headers.authorization;
+
+                    return routeGuards.isAuthorized(token, user._id);
+                })
+                .catch(error => {
+                    res.status(401).json(error);
+                })
+                .then(user => {
+                    if (!user.admin) {
+                        isAdmin = false;
+                    }
+
+                    return data.updateUserInfo(id, username, email, isAdmin);
+                })
+                .then(response => {
+                    let clonedUser = cloneUser(response);
+                    return res.status(200).json(clonedUser);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
                 });
-            }
         }
     };
 };

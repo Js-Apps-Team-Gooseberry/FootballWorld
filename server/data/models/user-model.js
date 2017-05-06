@@ -12,12 +12,6 @@ let userSchema = new Schema({
         unique: true,
         required: true
     },
-    name: {
-        type: String,
-        minlength: 3,
-        maxlength: 20,
-        required: true
-    },
     passHash: String,
     salt: String,
     email: String,

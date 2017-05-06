@@ -166,20 +166,6 @@ function register() {
                     $formRegisterConfirmPassword.removeClass('has-error').addClass('has-success');
                 }
 
-                let $registerName = $('#register-name');
-                let $formRegisterName = $('#form-register-name');
-                let name = $registerName.val();
-                if (!name || name.trim().length < 3 || name.trim().length > 25) {
-                    $formRegisterName.addClass('has-error');
-                    $registerName.focus();
-                    toastr.error('Name length should be between 3 and 25 symbols!');
-                    $btnRegister.removeClass('disabled');
-                    $btnRegister.attr('disabled', false);
-                    return;
-                } else {
-                    $formRegisterName.removeClass('has-error').addClass('has-success');
-                }
-
                 let $registerEmail = $('#register-email');
                 let $formRegisterEmail = $('#form-register-email');
                 let email = $registerEmail.val();
@@ -199,7 +185,6 @@ function register() {
                 let user = {
                     username,
                     password,
-                    name,
                     email,
                     profilePicture: $registerProfilePic.val()
                 };
@@ -209,7 +194,6 @@ function register() {
                         $registerUsername.val('');
                         $registerPassword.val('');
                         $registerConfirmPassword.val('');
-                        $registerName.val('');
                         $registerEmail.val('');
                         $registerProfilePic.val('');
 
@@ -237,4 +221,65 @@ function register() {
         });
 }
 
-export { register, login, logout, profile };
+function updateProfile(params) {
+    let id = params.id;
+    let data = {};
+
+    authService.getById(id)
+        .then(user => {
+            data.user = user;
+            return compile('auth/edit-profile', user);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            $(() => {
+                let selectOption = data.user.admin || false;
+                $(`option[value='${selectOption}']`).attr('selected', 'selected');
+            });
+
+            let $btnEditUserInfo = $('#btn-edit-profile');
+            $btnEditUserInfo.on('click', () => {
+                let $editUsername = $('#edit-username');
+                let $formEditUsername = $('#form-edit-username');
+                let username = $editUsername.val();
+                if (!username || username.trim().length < 5 || username.trim().length > 15) {
+                    $formEditUsername.addClass('has-error');
+                    $editUsername.focus();
+                    toastr.error('Username length should be between 5 and 15 symbols!');
+                    return;
+                } else {
+                    $formEditUsername.removeClass('has-error').addClass('has-success');
+                }
+
+                let $editEmail = $('#edit-email');
+                let $formEditEmail = $('#form-edit-email');
+                let email = $editEmail.val();
+                if (!email || !validateEmail(email)) {
+                    $formEditEmail.addClass('has-error');
+                    $editEmail.focus();
+                    toastr.error('Please enter a valid E-Mail address!');
+                    return;
+                } else {
+                    $formEditEmail.removeClass('has-error').addClass('has-success');
+                }
+
+                let isAdmin = $('#edit-admin-status').val() == 'true' ? true : false;
+
+                $btnEditUserInfo.attr('disabled', true);
+
+                authService.updateUserInfo(id, username.trim(), email.trim(), isAdmin)
+                    .then(response => {
+                        localStorage.setItem('currentUser', JSON.stringify(response));
+                        toastr.success('User info updated!');
+                        $(location).attr('href', '#!/profile');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        $btnEditUserInfo.attr('disabled', false);
+                        toastr.error('Username already taken!');
+                    });
+            });
+        });
+}
+
+export { register, login, logout, profile, updateProfile };
