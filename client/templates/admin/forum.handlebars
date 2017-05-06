@@ -16,7 +16,63 @@
             </li>
         </ul>
     </div>
+    <div class="row admin-operations">
+        <div class="col-md-5">
+            <input type="text" id="admin-forum-search" placeholder="Search thread titles..." class="form-control">
+        </div>
+        <div class="col-md-5">
+            <select name="orderBy" class="form-control" id="admin-forum-status">
+                <option value="date">Order by activity</option>
+                <option value="status">Order by status</option>
+                <option value="category">Order by category</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <a href="#!/forum/create" class="btn btn-success pull-right">Create a new Thread</a>
+        </div>
+    </div>
     <div class="row">
-        <a href="#!/admin/forum/create-category" class="btn btn-success">Create a new Category</a>
+        <hr />
+        <table class="table table-responsive table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Last activity</th>
+                    <th>Status</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each threads}}
+                <tr id="{{_id}}">
+                    <td>
+                        <a class="admin-news-title" href="#!/forum/details/{{_id}}">
+                            <h5>{{title}}</h5>
+                        </a>
+                    </td>
+                    <td>{{author.username}}</td>
+                    <td>{{category}}</td>
+                    <td>{{#date lastPostCreatedOn}}{{/date}}</td>
+                    <td>{{#if isDeleted}}Flagged as deleted{{else}}Active{{/if}}</td>
+                    <td class=text-center><a href="#!/forum/edit/{{_id}}" class="btn btn-danger btn-black btn-xs">Edit</a></td>
+                    <td class=text-center><button onclick="return confirm('Are ypu sure you want to permanently delete this thread?')" class="btn btn-danger btn-black btn-xs btn-forum-delete-premanently">Remove</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <div class="pager">
+            <ul class="pagination">
+                {{#paginate pagination type="previous"}}
+                <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/forum/news?page={{n}}&query={{../query}}&sort={{../sort}}">«</a></li>
+                {{/paginate}} {{#paginate pagination type="middle" limit="5"}}
+                <li {{#if active}}class="active disabled-link" {{/if}}><a href="#!/admin/forum?page={{n}}&query={{../query}}&sort={{../sort}}">{{n}}</a></li>
+                {{/paginate}} {{#paginate pagination type="next"}}
+                <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/admin/forum?page={{n}}&query={{../query}}&sort={{../sort}}">»</a></li>
+                {{/paginate}}
+            </ul>
+        </div>
     </div>
 </div>

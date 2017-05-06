@@ -19,4 +19,18 @@ function createNewCategory(title, description, linkName, imageUrl) {
     return requester.postJSON('/api/forum/create-category', body);
 }
 
-export { getAllNews, deltePermanentlyNewsEntry, createNewCategory };
+function getAllThreads(page, query, sort) {
+    return requester.getJSON(`/api/forum/get-all-admin/${page}/${query}/${sort}`);
+}
+
+function deleteThreadPermanently(id) {
+    return requester.deleteJSON(`/api/forum/delete-thread/${id}`);
+}
+
+export {
+    getAllNews,
+    deltePermanentlyNewsEntry,
+    createNewCategory,
+    getAllThreads,
+    deleteThreadPermanently
+};

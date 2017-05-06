@@ -356,6 +356,27 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        getAllThreadsAdmin(req, res) {
+            let token = req.headers.authorization;
+            let page = +req.params.page;
+            let query = req.params.query == '!-!' ? '' : req.params.query;
+            let sort = req.params.sort;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.getAllThreadsAdmin(page, query, sort);
+                })
+                .then(result => {
+                    return res.status(200).json(result);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

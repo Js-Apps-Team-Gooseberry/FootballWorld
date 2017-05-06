@@ -90,9 +90,78 @@ function getUsersPage() {
         .then(html => $mainContainer.html(html));
 }
 
-function getForumPage() {
-    compile('admin/forum')
-        .then(html => $mainContainer.html(html));
+function getForumPage(params, query) {
+    if (!isAdmin()) {
+        toastr.error('Unauthorized!');
+        $(location).attr('href', '#!/home');
+        return;
+    }
+
+    let queryDictionary = {};
+    if (query) {
+        let queryArr = query.split('&').map(x => x.trim()).filter(x => x != '');
+        for (let queryPair of queryArr) {
+            let key = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[0];
+            let value = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[1];
+            queryDictionary[key] = value;
+        }
+    }
+
+    let page = +queryDictionary.page || 1;
+    let searchQuery = queryDictionary.query || '!-!';
+    let sort = queryDictionary.sort || 'date';
+
+    adminService.getAllThreads(page, searchQuery, sort)
+        .then((data) => {
+            data.query = searchQuery;
+            data.sort = sort;
+            data.pagination = {
+                pageCount: data.pagesCount,
+                page
+            };
+            
+            return compile('admin/forum', data);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $forumSearch = $('#admin-forum-search');
+            $forumSearch.on('change', () => {
+                $(location).attr('href', `#!/admin/forum?query=${$forumSearch.val()}&sort=${sort}`);
+            });
+            let queryVal = searchQuery != '!-!' ? searchQuery : '';
+            $forumSearch.val(queryVal);
+
+            const $forumStatus = $('#admin-forum-status');
+            $forumStatus.on('change', () => {
+                $(location).attr('href', `#!/admin/forum?query=${queryVal}&sort=${$forumStatus.val()}`); //[0].selectedOptions[0].value}`);
+            });
+
+            $(`option[value='${sort}']`).attr('selected', 'selected');
+
+            $('.btn-forum-delete-premanently').on('click', (ev) => {
+                if (ev.isDefaultPrevented()) {
+                    return;
+                }
+
+                $(ev.target).addClass('disabled');
+                $(ev.target).attr('disabled', true);
+
+                let id = $(ev.target).parent().parent().attr('id');
+                adminService.deleteThreadPermanently(id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('Thread permanently deleted!');
+                        $(`#${id}`).remove();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+
+                        $(ev.target).removeClass('disabled');
+                        $(ev.target).attr('disabled', false);
+                    });
+            });
+        });
 }
 
 function getCreateCategoryPage() {

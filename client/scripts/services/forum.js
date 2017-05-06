@@ -48,6 +48,10 @@ function flagThreadAsDeleted(id) {
     return requester.putJSON(`/api/forum/flag-delete/${id}`);
 }
 
+function flagThreadAsActive(id) {
+    return requester.putJSON(`/api/forum/flag-active/${id}`);
+}
+
 function editPost(threadId, postId, content) {
     let body = {
         content
@@ -83,6 +87,7 @@ export {
     createNewPost,
     editThread,
     flagThreadAsDeleted,
+    flagThreadAsActive,
     editPost,
     deletePost,
     toggleLikePost,

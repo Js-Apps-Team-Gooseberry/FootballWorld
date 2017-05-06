@@ -510,6 +510,25 @@ function getEditThreadPage(params) {
                         $btnEditThread.attr('diasabled', false);
                     });
             });
+
+            let $btnRestore = $('#btn-restore-thread');
+            $btnRestore.on('click', () => {
+                $btnRestore.addClass('disabled');
+                $btnRestore.attr('disabled', true);
+
+                forumService.flagThreadAsActive(params.id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('Thread restored');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+
+                        $btnRestore.removeClass('disabled');
+                        $btnRestore.attr('disabled', false);
+                    });
+            });
         })
         .catch(error => {
             console.log(error);
