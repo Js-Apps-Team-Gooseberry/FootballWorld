@@ -381,4 +381,31 @@ function changePassword() {
         });
 }
 
-export { register, login, logout, profile, updateProfile, changePassword };
+function previewProfile(params) {
+    let username = params.username;
+
+    authService.getByUsername(username)
+        .then(user => {
+            compile('auth/preview-profile', user)
+                .then(html => $mainContainer.html(html));
+        })
+        .catch(error => {
+            if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            }
+        });
+}
+
+export {
+    register,
+    login,
+    logout,
+    profile,
+    previewProfile,
+    updateProfile,
+    changePassword
+};

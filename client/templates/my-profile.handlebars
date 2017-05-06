@@ -5,11 +5,12 @@
                 <img src="{{profilePicture}}" class="img-circle profile-picture" alt="{{username}}">
             </div>
             <div class="panel panel-default panel-profile">
-                <h1 class="text-center">Welcome, {{username}}!</h1>
+                <h2 class="text-center">Welcome, {{username}}!</h2>
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <a href="#!/update-profile/{{_id}}" class="btn btn-block btn-success">Update Profile Info</a>
-                        <a href="#!/change-password" class="btn btn-block btn-success">Change Password</a>
+                    <div class="col-md-8 col-md-offset-2 profile-options">
+                        <a href="#!/update-profile/{{_id}}" class="btn btn-block btn-success btn-black">Update Profile Info</a>
+                        <a href="#!/change-password" class="btn btn-block btn-success btn-black">Change Password</a>
+                        <a href="#!/profile/{{username}}" class="btn btn-block btn-success btn-black">Preview Profile</a>
                     </div>
                 </div>
             </div>

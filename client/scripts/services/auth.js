@@ -40,6 +40,10 @@ function changePassword(id, oldPassword, newPassword) {
     return requester.putJSON(`/api/auth/change-password/${id}`, body);
 }
 
+function getByUsername(username) {
+    return requester.getJSON(`/api/auth/get-by-username/${username}`);
+}
+
 export {
     register,
     login,
@@ -47,5 +51,6 @@ export {
     updateUserInfo,
     blockUser,
     unblockUser,
-    changePassword
+    changePassword,
+    getByUsername
 };

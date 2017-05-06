@@ -253,6 +253,22 @@ module.exports = (data) => {
 
                     return res.status(500).json(error);
                 });
+        },
+        getUserByCredentials(req, res) {
+            let username = req.params.username;
+
+            data.findUserByCredentials(username)
+                .then(user => {
+                    let clonedUser = cloneUser(user);
+                    return res.status(200).json(clonedUser);
+                })
+                .catch(error => {
+                    if (error.message == 'Cannot convert undefined or null to object') {
+                        return res.status(404).json('Not found!');
+                    }
+
+                    return res.status(500).json(error);
+                });
         }
     };
 };

@@ -3,6 +3,7 @@
 module.exports = (models) => {
     const Thread = models.Thread,
         Post = models.Post,
+        User = models.User,
         Category = models.ForumCategory,
         pageCalculator = require('../utils/page-calculator');
 
@@ -135,6 +136,11 @@ module.exports = (models) => {
 
                             category.posts += 1;
                             category.save();
+                        });
+
+                        User.findOne({ _id: userId }, (error, user) => {
+                            user.forumPosts += 1;
+                            user.save();
                         });
 
                         return resolve(success);
@@ -304,6 +310,11 @@ module.exports = (models) => {
                         Category.findOne({ linkName: thread.category }, (error, category) => {
                             category.posts -= 1;
                             category.save();
+                        });
+
+                        User.findOne({ _id: post.author.userId }, (error, user) => {
+                            user.forumPosts -= 1;
+                            user.save();
                         });
 
                         return resolve(result);

@@ -13,6 +13,7 @@ router
     .on('/register', controllers.auth.register)
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
+    .on('/profile/:username', controllers.auth.previewProfile)    
     .on('/profile', controllers.auth.profile)
     .on('/change-password', controllers.auth.changePassword)
     .on('/update-profile/:id', controllers.auth.updateProfile)

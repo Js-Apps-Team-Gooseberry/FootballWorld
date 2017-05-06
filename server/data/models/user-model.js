@@ -23,6 +23,10 @@ let userSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    forumPosts: {
+        type: Number,
+        default: 0
+    },
     isDeleted: Boolean,
     admin: Boolean
 });
