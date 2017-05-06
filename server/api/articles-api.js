@@ -13,6 +13,7 @@ module.exports = function (app, data) {
         .put('/edit-article/:id', controllers.editArticle)
         .put('/flag-delete/:id', controllers.flagArticleAsDeleted)
         .put('/flag-active/:id', controllers.flagArticleAsActive)
+        .get('/get-all-admin/:page/:query/:sort', controllers.getAllArticlesAdmin)
         .delete('/delete-comment', controllers.deleteComment)
         .delete('/delete-article/:id', controllers.permanentlyDeleteArticle);
 

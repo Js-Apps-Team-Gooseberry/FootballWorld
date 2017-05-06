@@ -35,6 +35,14 @@ function deleteUser(id) {
     return requester.deleteJSON(`/api/auth/delete-user/${id}`);
 }
 
+function getAllArticles(page, query, sort) {
+    return requester.getJSON(`/api/articles/get-all-admin/${page}/${query}/${sort}`);
+}
+
+function deleteArticlePermanently(id) {
+    return requester.deleteJSON(`/api/articles/delete-article/${id}`);
+}
+
 export {
     getAllNews,
     deltePermanentlyNewsEntry,
@@ -42,5 +50,7 @@ export {
     getAllThreads,
     deleteThreadPermanently,
     getAllUsers,
-    deleteUser
+    deleteUser,
+    deleteArticlePermanently,
+    getAllArticles
 };

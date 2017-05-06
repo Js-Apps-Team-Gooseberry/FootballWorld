@@ -148,7 +148,7 @@ module.exports = (data) => {
             let lineupsA = req.body.lineupsA;
             let lineupsB = req.body.lineupsB;
             let injuredA = req.body.injuredA;
-            let injuredB = req. body.injuredB;
+            let injuredB = req.body.injuredB;
 
             routeGuards.isAdmin(token)
                 .catch(error => {
@@ -160,6 +160,27 @@ module.exports = (data) => {
                 })
                 .then(response => {
                     return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        getAllArticlesAdmin(req, res) {
+            let token = req.headers.authorization;
+            let page = +req.params.page;
+            let query = req.params.query == '!-!' ? '' : req.params.query;
+            let sort = req.params.sort;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json(error);
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.getAllArticlesAdmin(page, query, sort);
+                })
+                .then(articles => {
+                    return res.status(200).json(articles);
                 })
                 .catch(error => {
                     return res.status(500).json(error);

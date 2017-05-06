@@ -192,6 +192,38 @@ module.exports = (models) => {
                     });
                 });
             });
+        },
+        getAllArticlesAdmin(page, query, sort) {
+            let pageSize = 10;
+
+            let sortMethod = sort == 'status' ? { isDeleted: -1, createdOn: -1 } : { createdOn: -1 };
+            let queryObj = query.trim() ? { title: { '$regex': query.trim(), '$options': 'i' } } : {};
+
+            return new Promise((resolve, reject) => {
+                Article.find(queryObj)
+                    .sort(sortMethod)
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec((error, articles) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        Article.count(queryObj, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let news = {
+                                articles,
+                                pagesCount
+                            };
+
+                            return resolve(news);
+                        });
+                    });
+            });
         }
     };
 };
