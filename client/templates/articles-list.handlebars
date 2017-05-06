@@ -14,8 +14,7 @@
 				<div class="article col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<article class="article-entry panel">
 						<div class="img-container">
-							<img class="img-responsive" alt=""
-								 src="{{imageUrl}}">
+							<img class="img-responsive" alt="" src="{{imageUrl}}">
 						</div>
 						<div class="article-list-content">
 							<h3>{{title}}</h3>
@@ -25,7 +24,7 @@
 							<div class="article-create-time text-right col-xs-12">
 								<span>created on {{#date createdOn}}{{/date}}</span>
 								<br>
-								<span>by Admin</span>
+								<span>by {{user.name}}</span>
 							</div>
 						</div>
 					</article>

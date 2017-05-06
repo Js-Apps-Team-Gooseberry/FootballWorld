@@ -118,18 +118,6 @@ nav a {
     padding-top: 15px;
 }
 
-.article-details-createOn h3 {
-    color: #666666;
-    font-weight: bold;
-    font-size: 1.7rem;
-    font-style: italic;
-}
-
-.article-details-createOn p {
-    color: #a3a3a3;
-    font-style: italic;
-}
-
 .article-details-aside {
     background-color: #eaeaea;
     border-radius: 10px;

@@ -45,4 +45,13 @@ function commentArticle(articleId, userId, commentContent) {
     return requester.postJSON('/api/articles/comment', body);
 }
 
-export { createNewArticle, getNotDeletedArticlesByPage, getArticleById, commentArticle }
+function deleteComment(articleId, commentId) {
+    let body = {
+        articleId,
+        commentId
+    };
+
+    return requester.deleteJSON('/api/articles/delete-comment', body);
+}
+
+export {createNewArticle, getNotDeletedArticlesByPage, getArticleById, commentArticle, deleteComment}

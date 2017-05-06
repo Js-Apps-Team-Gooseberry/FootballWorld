@@ -2,6 +2,7 @@ import {compile} from 'templates-compiler';
 import $ from 'jquery';
 import * as articlesService from 'articles-service';
 import * as toastr from 'toastr';
+import { isLoggedIn } from 'utils';
 
 const $mainContainer = $('#main-container');
 
@@ -69,6 +70,26 @@ function getArticleById(params) {
         })
         .then(html => $mainContainer.html(html))
         .then(() => {
+            $('html, body').animate({
+                scrollTop: $('body').offset().top
+            }, 500);
+
+            facebookShareButton();
+
+            const $articleCommentContent = $('#article-comment-content'),
+                $btnArticleComment = $('#btn-article-comment');
+
+            deleteArticleComment(data);
+
+            $articleCommentContent.on('focus', () => {
+                $btnArticleComment.removeClass('hidden');
+            });
+
+            $('#btn-comments-scroll').on('click', () => {
+                $('html, body').animate({
+                    scrollTop: $('#articles-comment-box').offset().top
+                }, 1000);
+            });
 
             getArticleComment(data);
         })
@@ -82,9 +103,14 @@ function getArticleComment(data) {
     const $articleCommentContent = $('#article-comment-content'),
         $btnArticleComment = $('#btn-article-comment'),
         $articleCommentForm = $('#article-comment-form'),
-        $articleCommentBox = $('#article-comment-box');
+        $articleCommentBox = $('#articles-comment-box');
 
     $btnArticleComment.on('click', () => {
+        if (!isLoggedIn()) {
+            toastr.error('You need to be logged in to comment!');
+            return;
+        }
+
         if ($articleCommentContent.val().length < 3 || $articleCommentContent.val().length > 500) {
             toastr.error('The comments\' length must be between 3 and 500 symbols!');
             $articleCommentForm.addClass('has-error');
@@ -135,6 +161,39 @@ function getArticleComment(data) {
                 $btnArticleComment.attr('disabled', false);
             });
     })
+}
+
+function deleteArticleComment(data) {
+    const $articleCommentBox = $('#articles-comment-box');
+
+    $articleCommentBox.on('click', '.btn-article-delete-comment', ev =>{
+        if (ev.isDefaultPrevented()) {
+            return;
+        }
+        let commentId = $(ev.target).parent().parent().attr('id');
+
+        articlesService.deleteComment(data.articles._id, commentId)
+            .then(() => {
+                toastr.success('Comment successfully deleted!');
+                $(`#${commentId}`).remove();
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error('An error occurred!');
+            });
+    })
+}
+
+function facebookShareButton() {
+    let $btnFacebookShare = $('#btn-facebook-share');
+    $btnFacebookShare.click((ev) => {
+        ev.preventDefault();
+        window.open(
+            $btnFacebookShare.attr('href'),
+            'popupWindow',
+            'width=600,height=600'
+        );
+    });
 }
 
 function getCreateArticlePage() {
