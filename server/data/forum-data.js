@@ -76,6 +76,10 @@ module.exports = (models) => {
                         return reject(error);
                     }
 
+                    if (!thread) {
+                        return resolve();
+                    }
+
                     thread.views += 1;
                     thread.save();
 

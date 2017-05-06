@@ -175,11 +175,10 @@ nav a {
     padding: 5px 0 5px 0;
 }
 
-
 .banner-articles {
     padding: 0;
-    margin-top: -15px;}
-
+    margin-top: -15px;
+}
 
 .news-entry {
     cursor: pointer;
@@ -475,14 +474,11 @@ nav a {
 
 .like-icons {
     font-size: 2rem;
+    padding: 12px 10px 0 0;
 }
 
 .thread-title {
     margin-top: 10px;
-}
-
-.like-icons {
-    padding-top: 12px;
 }
 
 .post-picture-hr {
@@ -513,6 +509,7 @@ nav a {
 
 .post-content {
     padding: 15px 10px 0 0;
+    word-break: break-word;
 }
 
 .post-avatar {
@@ -555,6 +552,7 @@ nav a {
 }
 
 #new-post-reveal {
+    padding-left: 0;
     margin-right: -15px;
 }
 
@@ -602,7 +600,7 @@ nav a {
 }
 
 .thread-container {
-    margin-bottom: 50px;
+    margin-bottom: 60px;
 }
 
 .btn-new-thread-bottom {
@@ -613,4 +611,20 @@ nav a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.forum-post-options {
+    margin-left: 15px;
+}
+
+.no-padding-left {
+    padding-left: 0;
+}
+
+.category-container {
+    margin-bottom: 60px;
+}
+
+.thread-content-placeholder {
+    word-break: break-word;
 }

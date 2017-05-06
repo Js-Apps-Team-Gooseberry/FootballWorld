@@ -10,7 +10,7 @@ function getMainPage() {
     forumService.getCategories()
         .then(categories => {
             return compile('forum/main', categories);
-        })    
+        })
         .then(html => $mainContainer.html(html));
 }
 
@@ -177,6 +177,16 @@ function getThread(params) {
             _bindCreateNewPostEvent(id, data.pagination.pageCount);
         })
         .catch(error => {
+            if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+                return;
+            } else if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+                return;
+            }
+
             console.log(error);
             toastr.error('An error occured!');
             $(location).attr('href', '#!/forum');

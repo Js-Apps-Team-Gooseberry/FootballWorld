@@ -1,13 +1,13 @@
 <div class="container-fluid banner">
     <img src="/public/assets/banner-forum.png" alt="forum-tsar-football" class="img-responsive">
 </div>
-<div class="container">
+<div class="container forum-container">
     {{#each this}}
     <a class="forum-link" href="#!/forum/{{linkName}}">
         <div class="forum-section panel panel-default row">
             <div class="col-md-2 forum-main-image" style="background-image: url('{{imageUrl}}');">
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 forum-main-description">
                 <h3>{{title}}</h3>
                 <p class="small italic">{{description}}</p>
             </div>
@@ -20,7 +20,7 @@
                 <p class="no-margin-bottom">Start a discussion now!</p>
                 {{/if}}
             </div>
-            <div class="col-md-2 forum-stats italic">
+            <div class="col-md-2 forum-stats forum-views italic">
                 <p class="text-center">{{threads}} Threads</p>
                 <p class="text-center">{{posts}} posts</p>
             </div>

@@ -1,25 +1,25 @@
 <div class="container-fluid banner">
     <img src="/public/assets/banner-forum.png" alt="forum-tsar-football" class="img-responsive">
 </div>
-<div class="container">
+<div class="container category-container">
     {{#each threads}}
     <a class="forum-link" href="#!/forum/details/{{_id}}">
         <div class="forum-section panel panel-default row">
             <div class="col-md-2 forum-main-image" style="background-image: url('{{imageUrl}}');">
             </div>
-            <div class="col-md-5">
-                <h3 class="threads-list-title">{{title}}</h3>
+            <div class="col-md-5 forum-main-description">
+                <h3 class="threads-list-title ellipsis">{{title}}</h3>
                 <p class="small italic list-threads-content">{{content}}</p>
             </div>
             <div class="col-md-3 forum-stats forum-last-post italic">
-                <p>Thread created on {{#date createdOn}}{{/date}}</p>
+                <p class="thread-date ellipsis">Thread created on {{#date createdOn}}{{/date}}</p>
                 {{#if posts.length}}
-                <p class="no-margin-bottom small">Last post on: {{#date lastPostCreatedOn}}{{/date}} by {{lastPost.author}}</p>
+                <p class="no-margin-bottom ellipsis small">Last post on: {{#date lastPostCreatedOn}}{{/date}} by {{lastPost.author}}</p>
                 {{else}}
                 <p class="no-margin-bottom">No posts yet...</p>
                 {{/if}}
             </div>
-            <div class="col-md-2 forum-stats italic">
+            <div class="col-md-2 forum-stats forum-views italic">
                 <p class="text-center">{{views}} Views</p>
                 <p class="text-center">{{posts.length}} Posts</p>
             </div>
@@ -46,7 +46,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-3 text-right">
+        <div class="col-md-3 text-right no-padding-left">
             {{#if user}}
             <div class="btn-new-thread-bottom">
                 <a href="#!/forum/create" class="btn btn-success">Start a new Discussion</a>

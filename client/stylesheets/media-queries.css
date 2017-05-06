@@ -55,6 +55,38 @@
         vertical-align: top;
         width: 66%;
     }
+    .post-avatar, .post-content, .new-post-col {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .post-avatar {
+        width: 19%;
+    }
+    .post-content, .new-post-col {
+        width: 79%;
+    }
+    .thread-container {
+        margin-top: -15px;
+    }
+    .forum-main-image, .forum-main-description, .forum-last-post, .forum-views {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .forum-main-image {
+        width: 16%;
+    }
+    .forum-main-description {
+        width: 41%;
+    }
+    .forum-last-post {
+        width: 25%;
+    }
+    .forum-views {
+        width: 16%;
+    }
+    .thread-date {
+        font-size: smaller;
+    }
 }
 
 @media only screen and (max-width: 720px) {
@@ -64,17 +96,67 @@
     .comment-avatar {
         padding: 0 5px;
     }
+    .forum-section, .forum-link:hover .forum-section {
+        border-right: 1px solid lightgrey;
+    }
+    #new-post-reveal {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .forum-main-image, .forum-main-description {
+        display: block;
+        width: 100%;
+    }
+    .btn-new-thread-bottom {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .forum-main-image {
+        height: 200px;
+        background-size: 700px;
+    }
+    .forum-views {
+        width: initial;
+    }
+    .forum-last-post {
+        width: 79%;
+    }
+    .forum-views {
+        float: right;
+        padding-left: 0;
+        font-size: smaller;
+    }
+    .category-container {
+        margin-top: -21px;
+    }
+    .forum-stats {
+        margin-top: 0;
+    }
+    .forum-container {
+        margin-top: -21px;
+    }
+    .forum-section {
+        border: none;
+        border-top: 1px solid lightgrey;
+        border-bottom: 1px solid lightgrey;
+    }
 }
 
 @media only screen and (max-width: 650px) {
     .comment-avatar {
         padding: 10px 5px;
     }
+    .forum-main-image {
+        background-size: 650px;
+    }
 }
 
 @media only screen and (max-width: 600px) {
     .home-loader-title {
         font-size: 5rem;
+    }
+    .forum-main-image {
+        background-size: 600px;
     }
 }
 
@@ -93,9 +175,11 @@
         width: 100%;
         background-size: 600px;
     }
-
     .news-entry, .news-entry:hover {
         border: 1px solid lightgrey;
+    }
+    .forum-main-image {
+        background-size: 550px;
     }
 }
 
@@ -124,6 +208,9 @@
         vertical-align: top;
     }
     .news-entry-image, .news-entry-info {
+        background-size: 450px;
+    }
+    .forum-main-image {
         background-size: 450px;
     }
 }
