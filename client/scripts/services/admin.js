@@ -27,10 +27,20 @@ function deleteThreadPermanently(id) {
     return requester.deleteJSON(`/api/forum/delete-thread/${id}`);
 }
 
+function getAllUsers(page, query, sort) {
+    return requester.getJSON(`/api/auth/get-all/${page}/${query}/${sort}`);
+}
+
+function deleteUser(id) {
+    return requester.deleteJSON(`/api/auth/delete-user/${id}`);
+}
+
 export {
     getAllNews,
     deltePermanentlyNewsEntry,
     createNewCategory,
     getAllThreads,
-    deleteThreadPermanently
+    deleteThreadPermanently,
+    getAllUsers,
+    deleteUser
 };

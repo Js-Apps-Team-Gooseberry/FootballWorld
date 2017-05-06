@@ -144,6 +144,89 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        blockUser(req, res) {
+            let token = req.headers.authorization;
+            let userId = req.params.id;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json(error);
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.blockUser(userId);
+                })
+                .then(user => {
+                    let clonedUser = cloneUser(user);
+                    return res.status(200).json(clonedUser);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        unblockUser(req, res) {
+            let token = req.headers.authorization;
+            let userId = req.params.id;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json(error);
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.unblockUser(userId);
+                })
+                .then(user => {
+                    let clonedUser = cloneUser(user);
+                    return res.status(200).json(clonedUser);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        getAllUsers(req, res) {
+            let token = req.headers.authorization;
+            let page = +req.params.page;
+            let query = req.params.query == '!-!' ? '' : req.params.query;
+            let sort = req.params.sort;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.getAllUsers(page, query, sort);
+                })
+                .then(response => {
+                    console.log(response);
+                    response.users = response.users.map(cloneUser);
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                    return res.status(500).json(error);
+                });
+        },
+        deleteUser(req, res) {
+            let token = req.headers.authorization;
+            let targetId = req.params.id;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.deleteUser(targetId);
+                })
+                .then(response => {
+                    return res.status(200).json(`User ${response.username} removed permanently!`);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

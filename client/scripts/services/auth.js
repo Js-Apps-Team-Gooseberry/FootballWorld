@@ -22,4 +22,19 @@ function updateUserInfo(id, username, email, isAdmin) {
     return requester.putJSON(`/api/auth/update-user-info/${id}`, body);
 }
 
-export { register, login, getById, updateUserInfo };
+function blockUser(id) {
+    return requester.putJSON(`/api/auth/block-user/${id}`);
+}
+
+function unblockUser(id) {
+    return requester.putJSON(`/api/auth/unblock-user/${id}`);
+}
+
+export {
+    register,
+    login,
+    getById,
+    updateUserInfo,
+    blockUser,
+    unblockUser
+};

@@ -628,3 +628,7 @@ nav a {
 .thread-content-placeholder {
     word-break: break-word;
 }
+
+.search-select-options {
+    margin-top: 22px;
+}

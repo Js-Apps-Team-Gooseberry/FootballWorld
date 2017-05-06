@@ -224,11 +224,13 @@ function register() {
 function updateProfile(params) {
     let id = params.id;
     let data = {};
+    let operatingUser = JSON.parse(localStorage.getItem('currentUser'));
 
     authService.getById(id)
         .then(user => {
             data.user = user;
-            return compile('auth/edit-profile', user);
+            data.operatingUser = operatingUser;
+            return compile('auth/edit-profile', data);
         })
         .then(html => $mainContainer.html(html))
         .then(() => {
@@ -269,7 +271,10 @@ function updateProfile(params) {
 
                 authService.updateUserInfo(id, username.trim(), email.trim(), isAdmin)
                     .then(response => {
-                        localStorage.setItem('currentUser', JSON.stringify(response));
+                        if (operatingUser._id == data.user._id) {
+                            localStorage.setItem('currentUser', JSON.stringify(response));
+                        }
+
                         toastr.success('User info updated!');
                         $(location).attr('href', '#!/profile');
                     })
@@ -277,6 +282,38 @@ function updateProfile(params) {
                         console.log(error);
                         $btnEditUserInfo.attr('disabled', false);
                         toastr.error('Username already taken!');
+                    });
+            });
+
+            let $btnBlockUser = $('#btn-block-user');
+            $btnBlockUser.on('click', () => {
+                $btnBlockUser.attr('disabled', true);
+
+                authService.blockUser(data.user._id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('User blocked!');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+                        $btnBlockUser.attr('disabled', false);
+                    });
+            });
+
+            let $btnUnblockUser = $('#btn-unblock-user');
+            $btnUnblockUser.on('click', () => {
+                $btnUnblockUser.attr('disabled', true);
+
+                authService.unblockUser(data.user._id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('User blocked!');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+                        $btnUnblockUser.attr('disabled', false);
                     });
             });
         });

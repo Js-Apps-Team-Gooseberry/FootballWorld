@@ -7,15 +7,15 @@
                         <h2 class="text-center">Edit User Info</h2>
                         <hr />
                         <div id="form-edit-username" class="form-group">
-                            <input type="text" placeholder="Username" value="{{username}}" id="edit-username" class="form-control">
+                            <input type="text" placeholder="Username" value="{{user.username}}" id="edit-username" class="form-control">
                         </div>
                         <div id="form-edit-email" class="form-group">
-                            <input type="text" placeholder="E-Mail" value="{{email}}" id="edit-email" class="form-control">
+                            <input type="text" placeholder="E-Mail" value="{{user.email}}" id="edit-email" class="form-control">
                         </div>
                         <div id="form-edit-profile-pic" class="form-group">
                             <input type="text" placeholder="Profile Picture URL (Leave empty to use default)" id="edit-profile-picture" class="form-control">
                         </div>
-                        {{#if admin}}
+                        {{#if operatingUser.admin}}
                         <div id="form-edit-admin-status" class="form-group">
                             <select name="edit-admin-status" id="edit-admin-status" class="form-control">
                                 <option value="false">Regular User</option>
@@ -25,6 +25,13 @@
                         {{/if}}
                         <div class="text-center">
                             <button id="btn-edit-profile" type="button" class="btn btn-success">Submit</button>
+                            {{#if operatingUser.admin}}
+                                {{#if user.isDeleted}}
+                                <button id="btn-unblock-user" type="button" class="btn btn-danger btn-black">Restore</button>                                
+                                {{else}}
+                                <button id="btn-block-user" type="button" class="btn btn-danger btn-black">Block</button>
+                                {{/if}}
+                            {{/if}}
                         </div>
                     </div>
                 </div>
