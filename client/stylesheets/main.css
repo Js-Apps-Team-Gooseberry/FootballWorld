@@ -632,3 +632,12 @@ nav a {
 .search-select-options {
     margin-top: 22px;
 }
+
+.profile-picture {
+    max-width: 200px;
+}
+
+.panel-profile {
+    margin-top: -18%;
+    padding-top: 18%;
+}

@@ -320,4 +320,65 @@ function updateProfile(params) {
         });
 }
 
-export { register, login, logout, profile, updateProfile };
+function changePassword() {
+    if (!isLoggedIn()) {
+        toastr.error('You are not authorized to do that!');
+        $(location).attr('href', '#!/home');
+        return;
+    }
+
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+
+    compile('auth/change-password')
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $btnChangePassword = $('#btn-change-password'),
+                $oldPassword = $('#old-password'),
+                $newPassword = $('#new-password'),
+                $confirmNewPassword = $('#confirm-new-password'),
+                $formNewPassword = $('#form-new-password'),
+                $formConfirmNewPassword = $('#form-confirm-new-password');
+
+            $btnChangePassword.on('click', () => {
+                if (!$newPassword.val() || $newPassword.val().trim().length < 6 || $newPassword.val().trim().length > 15) {
+                    $formNewPassword.addClass('has-error');
+                    $newPassword.focus();
+                    toastr.error('Pasword length should be between 6 and 15 symbols!');
+                    return;
+                } else {
+                    $formNewPassword.removeClass('has-error').addClass('has-success');
+                }
+
+                if (!$confirmNewPassword.val() || $newPassword.val().trim() != $confirmNewPassword.val().trim()) {
+                    $formNewPassword.addClass('has-error');
+                    $formConfirmNewPassword.addClass('has-error');
+                    $confirmNewPassword.focus();
+                    toastr.error('Paswords don\'t match!');
+                    return;
+                } else {
+                    $formNewPassword.removeClass('has-error').addClass('has-success');
+                    $formConfirmNewPassword.removeClass('has-error').addClass('has-success');
+                }
+
+                $btnChangePassword.attr('disabled', true);
+
+                authService.changePassword(user._id, $oldPassword.val(), $newPassword.val())
+                    .then(() => {
+                        toastr.success('Password successfully changed!');
+                        $(location).attr('href', '#!/profile');
+                    })
+                    .catch(error => {
+                        if (error.status == 400) {
+                            toastr.error('Invalid old password!');
+                            $btnChangePassword.attr('disabled', false);
+                            return;
+                        }
+                        console.log(error);
+                        toastr.error('An error occured!');
+                        $btnChangePassword.attr('disabled', false);
+                    });
+            });
+        });
+}
+
+export { register, login, logout, profile, updateProfile, changePassword };

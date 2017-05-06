@@ -31,11 +31,21 @@ function unblockUser(id) {
     return requester.putJSON(`/api/auth/unblock-user/${id}`);
 }
 
+function changePassword(id, oldPassword, newPassword) {
+    let body = {
+        oldPassword,
+        newPassword
+    };
+
+    return requester.putJSON(`/api/auth/change-password/${id}`, body);
+}
+
 export {
     register,
     login,
     getById,
     updateUserInfo,
     blockUser,
-    unblockUser
+    unblockUser,
+    changePassword
 };

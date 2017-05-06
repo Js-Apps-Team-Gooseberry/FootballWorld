@@ -168,6 +168,28 @@ module.exports = (models) => {
                     return resolve(result);
                 });
             });
+        },
+        changePassword(userId, oldPassword, newPassword) {
+            return new Promise((resolve, reject) => {
+                User.findOne({ _id: userId }, (error, user) => {
+                    if (error) {
+                        return reject(error);
+                    } else if (!user.authenticate(oldPassword)) {
+                        return reject(new Error('Invalid old password!'));
+                    }
+
+                    let passHash = encryptor.generateHashedPassword(user.salt, newPassword);
+
+                    user.passHash = passHash;
+                    user.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve(result);
+                    });
+                });
+            });
         }
     };
 };

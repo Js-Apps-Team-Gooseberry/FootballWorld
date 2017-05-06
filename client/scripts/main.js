@@ -14,6 +14,7 @@ router
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
     .on('/profile', controllers.auth.profile)
+    .on('/change-password', controllers.auth.changePassword)
     .on('/update-profile/:id', controllers.auth.updateProfile)
     .on('/admin/news', controllers.admin.getNewsPage)
     .on('/admin/articles', controllers.admin.getArticlesPage)

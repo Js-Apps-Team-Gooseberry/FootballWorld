@@ -13,6 +13,7 @@ module.exports = function (app, data) {
         .put('/block-user/:id', controllers.blockUser)
         .put('/unblock-user/:id', controllers.unblockUser)
         .put('/update-user-info/:id', controllers.updateUserInfo)
+        .put('/change-password/:id', controllers.changePassword)
         .put('/login', controllers.login);
 
     app.use('/api/auth', router);

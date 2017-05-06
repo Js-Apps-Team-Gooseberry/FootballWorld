@@ -1,2 +1,18 @@
-<h4 class="text-center">Welcome, {{username}}!</h4>
-<a href="#!/update-profile/{{_id}}" class="btn btn-succes">Update Profile Info</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="row text-center">
+                <img src="{{profilePicture}}" class="img-circle profile-picture" alt="{{username}}">
+            </div>
+            <div class="panel panel-default panel-profile">
+                <h1 class="text-center">Welcome, {{username}}!</h1>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <a href="#!/update-profile/{{_id}}" class="btn btn-block btn-success">Update Profile Info</a>
+                        <a href="#!/change-password" class="btn btn-block btn-success">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

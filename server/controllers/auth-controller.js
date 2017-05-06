@@ -111,7 +111,7 @@ module.exports = (data) => {
         },
         updateUserInfo(req, res) {
             let id = req.params.id;
-            let username = req.body.username;            
+            let username = req.body.username;
             let profilePicture = req.body.profilePicture;
             let email = req.body.email;
             let isAdmin = req.body.isAdmin;
@@ -223,6 +223,34 @@ module.exports = (data) => {
                     return res.status(200).json(`User ${response.username} removed permanently!`);
                 })
                 .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        changePassword(req, res) {
+            let id = req.params.id;
+            let oldPassword = req.body.oldPassword;
+            let newPassword = req.body.newPassword;
+
+            data.getUserById(id)
+                .then(user => {
+                    let token = req.headers.authorization;
+                    return routeGuards.isAuthorized(token, user._id);
+                })
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.changePassword(id, oldPassword, newPassword);
+                })
+                .then(response => {
+                    res.status(200).json('Password changed!');
+                })
+                .catch(error => {
+                    if (error.message == 'Invalid old password!') {
+                        return res.status(400).json(error.message);
+                    }
+
                     return res.status(500).json(error);
                 });
         }
