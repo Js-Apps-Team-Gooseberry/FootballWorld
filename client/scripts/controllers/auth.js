@@ -266,10 +266,11 @@ function updateProfile(params) {
                 }
 
                 let isAdmin = $('#edit-admin-status').val() == 'true' ? true : false;
+                let profilePicture = $('#edit-profile-picture').val().trim();
 
                 $btnEditUserInfo.attr('disabled', true);
 
-                authService.updateUserInfo(id, username.trim(), email.trim(), isAdmin)
+                authService.updateUserInfo(id, username.trim(), profilePicture, email.trim(), isAdmin)
                     .then(response => {
                         if (operatingUser._id == data.user._id) {
                             localStorage.setItem('currentUser', JSON.stringify(response));

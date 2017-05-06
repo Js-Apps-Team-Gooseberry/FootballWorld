@@ -12,9 +12,10 @@ function getById(id) {
     return requester.getJSON(`/api/auth/get-by-id/${id}`);
 }
 
-function updateUserInfo(id, username, email, isAdmin) {
+function updateUserInfo(id, username, profilePicture, email, isAdmin) {
     let body = {
         username,
+        profilePicture,
         email,
         isAdmin
     };

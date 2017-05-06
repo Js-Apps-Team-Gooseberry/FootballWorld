@@ -69,15 +69,18 @@ module.exports = (models) => {
                 });
             });
         },
-        updateUserInfo(userId, username, email, isAdmin) {
+        updateUserInfo(userId, username, profilePicture, email, isAdmin) {
             return new Promise((resolve, reject) => {
                 User.findOne({ _id: userId }, (error, user) => {
                     if (error) {
                         return reject(error);
                     }
 
+                    profilePicture = profilePicture || '/public/assets/default-user-photo.png';
+
                     user.username = username;
                     user.email = email;
+                    user.profilePicture = profilePicture;
                     user.admin = isAdmin;
                     user.save((error, result) => {
                         if (error) {

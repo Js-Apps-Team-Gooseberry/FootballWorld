@@ -124,6 +124,74 @@ module.exports = (models) => {
                     });
                 });
             });
+        },
+        flagArticleAsDeleted(articleId) {
+            return new Promise((resolve, reject) => {
+                Article.update({ _id: articleId }, { $set: { isDeleted: true } }, (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(result);
+                });
+            });
+        },
+        flagArticleAsActive(articleId) {
+            return new Promise((resolve, reject) => {
+                Article.update({ _id: articleId }, { $set: { isDeleted: false } }, (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(result);
+                });
+            });
+        },
+        permanentlyDeleteArticle(articleId) {
+            return new Promise((resolve, reject) => {
+                Article.findOneAndRemove({ _id: articleId }, (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    return resolve(result);
+                });
+            });
+        },
+        editArticle(articleId, title, imageUrl, content, matchPrediction, sideA, sideB, lineupsAStr, lineupsBStr, injuredAStr, injuredBStr) {
+            return new Promise((resolve, reject) => {
+                let lineupsA = lineupsAStr.split(',').map(x => x.trim()).filter(x => x != '');
+                let lineupsB = lineupsBStr.split(',').map(x => x.trim()).filter(x => x != '');
+                let injuredA = injuredAStr.split(',').map(x => x.trim()).filter(x => x != '');
+                let injuredB = injuredBStr.split(',').map(x => x.trim()).filter(x => x != '');
+                let tags = [sideA, sideB];
+
+                Article.findOne({ _id: articleId }, (error, article) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    article.title = title;
+                    article.imageUrl = imageUrl;
+                    article.content = content;
+                    article.matchPrediction = matchPrediction;
+                    article.sideA = sideA;
+                    article.sideB = sideB;
+                    article.lineupsA = lineupsA;
+                    article.lineupsB = lineupsB;
+                    article.injuredA = injuredA;
+                    article.injuredB = injuredB;
+                    article.tags = tags;
+
+                    article.save((error, result) => {
+                        if (error) {
+                            return reject(error);
+
+                        }
+                        return resolve(result);
+                    });
+                });
+            });
         }
     };
 };

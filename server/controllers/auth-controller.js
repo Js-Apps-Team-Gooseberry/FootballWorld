@@ -106,13 +106,13 @@ module.exports = (data) => {
                     return res.status(200).json(clonedUser);
                 })
                 .catch(error => {
-                    console.log(error);
                     return res.status(500).json(error);
                 });
         },
         updateUserInfo(req, res) {
             let id = req.params.id;
-            let username = req.body.username;
+            let username = req.body.username;            
+            let profilePicture = req.body.profilePicture;
             let email = req.body.email;
             let isAdmin = req.body.isAdmin;
 
@@ -135,7 +135,7 @@ module.exports = (data) => {
                         isAdmin = false;
                     }
 
-                    return data.updateUserInfo(id, username, email, isAdmin);
+                    return data.updateUserInfo(id, username, profilePicture, email, isAdmin);
                 })
                 .then(response => {
                     let clonedUser = cloneUser(response);
@@ -200,12 +200,10 @@ module.exports = (data) => {
                     return data.getAllUsers(page, query, sort);
                 })
                 .then(response => {
-                    console.log(response);
                     response.users = response.users.map(cloneUser);
                     return res.status(200).json(response);
                 })
                 .catch(error => {
-                    console.log(error);
                     return res.status(500).json(error);
                 });
         },
