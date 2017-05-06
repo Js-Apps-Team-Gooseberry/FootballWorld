@@ -3,6 +3,8 @@
 module.exports = (models) => {
     const Thread = models.Thread,
         Post = models.Post,
+        User = models.User,
+        Category = models.ForumCategory,
         pageCalculator = require('../utils/page-calculator');
 
     return {
@@ -22,6 +24,17 @@ module.exports = (models) => {
                     if (error) {
                         return reject(error);
                     }
+
+                    Category.findOne({ linkName: category }, (error, category) => {
+                        category.lastPost = {
+                            author: author.username,
+                            createdOn: new Date(),
+                            thread: title
+                        };
+
+                        category.threads += 1;
+                        category.save();
+                    });
 
                     return resolve(dbThread);
                 });
@@ -64,6 +77,10 @@ module.exports = (models) => {
                         return reject(error);
                     }
 
+                    if (!thread) {
+                        return resolve();
+                    }
+
                     thread.views += 1;
                     thread.save();
 
@@ -100,10 +117,31 @@ module.exports = (models) => {
                     }
 
                     thread.posts.push(post);
+
+                    thread.lastPost.author = post.author.username;
+                    thread.lastPost.userId = post.author.userId;
+                    thread.lastPostCreatedOn = post.createdOn;
+
                     thread.save((error, success) => {
                         if (error) {
                             return reject(error);
                         }
+
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            category.lastPost = {
+                                author: author.username,
+                                createdOn: new Date(),
+                                thread: thread.title
+                            };
+
+                            category.posts += 1;
+                            category.save();
+                        });
+
+                        User.findOne({ _id: userId }, (error, user) => {
+                            user.forumPosts += 1;
+                            user.save();
+                        });
 
                         return resolve(success);
                     });
@@ -139,34 +177,71 @@ module.exports = (models) => {
         },
         flagThreadAsDeleted(threadId) {
             return new Promise((resolve, reject) => {
-                Thread.update({ _id: threadId }, { $set: { isDeleted: true } }, (error, result) => {
+                Thread.findOne({ _id: threadId }, (error, thread) => {
                     if (error) {
+                        console.log(error);
                         return reject(error);
                     }
 
-                    return resolve(result);
+                    thread.isDeleted = true;
+                    thread.save((error, success) => {
+                        if (error) {
+                            console.log(error);
+                            return reject(error);
+                        }
+                        console.log('here');
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            console.log(error);
+                            category.threads -= 1;
+                            category.posts -= thread.posts.length;
+                            category.save();
+                        });
+
+                        return resolve(success);
+                    });
                 });
             });
         },
         flagThreadAsActive(threadId) {
             return new Promise((resolve, reject) => {
-                Thread.update({ _id: threadId }, { $set: { isDeleted: false } }, (error, result) => {
+                Thread.findOne({ _id: threadId }, (error, thread) => {
                     if (error) {
                         return reject(error);
                     }
 
-                    return resolve(result);
+                    thread.isDeleted = false;
+                    thread.save((error, success) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            category.threads += 1;
+                            category.posts += thread.posts.length;
+                            category.save();
+                        });
+
+                        return resolve(success);
+                    });
                 });
             });
         },
         deleteThread(threadId) {
             return new Promise((resolve, reject) => {
-                Thread.findOneAndRemove({ _id: threadId }, (error, result) => {
+                Thread.findOneAndRemove({ _id: threadId }, (error, thread) => {
                     if (error) {
                         return reject(error);
                     }
 
-                    return resolve(result);
+                    if (!thread.isDeleted) {
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            category.threads -= 1;
+                            category.posts -= thread.posts.length;
+                            category.save();
+                        });
+                    }
+
+                    return resolve(thread);
                 });
             });
         },
@@ -217,10 +292,30 @@ module.exports = (models) => {
                     let index = thread.posts.indexOf(post);
                     thread.posts.splice(index, 1);
 
+                    if (thread.posts.length) {
+                        let lastPost = thread.posts[thread.posts.length - 1];
+                        thread.lastPost.author = lastPost.author.username;
+                        thread.lastPost.userId = lastPost.author.userId;
+                        thread.lastPostCreatedOn = lastPost.createdOn;
+                    } else {
+                        thread.lastPost = null;
+                        thread.lastPostCreatedOn = thread.createdOn;
+                    }
+
                     thread.save((error, result) => {
                         if (error) {
                             return reject(error);
                         }
+
+                        Category.findOne({ linkName: thread.category }, (error, category) => {
+                            category.posts -= 1;
+                            category.save();
+                        });
+
+                        User.findOne({ _id: post.author.userId }, (error, user) => {
+                            user.forumPosts -= 1;
+                            user.save();
+                        });
 
                         return resolve(result);
                     });
@@ -363,6 +458,38 @@ module.exports = (models) => {
                         return resolve(post);
                     });
                 });
+            });
+        },
+        getAllThreadsAdmin(page, query, sort) {
+            let pageSize = 10;
+
+            let sortMethod = sort == 'status' ? { isDeleted: -1, lastPostCreatedOn: -1 } : sort == 'category' ? { category: 1, lastPostCreatedOn: -1, } : { lastPostCreatedOn: -1 };
+            let queryObj = query.trim() ? { title: { '$regex': query.trim(), '$options': 'i' } } : {};
+
+            return new Promise((resolve, reject) => {
+                Thread.find(queryObj)
+                    .sort(sortMethod)
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec((error, threads) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        Thread.count(queryObj, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let result = {
+                                threads,
+                                pagesCount
+                            };
+
+                            return resolve(result);
+                        });
+                    });
             });
         }
     };

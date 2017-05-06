@@ -28,6 +28,10 @@ function createNewPost(id, content) {
     return requester.postJSON(`/api/forum/create-post/${id}`, body);
 }
 
+function getCategories() {
+    return requester.getJSON('/api/forum/get-all-categories');
+}
+
 function editThread(id, title, content, imageUrl, category, tags) {
     let body = {
         title,
@@ -42,6 +46,10 @@ function editThread(id, title, content, imageUrl, category, tags) {
 
 function flagThreadAsDeleted(id) {
     return requester.putJSON(`/api/forum/flag-delete/${id}`);
+}
+
+function flagThreadAsActive(id) {
+    return requester.putJSON(`/api/forum/flag-active/${id}`);
 }
 
 function editPost(threadId, postId, content) {
@@ -79,10 +87,12 @@ export {
     createNewPost,
     editThread,
     flagThreadAsDeleted,
+    flagThreadAsActive,
     editPost,
     deletePost,
     toggleLikePost,
     toggleDislikePost,
     toggleLikeThread,
-    toggleDislikeThread
+    toggleDislikeThread,
+    getCategories
 };

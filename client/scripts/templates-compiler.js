@@ -18,8 +18,8 @@ Handlebars.registerHelper('commentsCount', comments => {
     }
 });
 
-Handlebars.registerHelper('deleteCommentBtn', (user, commentAuthorId, options) => {
-    if ((user && user._id == commentAuthorId) || (user && user.admin)) {
+Handlebars.registerHelper('isAuthorized', (user, authorId, options) => {
+    if ((user && user._id == authorId) || (user && user.admin)) {
         return options.fn(this);
     } else {
         return options.inverse(this);

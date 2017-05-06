@@ -1,41 +1,58 @@
-<div class="container">
-    <div class="row">
-        <h1>{{category}}</h1>
-        <hr />
-    </div>
+<div class="container-fluid banner">
+    <img src="/public/assets/banner-forum.png" alt="forum-tsar-football" class="img-responsive">
+</div>
+<div class="container category-container">
     {{#each threads}}
     <a class="forum-link" href="#!/forum/details/{{_id}}">
         <div class="forum-section panel panel-default row">
             <div class="col-md-2 forum-main-image" style="background-image: url('{{imageUrl}}');">
             </div>
-            <div class="col-md-5">
-                <h3 class="threads-list-title">{{title}}</h3>
+            <div class="col-md-5 forum-main-description">
+                <h3 class="threads-list-title ellipsis">{{title}}</h3>
                 <p class="small italic list-threads-content">{{content}}</p>
             </div>
             <div class="col-md-3 forum-stats forum-last-post italic">
-                <p>Thread created on {{#date createdOn}}{{/date}}</p>
+                <p class="thread-date ellipsis">Thread created on {{#date createdOn}}{{/date}}</p>
                 {{#if posts.length}}
-                <p class="no-margin-bottom">Last post on: {{#date lastPostCreatedOn}}{{/date}} by {{lastPost.author}}</p>
+                <p class="no-margin-bottom ellipsis small">Last post on: {{#date lastPostCreatedOn}}{{/date}} by {{lastPost.author}}</p>
                 {{else}}
                 <p class="no-margin-bottom">No posts yet...</p>
                 {{/if}}
             </div>
-            <div class="col-md-2 forum-stats italic">
+            <div class="col-md-2 forum-stats forum-views italic">
                 <p class="text-center">{{views}} Views</p>
                 <p class="text-center">{{posts.length}} Posts</p>
             </div>
         </div>
     </a>
-    {{/each}}
-    <div class="pager">
-        <ul class="pagination">
-            {{#paginate pagination type="previous"}}
-            <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/forum/{{../category}}/{{n}}">«</a></li>
-            {{/paginate}} {{#paginate pagination type="middle" limit="5"}}
-            <li {{#if active}}class="active disabled-link" {{/if}}><a href="#!/forum/{{../category}}/{{n}}">{{n}}</a></li>
-            {{/paginate}} {{#paginate pagination type="next"}}
-            <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/forum/{{../category}}/{{n}}">»</a></li>
-            {{/paginate}}
-        </ul>
+    {{/each}} {{#unless threads}}
+    <h2 class="no-threads-heading text-center">No threads in this section yet...</h2>
+    {{#if user}}
+    <div class="text-center">
+        <a href="#!/forum/create" class="btn btn-success">Start a Discussion</a>
     </div>
+    {{/if}} {{/unless}} {{#if threads}}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="pager pager-forum-thread">
+                <ul class="pagination">
+                    {{#paginate pagination type="previous"}}
+                    <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/forum/{{../category}}/{{n}}">«</a></li>
+                    {{/paginate}} {{#paginate pagination type="middle" limit="5"}}
+                    <li {{#if active}}class="active disabled-link" {{/if}}><a href="#!/forum/{{../category}}/{{n}}">{{n}}</a></li>
+                    {{/paginate}} {{#paginate pagination type="next"}}
+                    <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/forum/{{../category}}/{{n}}">»</a></li>
+                    {{/paginate}}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3 text-right no-padding-left">
+            {{#if user}}
+            <div class="btn-new-thread-bottom">
+                <a href="#!/forum/create" class="btn btn-success">Start a new Discussion</a>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+    {{/if}}
 </div>

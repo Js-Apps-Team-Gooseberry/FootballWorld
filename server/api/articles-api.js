@@ -10,7 +10,12 @@ module.exports = function (app, data) {
         .post('/get-all-not-deleted-articles', controllers.getNotDeletedArticlesByPage)
         .post('/get-by-id', controllers.getArticleById)
         .post('/comment', controllers.commentArticle)
-        .delete('/delete-comment', controllers.deleteComment);
+        .put('/edit-article/:id', controllers.editArticle)
+        .put('/flag-delete/:id', controllers.flagArticleAsDeleted)
+        .put('/flag-active/:id', controllers.flagArticleAsActive)
+        .get('/get-all-admin/:page/:query/:sort', controllers.getAllArticlesAdmin)
+        .delete('/delete-comment', controllers.deleteComment)
+        .delete('/delete-article/:id', controllers.permanentlyDeleteArticle);
 
     app.use('/api/articles', router);
 };

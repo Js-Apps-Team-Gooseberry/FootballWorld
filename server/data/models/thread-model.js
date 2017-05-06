@@ -65,8 +65,7 @@ let threadSchema = new Schema({
     },
     lastPost: {
         author: String,
-        userId: String,
-        userAvatar: String
+        userId: String
     },
     lastPostCreatedOn: {
         type: Date

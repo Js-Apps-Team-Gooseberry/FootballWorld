@@ -12,7 +12,7 @@ module.exports = (data) => {
                     const user = decoded._doc;
                     data.findUserById(user._id)
                         .then((resUser) => {
-                            if (resUser && resUser.admin) {
+                            if (resUser && !resUser.isDeleted && resUser.admin) {
                                 return resolve(resUser);
                             }
 
@@ -33,7 +33,7 @@ module.exports = (data) => {
                     const user = decoded._doc;
                     data.findUserById(user._id)
                         .then((resUser) => {
-                            if (resUser && (resUser.admin || resUser._id.toString() == targetUserId.toString())) {
+                            if (resUser && !resUser.isDeleted && (resUser.admin || resUser._id.toString() == targetUserId.toString())) {
                                 return resolve(resUser);
                             }
 
@@ -54,7 +54,7 @@ module.exports = (data) => {
                     const user = decoded._doc;
                     data.findUserById(user._id)
                         .then((resUser) => {
-                            if (resUser) {
+                            if (resUser && !resUser.isDeleted) {
                                 return resolve(resUser);
                             }
 

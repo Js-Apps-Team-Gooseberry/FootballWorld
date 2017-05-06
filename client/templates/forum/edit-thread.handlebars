@@ -29,6 +29,9 @@
                     </div>
                     <div class="text-center">
                         <button id="btn-thread-edit" type="button" class="btn btn-success">Submit</button>
+                        {{#if isDeleted}}
+                        <button id="btn-restore-thread" type="button" class="btn btn-danger btn-black">Restore</button>
+                        {{/if}}
                     </div>
                 </div>
             </div>

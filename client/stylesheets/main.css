@@ -375,9 +375,10 @@ nav a {
     pointer-events: none;
 }
 
-.banner-news {
+.banner {
     padding: 0;
     margin-top: -15px;
+    margin-bottom: 20px;
 }
 
 .navbar-brand {
@@ -461,14 +462,11 @@ nav a {
 
 .like-icons {
     font-size: 2rem;
+    padding: 12px 10px 0 0;
 }
 
 .thread-title {
     margin-top: 10px;
-}
-
-.like-icons {
-    padding-top: 12px;
 }
 
 .post-picture-hr {
@@ -499,6 +497,7 @@ nav a {
 
 .post-content {
     padding: 15px 10px 0 0;
+    word-break: break-word;
 }
 
 .post-avatar {
@@ -512,6 +511,7 @@ nav a {
 .img-thread-header {
     margin-top: 15px;
     border-radius: 3%;
+    cursor: pointer;
 }
 
 .new-post-col {
@@ -540,5 +540,106 @@ nav a {
 }
 
 #new-post-reveal {
+    padding-left: 0;
     margin-right: -15px;
+}
+
+.pager-forum-thread {
+    margin: 0;
+}
+
+.pager-forum-thread ul {
+    margin: 5px 0 0 0;
+}
+
+.no-threads-heading {
+    font-family: Charlemagne;
+}
+
+.modal-img-articles {
+    width: 100%;
+}
+
+.icon-close {
+    color: white;
+    position: absolute;
+    top: 1.5%;
+    right: 1%;
+    font-size: 2.5rem;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.modal-dialog {
+    width: 80%;
+}
+
+.modal-content {
+    border: 2px solid white;
+    border-radius: 1%;
+}
+
+.modal-content img {
+    border-radius: 1%;
+}
+
+.thread-container {
+    margin-bottom: 60px;
+}
+
+.btn-new-thread-bottom {
+    margin: 0 -15px 0 0;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.forum-post-options {
+    margin-left: 15px;
+}
+
+.no-padding-left {
+    padding-left: 0;
+}
+
+.category-container {
+    margin-bottom: 60px;
+}
+
+.thread-content-placeholder {
+    word-break: break-word;
+}
+
+.search-select-options {
+    margin-top: 22px;
+}
+
+.profile-picture {
+    max-width: 200px;
+}
+
+.panel-profile {
+    margin-top: -18%;
+    padding-top: 18%;
+}
+
+.panel-profile {
+    padding-bottom: 20px;
+    border: 1px solid grey;
+    border-bottom: 3px solid black;
+}
+
+.profile-options a {
+    margin-top: 18px;
+}
+
+.profile-picture {
+    border: 1px solid grey;
 }

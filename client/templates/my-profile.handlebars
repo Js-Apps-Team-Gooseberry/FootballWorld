@@ -1,1 +1,19 @@
-<h4 class="text-center">Welcome, {{username}}!</h4>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="row text-center">
+                <img src="{{profilePicture}}" class="img-circle profile-picture" alt="{{username}}">
+            </div>
+            <div class="panel panel-default panel-profile">
+                <h2 class="text-center">Welcome, {{username}}!</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 profile-options">
+                        <a href="#!/update-profile/{{_id}}" class="btn btn-block btn-success btn-black">Update Profile Info</a>
+                        <a href="#!/change-password" class="btn btn-block btn-success btn-black">Change Password</a>
+                        <a href="#!/profile/{{username}}" class="btn btn-block btn-success btn-black">Preview Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

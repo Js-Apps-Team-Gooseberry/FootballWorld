@@ -75,7 +75,7 @@ function comment(newsEntryId, userId, commentContent) {
         userId,
         commentContent
     };
-
+    
     return requester.postJSON('/api/news/comment', body);
 }
 

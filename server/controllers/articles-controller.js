@@ -1,6 +1,8 @@
-/* globals module */
+/* globals module require */
 
 module.exports = (data) => {
+    const routeGuards = require('../utils/route-guards')(data);
+
     return {
         createNewArticle(req, res) {
             let title = req.body.title;
@@ -72,6 +74,113 @@ module.exports = (data) => {
             data.deleteArticleComment(articleId, commentId)
                 .then(response => {
                     return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        flagArticleAsDeleted(req, res) {
+            let token = req.headers.authorization;
+            let id = req.params.id;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.flagArticleAsDeleted(id);
+                })
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        flagArticleAsActive(req, res) {
+            let token = req.headers.authorization;
+            let id = req.params.id;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.flagArticleAsActive(id);
+                })
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        permanentlyDeleteArticle(req, res) {
+            let token = req.headers.authorization;
+            let id = req.params.id;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.permanentlyDeleteArticle(id);
+                })
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        editArticle(req, res) {
+            let token = req.headers.authorization;
+            let id = req.params.id;
+            let title = req.body.title;
+            let imageUrl = req.body.imageUrl;
+            let content = req.body.content;
+            let matchPrediction = req.body.matchPrediction;
+            let sideA = req.body.sideA;
+            let sideB = req.body.sideB;
+            let lineupsA = req.body.lineupsA;
+            let lineupsB = req.body.lineupsB;
+            let injuredA = req.body.injuredA;
+            let injuredB = req.body.injuredB;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.editArticle(id, title, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB);
+                })
+                .then(response => {
+                    return res.status(200).json(response);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
+        },
+        getAllArticlesAdmin(req, res) {
+            let token = req.headers.authorization;
+            let page = +req.params.page;
+            let query = req.params.query == '!-!' ? '' : req.params.query;
+            let sort = req.params.sort;
+
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json(error);
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.getAllArticlesAdmin(page, query, sort);
+                })
+                .then(articles => {
+                    return res.status(200).json(articles);
                 })
                 .catch(error => {
                     return res.status(500).json(error);

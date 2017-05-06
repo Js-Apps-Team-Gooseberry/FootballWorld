@@ -166,20 +166,6 @@ function register() {
                     $formRegisterConfirmPassword.removeClass('has-error').addClass('has-success');
                 }
 
-                let $registerName = $('#register-name');
-                let $formRegisterName = $('#form-register-name');
-                let name = $registerName.val();
-                if (!name || name.trim().length < 3 || name.trim().length > 25) {
-                    $formRegisterName.addClass('has-error');
-                    $registerName.focus();
-                    toastr.error('Name length should be between 3 and 25 symbols!');
-                    $btnRegister.removeClass('disabled');
-                    $btnRegister.attr('disabled', false);
-                    return;
-                } else {
-                    $formRegisterName.removeClass('has-error').addClass('has-success');
-                }
-
                 let $registerEmail = $('#register-email');
                 let $formRegisterEmail = $('#form-register-email');
                 let email = $registerEmail.val();
@@ -199,7 +185,6 @@ function register() {
                 let user = {
                     username,
                     password,
-                    name,
                     email,
                     profilePicture: $registerProfilePic.val()
                 };
@@ -209,7 +194,6 @@ function register() {
                         $registerUsername.val('');
                         $registerPassword.val('');
                         $registerConfirmPassword.val('');
-                        $registerName.val('');
                         $registerEmail.val('');
                         $registerProfilePic.val('');
 
@@ -237,4 +221,191 @@ function register() {
         });
 }
 
-export { register, login, logout, profile };
+function updateProfile(params) {
+    let id = params.id;
+    let data = {};
+    let operatingUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    authService.getById(id)
+        .then(user => {
+            data.user = user;
+            data.operatingUser = operatingUser;
+            return compile('auth/edit-profile', data);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            $(() => {
+                let selectOption = data.user.admin || false;
+                $(`option[value='${selectOption}']`).attr('selected', 'selected');
+            });
+
+            let $btnEditUserInfo = $('#btn-edit-profile');
+            $btnEditUserInfo.on('click', () => {
+                let $editUsername = $('#edit-username');
+                let $formEditUsername = $('#form-edit-username');
+                let username = $editUsername.val();
+                if (!username || username.trim().length < 5 || username.trim().length > 15) {
+                    $formEditUsername.addClass('has-error');
+                    $editUsername.focus();
+                    toastr.error('Username length should be between 5 and 15 symbols!');
+                    return;
+                } else {
+                    $formEditUsername.removeClass('has-error').addClass('has-success');
+                }
+
+                let $editEmail = $('#edit-email');
+                let $formEditEmail = $('#form-edit-email');
+                let email = $editEmail.val();
+                if (!email || !validateEmail(email)) {
+                    $formEditEmail.addClass('has-error');
+                    $editEmail.focus();
+                    toastr.error('Please enter a valid E-Mail address!');
+                    return;
+                } else {
+                    $formEditEmail.removeClass('has-error').addClass('has-success');
+                }
+
+                let isAdmin = $('#edit-admin-status').val() == 'true' ? true : false;
+                let profilePicture = $('#edit-profile-picture').val().trim();
+
+                $btnEditUserInfo.attr('disabled', true);
+
+                authService.updateUserInfo(id, username.trim(), profilePicture, email.trim(), isAdmin)
+                    .then(response => {
+                        if (operatingUser._id == data.user._id) {
+                            localStorage.setItem('currentUser', JSON.stringify(response));
+                        }
+
+                        toastr.success('User info updated!');
+                        $(location).attr('href', '#!/profile');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        $btnEditUserInfo.attr('disabled', false);
+                        toastr.error('Username already taken!');
+                    });
+            });
+
+            let $btnBlockUser = $('#btn-block-user');
+            $btnBlockUser.on('click', () => {
+                $btnBlockUser.attr('disabled', true);
+
+                authService.blockUser(data.user._id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('User blocked!');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+                        $btnBlockUser.attr('disabled', false);
+                    });
+            });
+
+            let $btnUnblockUser = $('#btn-unblock-user');
+            $btnUnblockUser.on('click', () => {
+                $btnUnblockUser.attr('disabled', true);
+
+                authService.unblockUser(data.user._id)
+                    .then(response => {
+                        console.log(response);
+                        toastr.success('User blocked!');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        toastr.error('An error occured!');
+                        $btnUnblockUser.attr('disabled', false);
+                    });
+            });
+        });
+}
+
+function changePassword() {
+    if (!isLoggedIn()) {
+        toastr.error('You are not authorized to do that!');
+        $(location).attr('href', '#!/home');
+        return;
+    }
+
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+
+    compile('auth/change-password')
+        .then(html => $mainContainer.html(html))
+        .then(() => {
+            const $btnChangePassword = $('#btn-change-password'),
+                $oldPassword = $('#old-password'),
+                $newPassword = $('#new-password'),
+                $confirmNewPassword = $('#confirm-new-password'),
+                $formNewPassword = $('#form-new-password'),
+                $formConfirmNewPassword = $('#form-confirm-new-password');
+
+            $btnChangePassword.on('click', () => {
+                if (!$newPassword.val() || $newPassword.val().trim().length < 6 || $newPassword.val().trim().length > 15) {
+                    $formNewPassword.addClass('has-error');
+                    $newPassword.focus();
+                    toastr.error('Pasword length should be between 6 and 15 symbols!');
+                    return;
+                } else {
+                    $formNewPassword.removeClass('has-error').addClass('has-success');
+                }
+
+                if (!$confirmNewPassword.val() || $newPassword.val().trim() != $confirmNewPassword.val().trim()) {
+                    $formNewPassword.addClass('has-error');
+                    $formConfirmNewPassword.addClass('has-error');
+                    $confirmNewPassword.focus();
+                    toastr.error('Paswords don\'t match!');
+                    return;
+                } else {
+                    $formNewPassword.removeClass('has-error').addClass('has-success');
+                    $formConfirmNewPassword.removeClass('has-error').addClass('has-success');
+                }
+
+                $btnChangePassword.attr('disabled', true);
+
+                authService.changePassword(user._id, $oldPassword.val(), $newPassword.val())
+                    .then(() => {
+                        toastr.success('Password successfully changed!');
+                        $(location).attr('href', '#!/profile');
+                    })
+                    .catch(error => {
+                        if (error.status == 400) {
+                            toastr.error('Invalid old password!');
+                            $btnChangePassword.attr('disabled', false);
+                            return;
+                        }
+                        console.log(error);
+                        toastr.error('An error occured!');
+                        $btnChangePassword.attr('disabled', false);
+                    });
+            });
+        });
+}
+
+function previewProfile(params) {
+    let username = params.username;
+
+    authService.getByUsername(username)
+        .then(user => {
+            compile('auth/preview-profile', user)
+                .then(html => $mainContainer.html(html));
+        })
+        .catch(error => {
+            if (error.status == 404) {
+                compile('errors/not-found')
+                    .then(html => $mainContainer.html(html));
+            } else if (error.status == 500) {
+                compile('errors/server-error')
+                    .then(html => $mainContainer.html(html));
+            }
+        });
+}
+
+export {
+    register,
+    login,
+    logout,
+    profile,
+    previewProfile,
+    updateProfile,
+    changePassword
+};

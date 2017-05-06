@@ -11,9 +11,64 @@
             <li role="presentation" class="active">
                 <a href="#!/admin/users" class="tab-admin">Users</a>
             </li>
+            <li role="presentation">
+                <a href="#!/admin/forum" class="tab-admin">Forum</a>
+            </li>
         </ul>
     </div>
+    <div class="row search-select-options">
+        <div class="col-md-6">
+            <input type="text" id="admin-users-search" placeholder="Search usernames..." class="form-control">
+        </div>
+        <div class="col-md-6">
+            <select name="orderBy" class="form-control" id="admin-users-status">
+                <option value="date">Order by registration date</option>
+                <option value="status">Order by status</option>
+            </select>
+        </div>
+    </div>
     <div class="row">
-        
+        <hr />
+        <table class="table table-responsive table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>E-Mail</th>
+                    <th>Role</th>
+                    <th>Registration Date</th>
+                    <th>Status</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr id="{{_id}}">
+                    <td>
+                        <a class="admin-news-title" href="#!/forum/details/{{_id}}">
+                            <h5>{{username}}</h5>
+                        </a>
+                    </td>
+                    <td>{{email}}</td>
+                    <td>{{#if admin}}Admin{{else}}User{{/if}}</td>
+                    <td>{{#date registeredOn}}{{/date}}</td>
+                    <td>{{#if isDeleted}}Blocked{{else}}Active{{/if}}</td>
+                    <td class=text-center><a href="#!/update-profile/{{_id}}" class="btn btn-danger btn-black btn-xs">Edit</a></td>
+                    <td class=text-center><button onclick="return confirm('Are ypu sure you want to permanently delete this user?')" class="btn btn-danger btn-black btn-xs btn-user-delete-premanently">Remove</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <div class="pager">
+            <ul class="pagination">
+                {{#paginate pagination type="previous"}}
+                <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/admin/users?page={{n}}&query={{../query}}&sort={{../sort}}">«</a></li>
+                {{/paginate}} {{#paginate pagination type="middle" limit="5"}}
+                <li {{#if active}}class="active disabled-link" {{/if}}><a href="#!/admin/users?page={{n}}&query={{../query}}&sort={{../sort}}">{{n}}</a></li>
+                {{/paginate}} {{#paginate pagination type="next"}}
+                <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/admin/users?page={{n}}&query={{../query}}&sort={{../sort}}">»</a></li>
+                {{/paginate}}
+            </ul>
+        </div>
     </div>
 </div>
