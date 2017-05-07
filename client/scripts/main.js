@@ -37,8 +37,8 @@ router
     .on('/forum/:category', controllers.forum.getCategoryPage)
     .on('/forum', controllers.forum.getMainPage)
     .on('/articles/create', controllers.articles.getCreateArticlePage)
-    .on('/articles:page', controllers.articles.getAllArticles)
-    .on('/articles/details:id', controllers.articles.getArticleById)
+    .on('/articles/:page', controllers.articles.getAllArticles)
+    .on('/articles/details/:id', controllers.articles.getArticleById)
     .on('/articles', controllers.articles.getAllArticles)
     .on('*', controllers.home.get)
     .resolve();

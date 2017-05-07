@@ -2,15 +2,10 @@
 	<img src="/public/assets/banner-articles.png" class="img-responsive" alt="banner">
 </div>
 <div class="container">
-	<div class="row hidden">
-		<div class="col-md-4 text-right">
-			<a href="#!/articles/create" class="btn btn-success btn-create">Write a New Article</a>
-		</div>
-	</div>
 	<hr class="no-margin-top">
 	<div class="row">
 		{{#each articles}}
-			<a href="#!/articles/details{{_id}}">
+			<a href="#!/articles/details/{{_id}}">
 				<div class="article col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<article class="article-entry panel">
 						<div class="img-container">
@@ -24,23 +19,23 @@
 							<div class="article-create-time text-right col-xs-12">
 								<span>created on {{#date createdOn}}{{/date}}</span>
 								<br>
-								<span>by {{user.name}}</span>
+								<span>by </span>
 							</div>
 						</div>
 					</article>
 				</div>
 			</a>
 		{{/each}}
-		<div class="pager">
-			<ul class="pagination">
-				{{#paginate pagination type="previous"}}
-					<li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/articles/{{n}}">«</a></li>
-				{{/paginate}} {{#paginate pagination type="middle" limit="5"}}
-				<li {{#if active}}class="active disabled-link" {{/if}}><a href="#!/articles/{{n}}">{{n}}</a></li>
-			{{/paginate}} {{#paginate pagination type="next"}}
-				<li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/articles/{{n}}">»</a></li>
-			{{/paginate}}
-			</ul>
-		</div>
+	</div>
+	<div class="pager">
+		<ul class="pagination">
+			{{#paginate pagination type="previous"}}
+				<li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/articles/{{n}}">«</a></li>
+			{{/paginate}} {{#paginate pagination type="middle" limit="5"}}
+			<li {{#if active}}class="active disabled-link" {{/if}}><a href="#!/articles/{{n}}">{{n}}</a></li>
+		{{/paginate}} {{#paginate pagination type="next"}}
+			<li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/articles/{{n}}">»</a></li>
+		{{/paginate}}
+		</ul>
 	</div>
 </div>

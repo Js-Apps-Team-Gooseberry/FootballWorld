@@ -2,7 +2,7 @@ import {compile} from 'templates-compiler';
 import $ from 'jquery';
 import * as articlesService from 'articles-service';
 import * as toastr from 'toastr';
-import { isLoggedIn } from 'utils';
+import { isAdmin, isLoggedIn } from 'utils';
 
 const $mainContainer = $('#main-container');
 

@@ -94,6 +94,7 @@ nav a {
     overflow: hidden;
     height: 10rem;
     line-height: 2rem;
+    word-break: break-word;
 }
 
 .article-entry:hover .img-container img {
@@ -120,8 +121,19 @@ nav a {
     width: 100%;
 }
 
+.article-header {
+    padding: 0 15px;
+    margin: 0;
+}
+
+.article-header h1 {
+    border-left: 3px solid black;
+    padding-left: 1%;
+    margin: 0;
+}
+
 .article-details-title {
-    font-style: italic;
+    font-size: 4.5rem;
     font-weight: bold;
 }
 
@@ -136,6 +148,7 @@ nav a {
 .article-details-aside {
     background-color: #eaeaea;
     border-radius: 10px;
+    margin-top: 20px;
 }
 
 .article-aside-lineups {
