@@ -648,25 +648,13 @@ nav a {
     color: black;
 }
 
-.league-standings, .league-standings iframe {
-    height: 1050px;
-}
-
-.league-standings  div {
-    display: none;
-}
-
-.header {
-    background: blue !important;
-    background-color: blue !important;
-}
-
 .standings-team-badge {
     height: 15px;
 }
 
-.standings {
-    width: 320px;
+.standings thead {
+    background: #333;
+    color: white;
 }
 
 .no-padding-sides {
@@ -681,4 +669,63 @@ nav a {
 .standings-team-cell {
     width: 90px;
     display: block;
+}
+
+.container-landing-photo {
+    position: absolute;
+    top: 45px;
+    padding: 0;
+    z-index: -1;
+}
+
+.container-landing-page {
+    background-color: white;
+    margin-top: 30%;
+    border: 1px solid lightgrey;
+    box-shadow: 0 0 5px lightgrey;
+    margin-bottom: 60px;
+}
+
+.landing-page-title {
+    font-family: Charlemagne;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.panel-section {
+    border: 1px solid grey;
+    border-bottom: 3px solid #333;
+    cursor: pointer;
+}
+
+.panel-section:hover {
+    border-bottom: 3px solid #43AC6A;
+}
+
+.panel-section img {
+    width: 100%;
+}
+
+th, td {
+    cursor: default;
+}
+
+.landing-page-subtitle {
+    padding: 0 20px;
+}
+
+.landing-page-subtitle h2 {
+    font-family: Charlemagne;
+}
+
+.hr-smaller-margin {
+    margin: 10px 0;
+}
+
+.entry-related {
+    border-right: 3px solid #333;
+}
+
+.entry-related:hover {
+    border-right: 3px solid #43AC6A;
 }

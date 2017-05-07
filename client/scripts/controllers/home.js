@@ -7,7 +7,6 @@ const $mainContainer = $('#main-container');
 function get() {
     statsService.getStandings()
         .then(standings => {
-            console.log(standings);
             return compile('home', standings);
         })    
         .then(html => $mainContainer.html(html));
