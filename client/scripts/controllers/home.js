@@ -3,6 +3,7 @@ import $ from 'jquery';
 import * as statsService from 'stats-service';
 import { getNotDeletedArticlesByPage as getLatestNews } from 'news-service';
 import { getNotDeletedArticlesByPage as getLatestArticles } from 'articles-service';
+import * as toastr from 'toastr';
 
 const $mainContainer = $('#main-container');
 
@@ -20,7 +21,11 @@ function get() {
             
             return compile('home', data);
         })
-        .then(html => $mainContainer.html(html));
+        .then(html => $mainContainer.html(html))
+        .catch(()  => {
+            toastr.error('An error occured! Redirecting to another section...');
+            $(location).attr('href', '#!/news');
+        });
 }
 
 export { get };
