@@ -13,7 +13,7 @@ router
     .on('/register', controllers.auth.register)
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
-    .on('/profile/:username', controllers.auth.previewProfile)    
+    .on('/profile/:username', controllers.auth.previewProfile)
     .on('/profile', controllers.auth.profile)
     .on('/change-password', controllers.auth.changePassword)
     .on('/update-profile/:id', controllers.auth.updateProfile)
@@ -45,4 +45,13 @@ router
 
 $('#navbar-main').on('click', 'ul li a', () => {
     $('#navbar-main').collapse('hide');
+});
+
+$('#btn-facebook-share-site').click((ev) => {
+    ev.preventDefault();
+    window.open(
+        $('#btn-facebook-share-site').attr('href'),
+        'popupWindow',
+        'width=600,height=600'
+    );
 });
