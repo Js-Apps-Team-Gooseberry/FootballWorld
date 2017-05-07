@@ -702,6 +702,7 @@ nav a {
 }
 
 .container-landing-photo {
+    width: 100%;
     position: absolute;
     top: 45px;
     padding: 0;
@@ -712,7 +713,7 @@ nav a {
     background-color: white;
     border: 1px solid lightgrey;
     box-shadow: 0 0 2px lightgrey;
-    margin-bottom: 60px;
+    margin-bottom: 20px;
 }
 
 .title-container {
@@ -798,4 +799,8 @@ th, td {
 
 .standings {
     border: 1px solid lightgrey;
+}
+
+.img-home-page {
+    width: 100%;
 }
