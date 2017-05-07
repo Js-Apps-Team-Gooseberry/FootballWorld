@@ -37,6 +37,9 @@ SystemJS.config({
         'navigo': '/libs/navigo/lib/navigo.js',
         'handlebars': '/libs/handlebars/dist/handlebars.js',
         'handlebars-paginate': '/libs/handlebars-paginate/index.js',
-        'toastr-lib': '/libs/toastr/toastr.js'
+        'toastr-lib': '/libs/toastr/toastr.js',
+        
+        // tests
+        'tests': '/tests/tests.js'
     }
 });

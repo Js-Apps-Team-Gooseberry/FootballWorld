@@ -277,7 +277,7 @@ function updateProfile(params) {
                         }
 
                         toastr.success('User info updated!');
-                        $(location).attr('href', `#!/profile/${data.user.username}`);
+                        $(location).attr('href', `#!/profile/${username.trim()}`);
                     })
                     .catch(error => {
                         console.log(error);
