@@ -1,3 +1,9 @@
+@media only screen and (max-width: 1200px) {
+    .standings-data-cell {
+        padding-left: 0 !important;
+    }
+}
+
 @media only screen and (max-width: 991px) {
     a {
         text-decoration: none !important;
@@ -86,6 +92,13 @@
     }
     .thread-date {
         font-size: smaller;
+    }
+    .home-related-entry {
+        height: 350px;
+        background-size: 800px;
+    }
+    .standings-team-cell {
+        width: initial;
     }
 }
 
@@ -181,11 +194,21 @@
     .forum-main-image {
         background-size: 550px;
     }
+    .home-related-entry {
+        height: 250px;
+        background-size: 500px;
+    }
 }
 
 @media only screen and (max-width: 500px) {
     .news-entry-image, .news-entry-info {
         background-size: 550px;
+    }
+    .landing-page-title {
+        font-size: 4rem;
+    }
+    .title-related-home {
+        font-size: 1.7rem;
     }
 }
 
@@ -212,5 +235,18 @@
     }
     .forum-main-image {
         background-size: 450px;
+    }
+    .home-related-entry {
+        height: 200px;
+        background-size: 400px;
+    }
+    .standings-team-cell {
+        width: 90px;
+    }
+}
+
+@media only screen and (max-width: 335px) {
+    .standings-container {
+        padding-left: 0;
     }
 }

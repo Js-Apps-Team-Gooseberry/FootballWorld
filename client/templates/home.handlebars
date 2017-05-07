@@ -1,76 +1,102 @@
 <div class="container-fluid container-landing-photo">
-    <img src="/public/assets/landing-page.jpg" class="img-responsive" alt="">
+    <img src="/public/assets/landing-page.jpg" class="img-responsive" alt="premier-league">
 </div>
-
+<div class="container-fluid title-container text-center">
+    <h1 class="text-center landing-page-title">Premier League Latest</h1>
+</div>
 <div class="container container-landing-page">
-    <h2 class="text-center landing-page-title">The latest info on your favourite Premier League team</h2>
+    <div class="row div-site-logo text-center">
+        <img src="/public/assets/logo-separator.png" class="logo-home-container" alt="tsar-football">
+    </div>
     <div class="row">
         <div class="col-md-4">
-            <div class="panel panel-default panel-section">
-                <img src="/public/assets/news-section.jpg" class="img-responsive" alt="news">
-                <div class="panel-body">
-                    <h3 class="text-center">News, results, transfer rumors and more</h3>
+            <a class="black-link" href="#!/news">
+                <div class="panel panel-default panel-section">
+                    <img src="/public/assets/news-section.jpg" class="img-responsive" alt="news">
+                    <div class="panel-body">
+                        <h3 class="text-center">News, results, transfer rumors and more</h3>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-default panel-section">
-                <img src="/public/assets/analyses-section.jpg" class="img-responsive" alt="news">
-                <div class="panel-body">
-                    <h3 class="text-center">Analyses and game predictions</h3>
+            <a class="black-link" href="#!/articles">
+                <div class="panel panel-default panel-section">
+                    <img src="/public/assets/analyses-section.jpg" class="img-responsive" alt="news">
+                    <div class="panel-body">
+                        <h3 class="text-center">Analyses and game predictions</h3>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-default panel-section">
-                <img src="/public/assets/forum-section.jpg" class="img-responsive" alt="news">
-                <div class="panel-body">
-                    <h3 class="text-center">Fan zone forum - join in the discussions</h3>
+            <a class="black-link" href="#!/forum">
+                <div class="panel panel-default panel-section">
+                    <img src="/public/assets/forum-section.jpg" class="img-responsive" alt="news">
+                    <div class="panel-body">
+                        <h3 class="text-center">Fan zone forum - join in the discussions</h3>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="row">
         <div class="landing-page-subtitle">
-            <h2>Latest</h2>
             <hr class="hr-smaller-margin" />
         </div>
         <div class="col-md-8">
-            <div class="row panel panel-default entry-related">
-                <div class="col-md-4" class="home-related-entry">
-                    <img src="/public/assets/forum-media.jpg" class="img-responsive" alt="title">
+            <h4 class="aside-title">Latest news</h4>
+            {{#each news}}
+            <a class="black-link" href="#!/news/details/{{_id}}">
+                <div class="row panel panel-default entry-related">
+                    <div class="col-md-4 home-related-entry" style="background-image: url('{{imageUrl}}');">
+                    </div>
+                    <div class="col-md-8">
+                        <h3 class="title-related-home ellipsis">{{title}}</h3>
+                        <p class="italic small">{{#date createdOn}}{{/date}}</p>
+                    </div>
                 </div>
-                <div class="col-md-8">
-                    <h3>Some awesome title for awesome shit.</h3>
-                    <p class="italic">Created on...</p>
+            </a>
+            {{/each}}
+            <h4 class="aside-title aside-title-left">Latest analyses</h4>
+            {{#each articles}}
+            <a class="black-link" href="#!/articles/details/{{_id}}">
+                <div class="row panel panel-default entry-related">
+                    <div class="col-md-4 home-related-entry" style="background-image: url('{{imageUrl}}');">
+                    </div>
+                    <div class="col-md-8">
+                        <h3 class="title-related-home ellipsis">{{title}}</h3>
+                        <p class="italic small">{{#date createdOn}}{{/date}}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
+            {{/each}}
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 standings-container">
             <table class="table table-hover table-responsive standings">
                 <thead>
                     <th></th>
                     <th></th>
                     <th>Team</th>
-                    <th>GP</th>
-                    <th>GD</th>
-                    <th>W</th>
-                    <th>D</th>
-                    <th>L</th>
-                    <th class="text-center">Points</th>
+                    <th class="standings-data-cell">GP</th>
+                    <th class="standings-data-cell">GD</th>
+                    <th class="standings-data-cell">W</th>
+                    <th class="standings-data-cell">D</th>
+                    <th class="standings-data-cell">L</th>
+                    <th class="text-center standings-data-cell">Points</th>
                 </thead>
                 <tbody>
-                    {{#each standing}}
+                    {{#each standings.standing}}
                     <tr>
                         <td class="no-padding-right">{{position}}.</td>
                         <td class="text-center no-padding-sides"><img src="{{crestURI}}" class="standings-team-badge" alt="{{teamName}}"></td>
                         <td class="no-padding-right ellipsis standings-team-cell">{{teamName}}</td>
-                        <td>{{playedGames}}</td>
-                        <td>{{goalDifference}}</td>
-                        <td>{{wins}}</td>
-                        <td>{{draws}}</td>
-                        <td>{{losses}}</td>
-                        <td class="text-center bold">{{points}}</td>
+                        <td class="standings-data-cell">{{playedGames}}</td>
+                        <td class="standings-data-cell">{{goalDifference}}</td>
+                        <td class="standings-data-cell">{{wins}}</td>
+                        <td class="standings-data-cell">{{draws}}</td>
+                        <td class="standings-data-cell">{{losses}}</td>
+                        <td class="text-center bold standings-data-cell">{{points}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
