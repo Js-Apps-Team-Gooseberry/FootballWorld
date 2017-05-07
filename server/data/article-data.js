@@ -8,7 +8,7 @@ module.exports = (models) => {
         Comment = models.Comment;
 
     return {
-        createNewArticle(title, imageUrl, content, matchPrediction, sideA, sideB, lineupsAStr, lineupsBStr, injuredAStr, injuredBStr) {
+        createNewArticle(title, author, imageUrl, content, matchPrediction, sideA, sideB, lineupsAStr, lineupsBStr, injuredAStr, injuredBStr) {
             return new Promise((resolve, reject) => {
                 let createdOn = new Date();
                 let lineupsA = lineupsAStr.split(',').map(x => x.trim()).filter(x => x != '');
@@ -17,7 +17,7 @@ module.exports = (models) => {
                 let injuredB = injuredBStr.split(',').map(x => x.trim()).filter(x => x != '');
                 let tags = [sideA, sideB];
 
-                let newArticle = new Article({ title, imageUrl, content, tags, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, createdOn });
+                let newArticle = new Article({ title, author, imageUrl, content, tags, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, createdOn });
 
                 newArticle.save((error, dbArticle) => {
                     if (error) {

@@ -1,5 +1,6 @@
 <div class="container news-container">
 	<div class="row">
+<<<<<<< HEAD
 		<header class="row article-header">
 			<h1 class="article-details-title">{{articles.title}}</h1>
 			<hr class="no-margin-bottom">
@@ -8,6 +9,37 @@
 					<p class="no-margin-bottom">By </p>
 					<p class="italic small no-margin-bottom">
 						<time>{{#date articles.createdOn}}{{/date}}</time>
+=======
+		<article class="col-md-8">
+				<div>
+					<h1 class="text-center article-details-title">{{articles.sideA}} vs {{articles.sideB}}</h1>
+					<h2 class="bread-word">{{articles.title}}</h2>
+				</div>
+				<hr class="no-margin-bottom">
+				<div class="socials-container">
+					<div class="col-md-4 no-padding news-author-field">
+						<p class="no-margin-bottom">By <span class="bold">{{user.name}}</span></p>
+						<p class="italic small no-margin-bottom">
+							<time>{{#date articles.createdOn}}{{/date}}</time>
+						</p>
+					</div>
+					<a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=http%3A%2F%2Ftsar-football.herokuapp.com%2Farticle%2F{{articles._id}}%2F%23!%2Farticles%2Fdetails%2F{{articles._id}}&display=popup&ref=plugin&src=share_button">
+						<div class="col-md-4 no-padding field-facebook text-center">
+							<img class="icon-social" src="/public/assets/facebook-icon.png" alt="facebook">
+							<span class="bold news-field-text">&nbsp;&nbsp;Share to Facebook</span>
+						</div>
+					</a>
+					<div id="btn-comments-scroll" class="col-md-4 no-padding field-comments text-center">
+						<img class="icon-social" src="/public/assets/comments-icon.png" alt="comments">
+						<span id="news-comments-count" class="bold news-field-text">&nbsp;&nbsp;{{#commentsCount article.comments}}{{/commentsCount}}</span>
+					</div>
+				</div>
+				<hr class="no-margin-bottom">
+				<img class="article-details-img" src="{{articles.imageUrl}}" alt="">
+				<div>
+					<p class="article-detail-content bread-word pre-wrap">
+						{{articles.content}}
+>>>>>>> 8e726e3bdf33941e2e012bd02580b82607be3322
 					</p>
 				</div>
 				<a id="btn-facebook-share"

@@ -17,7 +17,15 @@ module.exports = (data) => {
             let injuredA = req.body.injuredA;
             let injuredB = req.body.injuredB;
 
-            data.createNewArticle(title, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, createdOn)
+            let token = req.headers.authorization;
+            routeGuards.isAdmin(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(user => {
+                    return data.createNewArticle(title, user.username, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB, createdOn);
+                })
                 .then(newArticle => {
                     return res.status(201).json(newArticle);
                 })
@@ -42,10 +50,18 @@ module.exports = (data) => {
         },
         getArticleById(req, res) {
             let id = req.body.articleId;
+            let token = req.headers.authorization;
+            let isAdmin = false;
 
-            data.getArticleById(id)
+            routeGuards.isAdmin(token)
+                .then(() => isAdmin = true)
+                .catch(() => isAdmin = false)
+                .then(() => {
+                    return data.getArticleById(id);
+                })
                 .then(article => {
-                    if (!article) {
+                    let predicate = isAdmin ? !article : (!article || article.isDeleted);
+                    if (predicate) {
                         return res.status(404).json({ message: 'Not found!' });
                     }
 
@@ -57,21 +73,50 @@ module.exports = (data) => {
         },
         commentArticle(req, res) {
             let articleId = req.body.articleId;
-            let userId = req.body.userId;
             let content = req.body.commentContent;
+            let token = req.headers.authorization;
 
-            data.commentArticle(articleId, userId, content)
+            routeGuards.isAuthenticated(token)
+                .catch(error => {
+                    res.status(401).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(user => {
+                    return data.commentArticle(articleId, user._id, content);
+                })
                 .then(response => {
                     return res.status(201).json(response);
                 })
                 .catch(error => {
+                    console.log(error);
                     return res.status(500).json(error);
                 });
         },
         deleteComment(req, res) {
             let articleId = req.body.articleId;
             let commentId = req.body.commentId;
-            data.deleteArticleComment(articleId, commentId)
+            let token = req.headers.authorization;
+
+            data.getArticleById(articleId)
+                .then(article => {
+                    if (!article || !article.comments) {
+                        return res.status(400).json('No such article or comment!');
+                    }
+
+                    let comment = article.comments.find(x => x._id.toString() == commentId);
+                    if (!comment) {
+                        return res.status(400).json('No such article or comment!');
+                    }
+
+                    return routeGuards.isAuthorized(token, comment.author.userId);
+                })
+                .catch(error => {
+                    res.status(404).json('Unauthorized!');
+                    return Promise.reject(error);
+                })
+                .then(() => {
+                    return data.deleteArticleComment(articleId, commentId);
+                })
                 .then(response => {
                     return res.status(200).json(response);
                 })

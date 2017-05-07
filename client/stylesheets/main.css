@@ -321,13 +321,17 @@ nav a {
     word-break: break-word;
 }
 
-.news-container {
+.news-container,  .admin-container {
     padding: 30px 22px 10px 22px;
     margin-top: -30px;
     background-color: white;
     border: 1px solid lightgrey;
     box-shadow: 0 0 2px lightgrey;
     margin-bottom: 20px;
+}
+
+.admin-container ul, .admin-container .pager {
+    margin-bottom: 0;
 }
 
 .news-header {
@@ -816,4 +820,8 @@ th, td {
 
 .img-home-page {
     width: 100%;
+}
+
+.bread-word {
+    word-break: break-word;
 }

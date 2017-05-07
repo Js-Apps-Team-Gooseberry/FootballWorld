@@ -4,9 +4,11 @@ const express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     morgan = require('morgan'),
-    handlebars = require('express-handlebars');
+    handlebars = require('express-handlebars'),
+    cors = require('cors');
 
 let app = express();
+app.use(cors());
 app.use('/public', express.static('client'));
 app.use('/libs', express.static('node_modules'));
 app.use(cookieParser());

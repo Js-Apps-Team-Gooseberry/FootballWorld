@@ -11,6 +11,11 @@ let articleSchema = new Schema({
         minlength: 5,
         maxlength: 100
     },
+    author: {
+        type: String,
+        minlength: 5,
+        maxlength: 15
+    },
     imageUrl: {
         type: String,
         required: true
