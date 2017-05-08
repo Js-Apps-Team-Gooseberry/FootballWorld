@@ -1,11 +1,23 @@
 import * as requester from 'requester';
 
-function register(user) {
-    return requester.postJSON('/api/auth/register', user);
+function register(username, password, email, profilePicture) {
+    let body = {
+        username,
+        password,
+        email,
+        profilePicture
+    };
+
+    return requester.postJSON('/api/auth/register', body);
 }
 
-function login(user) {
-    return requester.putJSON('/api/auth/login', user);
+function login(username, password) {
+    let body = {
+        username,
+        password
+    };
+    
+    return requester.putJSON('/api/auth/login', body);
 }
 
 function getById(id) {

@@ -53,12 +53,7 @@ function login() {
                     $formLoginPassword.removeClass('has-error').addClass('has-success');
                 }
 
-                let user = {
-                    username,
-                    password
-                };
-
-                authService.login(user)
+                authService.login(username, password)
                     .then(response => {
                         localStorage.setItem('currentUser', JSON.stringify(response.user));
                         localStorage.setItem('token', response.token);
@@ -182,14 +177,7 @@ function register() {
 
                 let $registerProfilePic = $('#register-profile-picture');
 
-                let user = {
-                    username,
-                    password,
-                    email,
-                    profilePicture: $registerProfilePic.val()
-                };
-
-                authService.register(user)
+                authService.register(username, password, email, $registerProfilePic.val())
                     .then(response => {
                         $registerUsername.val('');
                         $registerPassword.val('');
