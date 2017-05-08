@@ -1,13 +1,20 @@
 import $ from 'jquery';
 
 function toggleButtonsIfLoggedIn() {
-    if (localStorage.getItem('currentUser') != undefined) {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (user) {
         $('.logged-out').addClass('hidden');
         $('.logged-in').removeClass('hidden');
+
+        if (user.admin) {
+            $('.admin').removeClass('hidden');
+        }        
     } else {
         $('.logged-out').removeClass('hidden');
         $('.logged-in').addClass('hidden');
-    }
+        $('.admin').addClass('hidden');
+    }    
 }
 
 function isLoggedIn() {
