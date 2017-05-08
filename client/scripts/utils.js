@@ -80,6 +80,10 @@ function validateEmail(email) {
     }
 }
 
+function changeMainContainerHtml(html) {
+    $('#main-container').html(html);
+}
+
 export {
     toggleButtonsIfLoggedIn,
     formatDate,
@@ -87,5 +91,6 @@ export {
     isAdmin,
     isAuthorized,
     validateStringLength,
-    validateEmail
+    validateEmail,
+    changeMainContainerHtml
 };

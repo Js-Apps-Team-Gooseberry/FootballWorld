@@ -3,7 +3,8 @@
 mocha.setup('bdd');
 
 const mochaTestScripts = [
-    './services/auth-tests.js'
+    './services/auth-tests.js',
+    './controllers/auth-tests.js'
 ];
 
 Promise

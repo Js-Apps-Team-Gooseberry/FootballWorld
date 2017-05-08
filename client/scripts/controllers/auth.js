@@ -1,23 +1,21 @@
-import { compile } from 'templates-compiler';
+import * as loader from 'templates-compiler';
 import * as authService from 'auth-service';
 import * as toastr from 'toastr';
 import $ from 'jquery';
-import { toggleButtonsIfLoggedIn, isLoggedIn } from 'utils';
+import * as utils from 'utils';
 import { User } from 'user-model';
 
-const $mainContainer = $('#main-container');
-
 function login() {
-    if (isLoggedIn()) {
+    if (utils.isLoggedIn()) {
         toastr.error('You are already logged in!');
         return;
     }
 
-    compile('login')
-        .then(html => $mainContainer.html(html))
+    loader.compile('auth/login')
+        .then(html => utils.changeMainContainerHtml(html))
         .then(() => {
             const $btnLogin = $('#btn-login');
-            $btnLogin.on('click', () => {
+            $('#btn-login').on('click', () => {
                 const $loginUsername = $('#login-username');
                 const $formLoginUsername = $('#form-login-username');
 
@@ -25,7 +23,6 @@ function login() {
                 const $formLoginPassword = $('#form-login-password');
 
                 $btnLogin.attr('disabled', true);
-
                 authService.login($loginUsername.val(), $loginPassword.val())
                     .then(response => {
                         localStorage.setItem('currentUser', JSON.stringify(response.user));
@@ -33,7 +30,7 @@ function login() {
                         $loginPassword.val('');
                         toastr.success('Login successful!');
                         $(location).attr('href', '#!/home');
-                        toggleButtonsIfLoggedIn();
+                        utils.toggleButtonsIfLoggedIn();
                     })
                     .catch(error => {
                         if (error.status == 401) {
@@ -44,7 +41,6 @@ function login() {
                             toastr.error('Account blocked!');
                         } else {
                             toastr.error('An error occured! Please try again later!');
-                            console.log(error);
                         }
 
                         $btnLogin.attr('disabled', false);
@@ -54,13 +50,13 @@ function login() {
 }
 
 function logout() {
-    if (!isLoggedIn()) {
+    if (!utils.isLoggedIn()) {
         toastr.error('You are not logged in!');
         return;
     }
 
     localStorage.clear();
-    toggleButtonsIfLoggedIn();
+    utils.toggleButtonsIfLoggedIn();
     $(location).attr('href', '#!/home');
     toastr.success('Successfully logged out!');
 }
@@ -68,8 +64,8 @@ function logout() {
 function profile() {
     let user = JSON.parse(localStorage.getItem('currentUser'));
     if (user) {
-        compile('my-profile', user)
-            .then(html => $mainContainer.html(html));
+        loader.compile('auth/my-profile', user)
+            .then(html => utils.changeMainContainerHtml(html));
     } else {
         $(location).attr('href', '#!/login');
         toastr.error('You need to be logged in to view this page!');
@@ -77,13 +73,13 @@ function profile() {
 }
 
 function register() {
-    if (isLoggedIn()) {
+    if (utils.isLoggedIn()) {
         toastr.error('You are already logged in!');
         return;
     }
 
-    compile('register')
-        .then(html => $mainContainer.html(html))
+    loader.compile('auth/register')
+        .then(html => utils.changeMainContainerHtml(html))
         .then(() => {
             const $btnRegister = $('#btn-register');
             $btnRegister.on('click', () => {
@@ -139,7 +135,7 @@ function register() {
 
                     if (error.message.indexOf('E-Mail') > -1) {
                         $formRegisterEmail.addClass('has-error');
-                        $registerEmail.focus();;
+                        $registerEmail.focus();
                         return;
                     } else {
                         $formRegisterEmail.removeClass('has-error').addClass('has-success');
@@ -159,7 +155,7 @@ function register() {
                         localStorage.setItem('token', response.token);
 
                         $(location).attr('href', '#!/home');
-                        toggleButtonsIfLoggedIn();
+                        utils.toggleButtonsIfLoggedIn();
                     })
                     .catch(error => {
                         if (error.status == 409) {
@@ -169,7 +165,6 @@ function register() {
                         } else {
                             toastr.error('An error occured! Please try again later!');
                             $btnRegister.removeClass('disabled');
-                            console.log(error);
                         }
 
                         $btnRegister.attr('disabled', false);
@@ -186,19 +181,19 @@ function updateProfile(params) {
     authService.getById(id)
         .catch(error => {
             if (error.status == 404) {
-                compile('errors/not-found')
-                    .then(html => $mainContainer.html(html));
+                loader.compile('errors/not-found')
+                    .then(html => utils.changeMainContainerHtml(html));
             } else if (error.status == 500) {
-                compile('errors/server-error')
-                    .then(html => $mainContainer.html(html));
+                loader.compile('errors/server-error')
+                    .then(html => utils.changeMainContainerHtml(html));
             }
         })
         .then(user => {
             data.user = user;
             data.operatingUser = operatingUser;
-            return compile('auth/edit-profile', data);
+            return loader.compile('auth/edit-profile', data);
         })
-        .then(html => $mainContainer.html(html))
+        .then(html => utils.changeMainContainerHtml(html))
         .then(() => {
             _bindUpdateUserInfoButton(id, data, operatingUser);
             _bindBlockUserButton(data);
@@ -261,8 +256,7 @@ function _bindUpdateUserInfoButton(id, data, operatingUser) {
                 toastr.success('User info updated!');
                 $(location).attr('href', `#!/profile/${username.trim()}`);
             })
-            .catch(error => {
-                console.log(error);
+            .catch(() => {
                 $btnEditUserInfo.attr('disabled', false);
                 toastr.error('Username already taken!');
             });
@@ -270,18 +264,15 @@ function _bindUpdateUserInfoButton(id, data, operatingUser) {
 }
 
 function _bindBlockUserButton(data) {
-    console.log(data);
     let $btnBlockUser = $('#btn-block-user');
     $btnBlockUser.on('click', () => {
         $btnBlockUser.attr('disabled', true);
 
         authService.blockUser(data.user._id)
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 toastr.success('User blocked!');
             })
-            .catch(error => {
-                console.log(error);
+            .catch(() => {
                 toastr.error('An error occured!');
                 $btnBlockUser.attr('disabled', false);
             });
@@ -294,12 +285,10 @@ function _bindUnblockUserButton(data) {
         $btnUnblockUser.attr('disabled', true);
 
         authService.unblockUser(data.user._id)
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 toastr.success('User blocked!');
             })
-            .catch(error => {
-                console.log(error);
+            .catch(() => {
                 toastr.error('An error occured!');
                 $btnUnblockUser.attr('disabled', false);
             });
@@ -307,7 +296,7 @@ function _bindUnblockUserButton(data) {
 }
 
 function changePassword() {
-    if (!isLoggedIn()) {
+    if (!utils.isLoggedIn()) {
         toastr.error('You are not authorized to do that!');
         $(location).attr('href', '#!/home');
         return;
@@ -315,8 +304,8 @@ function changePassword() {
 
     let user = JSON.parse(localStorage.getItem('currentUser'));
 
-    compile('auth/change-password')
-        .then(html => $mainContainer.html(html))
+    loader.compile('auth/change-password')
+        .then(html => utils.changeMainContainerHtml(html))
         .then(() => {
             const $btnChangePassword = $('#btn-change-password'),
                 $oldPassword = $('#old-password'),
@@ -359,7 +348,7 @@ function changePassword() {
                             $btnChangePassword.attr('disabled', false);
                             return;
                         }
-                        console.log(error);
+                        
                         toastr.error('An error occured!');
                         $btnChangePassword.attr('disabled', false);
                     });
@@ -372,16 +361,16 @@ function previewProfile(params) {
 
     authService.getByUsername(username)
         .then(user => {
-            return compile('auth/preview-profile', user);
+            return loader.compile('auth/preview-profile', user);
         })
-        .then(html => $mainContainer.html(html))
+        .then(html => utils.changeMainContainerHtml(html))
         .catch(error => {
             if (error.status == 404) {
-                compile('errors/not-found')
-                    .then(html => $mainContainer.html(html));
+                loader.compile('errors/not-found')
+                    .then(html => utils.changeMainContainerHtml(html));
             } else if (error.status == 500) {
-                compile('errors/server-error')
-                    .then(html => $mainContainer.html(html));
+                loader.compile('errors/server-error')
+                    .then(html => utils.changeMainContainerHtml(html));
             }
         });
 }
