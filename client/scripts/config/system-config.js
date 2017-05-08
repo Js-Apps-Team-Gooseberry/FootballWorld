@@ -21,6 +21,7 @@ SystemJS.config({
         'admin-service': '/public/scripts/services/admin.js',
         'forum-service': '/public/scripts/services/forum.js',
         'stats-service': '/public/scripts/services/stats.js',
+        'search-service': '/public/scripts/services/search.js',
 
         // controllers
         'controllers': '/public/scripts/controllers/index.js',

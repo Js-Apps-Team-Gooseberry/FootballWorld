@@ -491,6 +491,38 @@ module.exports = (models) => {
                         });
                     });
             });
+        },
+        searchThreads(page, query) {
+            let pageSize = 5;
+
+            let queryObj = query.trim() ? { title: { '$regex': query.trim(), '$options': 'i' } } : {};
+
+            return new Promise((resolve, reject) => {
+                Thread.find(queryObj)
+                    .where({ isDeleted: false })
+                    .sort({ lastPostCreatedOn: -1 })
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec((error, threads) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        Thread.count(queryObj, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let result = {
+                                threads,
+                                pagesCount
+                            };
+
+                            return resolve(result);
+                        });
+                    });
+            });
         }
     };
 };

@@ -250,6 +250,38 @@ module.exports = (models) => {
                     return resolve(result);
                 });
             });
+        },
+        searchNews(page, query) {
+            let pageSize = 5;
+
+            let queryObj = query.trim() ? { title: { '$regex': query.trim(), '$options': 'i' } } : {};
+
+            return new Promise((resolve, reject) => {
+                NewsEntry.find(queryObj)
+                    .where({ isDeleted: false })
+                    .sort({ createdOn: -1 })
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec((error, newsEntries) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        NewsEntry.count(queryObj, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let news = {
+                                newsEntries,
+                                pagesCount
+                            };
+
+                            return resolve(news);
+                        });
+                    });
+            });
         }
     };
 };

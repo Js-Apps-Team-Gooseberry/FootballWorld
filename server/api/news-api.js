@@ -6,6 +6,7 @@ module.exports = function (app, data) {
     const controllers = require('../controllers/news-controller')(data);
 
     router
+        .get('/search/:page/:query', controllers.searchNews)
         .get('/get-all-for-users', controllers.getNewsForUsers)
         .post('/create', controllers.createNewNewsEntry)
         .post('/get-by-id', controllers.getNewsEntryById)

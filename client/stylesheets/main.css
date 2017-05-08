@@ -330,6 +330,10 @@ nav a {
     margin-bottom: 20px;
 }
 
+.admin-container {
+    margin-bottom: 30px;
+}
+
 .admin-container ul, .admin-container .pager {
     margin-bottom: 0;
 }
@@ -464,11 +468,11 @@ nav a {
     color: black;
 }
 
-.forum-section {
+.forum-section, .search-section {
     border-right: 4px solid black;
 }
 
-.forum-link:hover .forum-section {
+.forum-link:hover .forum-section, .search-section:hover {
     border-right: 4px solid #43AC6A;
 }
 
@@ -630,7 +634,7 @@ nav a {
     background-color: white;
     border: 1px solid lightgrey;
     box-shadow: 0 0 2px lightgrey;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .btn-new-thread-bottom {
@@ -825,4 +829,24 @@ th, td {
 
 .bread-word {
     word-break: break-word;
+}
+
+.search-main-image {
+    height: 100px; 
+    overflow: hidden;
+    background-position: center center;
+    background-size:200px;
+    background-repeat: no-repeat;
+}
+
+.search-meta {
+    border-left: 1px solid lightgrey;
+}
+
+.search-bar-page {
+    padding-bottom: 15px;
+}
+
+.search-container {
+    min-height: 513px;
 }

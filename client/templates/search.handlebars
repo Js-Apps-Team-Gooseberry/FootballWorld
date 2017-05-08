@@ -1,0 +1,48 @@
+<div class="container-fluid banner">
+    <img src="/public/assets/banner-search.png" alt="forum-tsar-football" class="img-responsive">
+</div>
+<div class="container search-container">
+    <div class="row search-bar-page">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-10 no-padding">
+                <input type="text" placeholder="Search news, articles, forum threads..." id="input-search-home-page" class="form-control">
+            </div>
+            <div class="col-md-2 text-center">
+                <button class="btn btn-success btn-search-home-page">Search</button>
+            </div>
+        </div>
+    </div>
+    {{#each entries}}
+    <a class="forum-link" href="#!/{{link}}/details/{{_id}}">
+        <div class="search-section panel panel-default row">
+            <div class="col-md-2 search-main-image" style="background-image: url('{{imageUrl}}');">
+            </div>
+            <div class="col-md-8 search-main-description">
+                <h3 class="search-title ellipsis">{{title}}</h3>
+                <p class="search-description ellipsis small italic">{{content}}</p>
+            </div>
+            <div class="col-md-2 search-meta forum-stats search-views italic">
+                <p class="text-center">{{type}}</p>
+                <p class="text-center italic small">{{#date createdOn}}{{/date}}</p>
+            </div>
+        </div>
+    </a>
+    {{/each}}
+    {{#if entries.length}}
+    <div class="pager">
+        <ul class="pagination">
+            {{#paginate pagination type="previous"}}
+            <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/search?page={{n}}&query={{../query}}">«</a></li>
+            {{/paginate}} {{#paginate pagination type="middle" limit="5"}}
+            <li {{#if active}}class="active disabled-link" {{/if}}><a href="#!/search?page={{n}}&query={{../query}}">{{n}}</a></li>
+            {{/paginate}} {{#paginate pagination type="next"}}
+            <li {{#if disabled}}class="disabled-link" {{/if}}><a href="#!/search?page={{n}}&query={{../query}}">»</a></li>
+            {{/paginate}}
+        </ul>
+    </div>
+    {{else}}
+    <div class="text-center">
+        <h3>No search results returned... Try something else!</h3>
+    </div>
+    {{/if}}
+</div>

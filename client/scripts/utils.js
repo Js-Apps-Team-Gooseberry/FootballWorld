@@ -91,6 +91,28 @@ function changeMainContainerHtml(html) {
     $('#main-container').html(html);
 }
 
+function searchQueryExtractor(query) {
+    let queryDictionary = {};
+    if (query) {
+        let queryArr = query.split('&').map(x => x.trim()).filter(x => x != '');
+        for (let queryPair of queryArr) {
+            let key = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[0];
+            let value = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[1];
+            queryDictionary[key] = value;
+        }
+    }
+
+    let page = +queryDictionary.page || 1;
+    let searchQuery = queryDictionary.query || '!-!';
+    let sort = queryDictionary.sort || 'date';
+    
+    return {
+        page,
+        query: searchQuery, 
+        sort
+    };
+}
+
 export {
     toggleButtonsIfLoggedIn,
     formatDate,
@@ -99,5 +121,6 @@ export {
     isAuthorized,
     validateStringLength,
     validateEmail,
-    changeMainContainerHtml
+    changeMainContainerHtml,
+    searchQueryExtractor
 };
