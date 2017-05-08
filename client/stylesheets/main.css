@@ -850,3 +850,7 @@ th, td {
 .search-container {
     min-height: 513px;
 }
+
+.tag-link, .tag-link:hover {
+    text-decoration: none;
+}
