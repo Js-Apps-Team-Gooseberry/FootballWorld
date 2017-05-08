@@ -670,6 +670,7 @@ nav a {
 
 .profile-picture {
     max-width: 200px;
+    background: white;
 }
 
 .panel-profile {

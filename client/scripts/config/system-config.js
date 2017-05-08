@@ -31,6 +31,9 @@ SystemJS.config({
         'admin-controller': '/public/scripts/controllers/admin.js',
         'forum-controller': '/public/scripts/controllers/forum.js',
 
+        // models
+        'user-model': '/public/scripts/models/user.js',
+
         // libs
         'jquery': '/libs/jquery/dist/jquery.js',
         'bootstrap': '/libs/bootstrap/dist/js/bootstrap.js',

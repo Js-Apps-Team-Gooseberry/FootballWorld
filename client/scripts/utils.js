@@ -67,4 +67,25 @@ function _formatNumber(number) {
     return number.toString().length < 2 ? `0${number}` : number;
 }
 
-export { toggleButtonsIfLoggedIn, formatDate, isLoggedIn, isAdmin, isAuthorized };
+function validateStringLength(string, minLength, maxLength, validationTarget) {
+    if (!string || string.trim().length < minLength || string.trim().length > maxLength) {
+        throw new Error(`${validationTarget} length should be between ${minLength} and ${maxLength} symbols!`);
+    }
+}
+
+function validateEmail(email) {
+    var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regex.test(email)) {
+        throw new Error('Please enter a valid E-Mail!');
+    }
+}
+
+export {
+    toggleButtonsIfLoggedIn,
+    formatDate,
+    isLoggedIn,
+    isAdmin,
+    isAuthorized,
+    validateStringLength,
+    validateEmail
+};
