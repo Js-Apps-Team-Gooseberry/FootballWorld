@@ -4,7 +4,9 @@ mocha.setup('bdd');
 
 const mochaTestScripts = [
     './services/auth-tests.js',
-    './controllers/auth-tests.js'
+    './controllers/auth-tests.js',
+    './models/user-tests.js',
+    './utils/auth-utils-tests.js'
 ];
 
 Promise

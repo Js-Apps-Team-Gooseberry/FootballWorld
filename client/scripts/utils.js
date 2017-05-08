@@ -37,7 +37,7 @@ function isAuthorized(authorId) {
     }
 
     let user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user.admin || user._id != authorId) {
+    if (!user.admin && user._id != authorId) {
         return false;
     }
 

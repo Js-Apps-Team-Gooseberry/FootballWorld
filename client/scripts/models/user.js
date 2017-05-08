@@ -1,4 +1,9 @@
-import { validateStringLength, validateEmail } from 'utils';
+import * as utils from 'utils';
+
+const minLengthUsername = 5;
+const maxLengthUsername = 15;
+const minLengthPassword = 6;
+const maxLengthPassword = 15;
 
 class User {
     constructor(username, email, password, confirmPassword, profilePicture) {
@@ -13,8 +18,8 @@ class User {
         return this._username;
     }
 
-    set username(value) {        
-        validateStringLength(value, 5, 15, 'Username');
+    set username(value) {
+        utils.validateStringLength(value, minLengthUsername, maxLengthUsername, 'Username');
         this._username = value.trim();
     }
 
@@ -32,7 +37,7 @@ class User {
     }
 
     set email(value) {
-        validateEmail(value);
+        utils.validateEmail(value);
         this._email = value.trim();
     }
 
@@ -41,7 +46,7 @@ class User {
     }
 
     set password(value) {
-        validateStringLength(value, 6, 15, 'Password');
+        utils.validateStringLength(value, minLengthPassword, maxLengthPassword, 'Password');
         this._password = value.trim();
     }
 
