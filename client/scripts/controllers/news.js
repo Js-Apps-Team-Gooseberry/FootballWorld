@@ -3,6 +3,8 @@ import $ from 'jquery';
 import * as newsService from 'news-service';
 import * as toastr from 'toastr';
 import { isAdmin, isLoggedIn } from 'utils';
+import { NewsEntry } from 'news-entry-model';
+import { Comment } from 'comment-model';
 
 const $mainContainer = $('#main-container');
 
@@ -152,22 +154,22 @@ function _bindCommentButton(data) {
             return;
         }
 
-        if ($newCommentTextArea.val().length < 3 || $newCommentTextArea.val().length > 500) {
-            toastr.error('The comments\' length must be between 3 and 500 symbols!');
+        let comment;
+        try {
+            comment = new Comment($newCommentTextArea.val());
+        } catch (error) {
+            toastr.error(error.message);
             $formNewsNewComment.addClass('has-error');
             $newCommentTextArea.focus();
             return;
-        } else {
-            $formNewsNewComment.removeClass('has-error');
         }
 
-        $btnNewsComment.addClass('disabled');
+        $formNewsNewComment.removeClass('has-error');
         $newCommentTextArea.attr('disabled', true);
         $btnNewsComment.attr('disabled', true);
 
-        newsService.comment(data.article._id, data.user._id, $newCommentTextArea.val())
+        newsService.comment(data.article._id, data.user._id, comment.content)
             .then((response) => {
-
                 let newCommentData = response.comments[response.comments.length - 1];
                 newCommentData.author = data.user;
                 compile('comment', newCommentData)
@@ -181,7 +183,6 @@ function _bindCommentButton(data) {
                         }, 1000);
 
                         $btnNewsComment.addClass('hidden');
-                        $btnNewsComment.removeClass('disabled');
                         $newCommentTextArea.val('');
                         $newCommentTextArea.attr('disabled', false);
                         $btnNewsComment.attr('disabled', false);
@@ -191,7 +192,6 @@ function _bindCommentButton(data) {
                 console.log(error);
                 toastr.error('An error occured!');
 
-                $btnNewsComment.removeClass('disabled');
                 $newCommentTextArea.attr('disabled', false);
                 $btnNewsComment.attr('disabled', false);
             });
@@ -220,62 +220,60 @@ function getCreatePage() {
                 $formNewsCreateContent = $('#form-news-create-content');
 
             $btnNewsCreate.on('click', () => {
-                if ($newsCreateTitle.val().trim().length < 5 || $newsCreateTitle.val().trim().length > 100) {
-                    toastr.error('Title length should be between 5 and 100 symbols!');
-                    $formNewsCreateTitle.addClass('has-error');
-                    $newsCreateTitle.focus();
-                    return;
-                } else {
-                    $formNewsCreateTitle.removeClass('has-error');
+                let newsEntry;
+                try {
+                    newsEntry = new NewsEntry($newsCreateTitle.val(), $newsCreateImageUrl.val(), $newsCreateTags.val(), $newsCreateDescription.val(), $newsCreateContent.val());
+                } catch (error) {
+                    if (error.message.indexOf('Title') == 0) {
+                        toastr.error(error.message);
+                        $formNewsCreateTitle.addClass('has-error');
+                        $newsCreateTitle.focus();
+                        return;
+                    } else {
+                        $formNewsCreateTitle.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('URL') > -1) {
+                        toastr.error('Please enter a valid URL!');
+                        $formNewsCreateImageUrl.addClass('has-error');
+                        $newsCreateImageUrl.focus();
+                        return;
+                    } else {
+                        $formNewsCreateImageUrl.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('Description') > -1) {
+                        toastr.error(error.message);
+                        $formNewsCreateDescription.addClass('has-error');
+                        $newsCreateDescription.focus();
+                        return;
+                    } else {
+                        $formNewsCreateDescription.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('Content') == 0) {
+                        toastr.error('Content length should be between 5 and 5000 symbols!');
+                        $formNewsCreateContent.addClass('has-error');
+                        $newsCreateContent.focus();
+                        return;
+                    } else {
+                        $formNewsCreateContent.removeClass('has-error');
+                    }
                 }
 
-                if (!_isUrlValid($newsCreateImageUrl.val())) {
-                    toastr.error('Please enter a valid URL!');
-                    $formNewsCreateImageUrl.addClass('has-error');
-                    $newsCreateImageUrl.focus();
-                    return;
-                } else {
-                    $formNewsCreateImageUrl.removeClass('has-error');
-                }
-
-                if ($newsCreateDescription.val().trim().length < 20 || $newsCreateDescription.val().trim().length > 1000) {
-                    toastr.error('Description length should be between 20 and 1000 symbols!');
-                    $formNewsCreateDescription.addClass('has-error');
-                    $newsCreateDescription.focus();
-                    return;
-                } else {
-                    $formNewsCreateDescription.removeClass('has-error');
-                }
-
-                if ($newsCreateContent.val().trim().length < 5 || $newsCreateContent.val().trim().length > 5000) {
-                    toastr.error('Content length should be between 5 and 5000 symbols!');
-                    $formNewsCreateContent.addClass('has-error');
-                    $newsCreateContent.focus();
-                    return;
-                } else {
-                    $formNewsCreateContent.removeClass('has-error');
-                }
-
+                $('.form-group').removeClass('has-error').addClass('has-success');
                 $btnNewsCreate.attr('disabled', true);
                 $btnNewsCreate.addClass('disabled');
 
-                let title = $newsCreateTitle.val();
-                let description = $newsCreateDescription.val();
-                let imageUrl = $newsCreateImageUrl.val();
-                let tags = $newsCreateTags.val();
-                let content = $newsCreateContent.val();
-
-                newsService.createNewEntry(title, description, imageUrl, content, tags)
-                    .then(response => {
-                        console.log(response);
+                newsService.createNewEntry(newsEntry.title, newsEntry.description, newsEntry.imageUrl, newsEntry.content, newsEntry.tags)
+                    .then(() => {
                         toastr.success('Article successfully added!');
                         $(location).attr('href', '#!/news');
                     })
-                    .catch(error => {
+                    .catch(() => {
                         $btnNewsCreate.attr('disabled', false);
                         $btnNewsCreate.removeClass('disabled');
                         toastr.error('Invalid data! Try again!');
-                        console.log(error);
                     });
             });
         });
@@ -317,52 +315,52 @@ function getEditPage(params) {
                 $formNewsEditContent = $('#form-news-edit-content');
 
             $btnNewsEdit.on('click', () => {
-                if ($newsEditTitle.val().trim().length < 5 || $newsEditTitle.val().trim().length > 100) {
-                    toastr.error('Title length should be between 5 and 100 symbols!');
-                    $formNewsEditTitle.addClass('has-error');
-                    $newsEditTitle.focus();
-                    return;
-                } else {
-                    $formNewsEditTitle.removeClass('has-error');
-                }
+                let newsEntry;
+                try {
+                    newsEntry = new NewsEntry($newsEditTitle.val(), $newsEditImageUrl.val(), $newsEditTags.val(), $newsEditDescription.val(), $newsEditContent.val());
+                } catch (error) {
+                    if (error.message.indexOf('Title') == 0) {
+                        toastr.error(error.message);
+                        $formNewsEditTitle.addClass('has-error');
+                        $newsEditTitle.focus();
+                        return;
+                    } else {
+                        $formNewsEditTitle.removeClass('has-error');
+                    }
 
-                if (!_isUrlValid($newsEditImageUrl.val())) {
-                    toastr.error('Please enter a valid URL!');
-                    $formNewsEditImageUrl.addClass('has-error');
-                    $newsEditImageUrl.focus();
-                    return;
-                } else {
-                    $formNewsEditImageUrl.removeClass('has-error');
-                }
+                    if (error.message.indexOf('URL') > -1) {
+                        toastr.error('Please enter a valid URL!');
+                        $formNewsEditImageUrl.addClass('has-error');
+                        $newsEditImageUrl.focus();
+                        return;
+                    } else {
+                        $formNewsEditImageUrl.removeClass('has-error');
+                    }
 
-                if ($newsEditDescription.val().trim().length < 20 || $newsEditDescription.val().trim().length > 1000) {
-                    toastr.error('Description length should be between 20 and 1000 symbols!');
-                    $formNewsEditDescription.addClass('has-error');
-                    $newsEditDescription.focus();
-                    return;
-                } else {
-                    $formNewsEditDescription.removeClass('has-error');
-                }
+                    if (error.message.indexOf('Description') > -1) {
+                        toastr.error(error.message);
+                        $formNewsEditDescription.addClass('has-error');
+                        $newsEditDescription.focus();
+                        return;
+                    } else {
+                        $formNewsEditDescription.removeClass('has-error');
+                    }
 
-                if ($newsEditContent.val().trim().length < 5 || $newsEditContent.val().trim().length > 5000) {
-                    toastr.error('Content length should be between 5 and 5000 symbols!');
-                    $formNewsEditContent.addClass('has-error');
-                    $newsEditContent.focus();
-                    return;
-                } else {
-                    $formNewsEditContent.removeClass('has-error');
+                    if (error.message.indexOf('Content') == 0) {
+                        toastr.error('Content length should be between 5 and 5000 symbols!');
+                        $formNewsEditContent.addClass('has-error');
+                        $newsEditContent.focus();
+                        return;
+                    } else {
+                        $formNewsEditContent.removeClass('has-error');
+                    }
                 }
 
                 $btnNewsEdit.attr('disabled', true);
                 $btnNewsEdit.addClass('disabled');
+                $('.form-group').removeClass('has-error').addClass('has-success');
 
-                let title = $newsEditTitle.val();
-                let imageUrl = $newsEditImageUrl.val();
-                let description = $newsEditDescription.val();
-                let tags = $newsEditTags.val();
-                let content = $newsEditContent.val();
-
-                newsService.editNewsEntry(params.id, title, description, imageUrl, content, tags)
+                newsService.editNewsEntry(params.id, newsEntry.title, newsEntry.description, newsEntry.imageUrl, newsEntry.content, newsEntry.tags)
                     .then(() => {
                         toastr.success('Article successfully altered!');
                         $(location).attr('href', `#!/news/details/${params.id}`);
@@ -371,7 +369,6 @@ function getEditPage(params) {
                         $btnNewsEdit.attr('disabled', false);
                         $btnNewsEdit.removeClass('disabled');
                         toastr.error('An error occured! Check if your data is correct or try again later!');
-                        console.log(error);
                     });
             });
 
@@ -381,8 +378,7 @@ function getEditPage(params) {
                 $btnRestore.attr('disabled', true);
 
                 newsService.flagNewsEntryAsActive(params.id)
-                    .then(response => {
-                        console.log(response);
+                    .then(() => {
                         toastr.success('Article restored');
                     })
                     .catch(error => {

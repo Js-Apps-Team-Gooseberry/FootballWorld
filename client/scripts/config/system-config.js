@@ -34,6 +34,9 @@ SystemJS.config({
 
         // models
         'user-model': '/public/scripts/models/user.js',
+        'news-entry-model': '/public/scripts/models/news-entry.js',
+        'comment-model': '/public/scripts/models/comment.js',
+        'thread-model': '/public/scripts/models/thread.js',
 
         // libs
         'jquery': '/libs/jquery/dist/jquery.js',
@@ -42,7 +45,7 @@ SystemJS.config({
         'handlebars': '/libs/handlebars/dist/handlebars.js',
         'handlebars-paginate': '/libs/handlebars-paginate/index.js',
         'toastr-lib': '/libs/toastr/toastr.js',
-        
+
         // tests
         'tests': '/tests/tests.js'
     }

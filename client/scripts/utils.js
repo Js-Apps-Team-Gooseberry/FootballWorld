@@ -9,12 +9,12 @@ function toggleButtonsIfLoggedIn() {
 
         if (user.admin) {
             $('.admin').removeClass('hidden');
-        }        
+        }
     } else {
         $('.logged-out').removeClass('hidden');
         $('.logged-in').addClass('hidden');
         $('.admin').addClass('hidden');
-    }    
+    }
 }
 
 function isLoggedIn() {
@@ -91,6 +91,13 @@ function changeMainContainerHtml(html) {
     $('#main-container').html(html);
 }
 
+function isUrlValid(str) {
+    let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$', 'i');
+    if (!pattern.test(str)) {
+        throw new Error('Please enter a valid URL!');
+    }
+}
+
 function searchQueryExtractor(query) {
     let queryDictionary = {};
     if (query) {
@@ -105,10 +112,10 @@ function searchQueryExtractor(query) {
     let page = +queryDictionary.page || 1;
     let searchQuery = queryDictionary.query || '!-!';
     let sort = queryDictionary.sort || 'date';
-    
+
     return {
         page,
-        query: searchQuery, 
+        query: searchQuery,
         sort
     };
 }
@@ -122,5 +129,6 @@ export {
     validateStringLength,
     validateEmail,
     changeMainContainerHtml,
-    searchQueryExtractor
+    searchQueryExtractor,
+    isUrlValid
 };
