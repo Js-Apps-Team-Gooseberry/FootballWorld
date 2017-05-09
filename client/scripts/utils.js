@@ -1,12 +1,19 @@
 import $ from 'jquery';
 
 function toggleButtonsIfLoggedIn() {
-    if (localStorage.getItem('currentUser') != undefined) {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (user) {
         $('.logged-out').addClass('hidden');
         $('.logged-in').removeClass('hidden');
+
+        if (user.admin) {
+            $('.admin').removeClass('hidden');
+        }
     } else {
         $('.logged-out').removeClass('hidden');
         $('.logged-in').addClass('hidden');
+        $('.admin').addClass('hidden');
     }
 }
 
@@ -37,7 +44,7 @@ function isAuthorized(authorId) {
     }
 
     let user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user.admin || user._id != authorId) {
+    if (!user.admin && user._id != authorId) {
         return false;
     }
 
@@ -67,4 +74,61 @@ function _formatNumber(number) {
     return number.toString().length < 2 ? `0${number}` : number;
 }
 
-export { toggleButtonsIfLoggedIn, formatDate, isLoggedIn, isAdmin, isAuthorized };
+function validateStringLength(string, minLength, maxLength, validationTarget) {
+    if (!string || string.trim().length < minLength || string.trim().length > maxLength) {
+        throw new Error(`${validationTarget} length should be between ${minLength} and ${maxLength} symbols!`);
+    }
+}
+
+function validateEmail(email) {
+    var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regex.test(email)) {
+        throw new Error('Please enter a valid E-Mail!');
+    }
+}
+
+function changeMainContainerHtml(html) {
+    $('#main-container').html(html);
+}
+
+function isUrlValid(str) {
+    let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$', 'i');
+    if (!pattern.test(str)) {
+        throw new Error('Please enter a valid URL!');
+    }
+}
+
+function searchQueryExtractor(query) {
+    let queryDictionary = {};
+    if (query) {
+        let queryArr = query.split('&').map(x => x.trim()).filter(x => x != '');
+        for (let queryPair of queryArr) {
+            let key = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[0];
+            let value = queryPair.split('=').map(x => x.trim()).filter(x => x != '')[1];
+            queryDictionary[key] = value;
+        }
+    }
+
+    let page = +queryDictionary.page || 1;
+    let searchQuery = queryDictionary.query || '!-!';
+    let sort = queryDictionary.sort || 'date';
+
+    return {
+        page,
+        query: searchQuery,
+        sort
+    };
+}
+
+export {
+    toggleButtonsIfLoggedIn,
+    formatDate,
+    isLoggedIn,
+    isAdmin,
+    isAuthorized,
+    validateStringLength,
+    validateEmail,
+    changeMainContainerHtml,
+    searchQueryExtractor,
+    isUrlValid
+};

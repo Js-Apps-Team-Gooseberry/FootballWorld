@@ -21,6 +21,7 @@ SystemJS.config({
         'admin-service': '/public/scripts/services/admin.js',
         'forum-service': '/public/scripts/services/forum.js',
         'stats-service': '/public/scripts/services/stats.js',
+        'search-service': '/public/scripts/services/search.js',
 
         // controllers
         'controllers': '/public/scripts/controllers/index.js',
@@ -31,12 +32,21 @@ SystemJS.config({
         'admin-controller': '/public/scripts/controllers/admin.js',
         'forum-controller': '/public/scripts/controllers/forum.js',
 
+        // models
+        'user-model': '/public/scripts/models/user.js',
+        'news-entry-model': '/public/scripts/models/news-entry.js',
+        'comment-model': '/public/scripts/models/comment.js',
+        'thread-model': '/public/scripts/models/thread.js',
+
         // libs
         'jquery': '/libs/jquery/dist/jquery.js',
         'bootstrap': '/libs/bootstrap/dist/js/bootstrap.js',
         'navigo': '/libs/navigo/lib/navigo.js',
         'handlebars': '/libs/handlebars/dist/handlebars.js',
         'handlebars-paginate': '/libs/handlebars-paginate/index.js',
-        'toastr-lib': '/libs/toastr/toastr.js'
+        'toastr-lib': '/libs/toastr/toastr.js',
+
+        // tests
+        'tests': '/tests/tests.js'
     }
 });

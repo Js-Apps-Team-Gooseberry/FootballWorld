@@ -3,6 +3,7 @@ import * as forumService from 'forum-service';
 import * as toastr from 'toastr';
 import $ from 'jquery';
 import { isLoggedIn, isAuthorized } from 'utils';
+import { Thread } from 'thread-model';
 
 const $mainContainer = $('#main-container');
 
@@ -38,60 +39,64 @@ function getCreatePage() {
             const $formThreadCreateTags = $('#form-create-thread-tags');
 
             $btnCreateThread.on('click', () => {
-                if (!$threadCreateTitle.val().trim() || $threadCreateTitle.val().trim().length < 5 || $threadCreateTitle.val().trim().length > 50) {
-                    toastr.error('Thread title length must be between 5 and 50 symbols!');
-                    $formThreadCreateTitle.addClass('has-error');
-                    !$threadCreateTitle.focus();
-                    return;
-                } else {
-                    $formThreadCreateTitle.removeClass('has-error');
+                let thread;
+                try {
+                    thread = new Thread($threadCreateTitle.val(), $threadCreateImageUrl.val(), $threadCreateTags.val(),
+                        $threadCreateCategory.val(), $threadCreateContent.val());
+                } catch (error) {
+                    if (error.message.indexOf('Title') == 0) {
+                        toastr.error(error.message);
+                        $formThreadCreateTitle.addClass('has-error');
+                        $threadCreateTitle.focus();
+                        return;
+                    } else {
+                        $formThreadCreateTitle.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('URL') > -1) {
+                        toastr.error(error.message);
+                        $formThreadCreateImageUrl.addClass('has-error');
+                        !$threadCreateImageUrl.focus();
+                        return;
+                    } else {
+                        $formThreadCreateImageUrl.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('Tags') > -1) {
+                        toastr.error(error.message);
+                        $formThreadCreateTags.addClass('has-error');
+                        !$threadCreateTags.focus();
+                        return;
+                    } else {
+                        $formThreadCreateTags.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('category') > -1) {
+                        toastr.error(error.message);
+                        return;
+                    }
+
+                    if (error.message.indexOf('Content') > -1) {
+                        toastr.error('Thread content length must be between 5 and 2000 symbols!');
+                        $formThreadCreateContent.addClass('has-error');
+                        !$threadCreateContent.focus();
+                        return;
+                    } else {
+                        $formThreadCreateContent.removeClass('has-error');
+                    }
                 }
 
-                if (!$threadCreateImageUrl.val().trim() || $threadCreateImageUrl.val().trim().length < 5) {
-                    toastr.error('Please enter a valid URL!');
-                    $formThreadCreateImageUrl.addClass('has-error');
-                    !$threadCreateImageUrl.focus();
-                    return;
-                } else {
-                    $formThreadCreateImageUrl.removeClass('has-error');
-                }
-
-                if (!$threadCreateTags.val().trim()) {
-                    toastr.error('Please enter at least one tag! Helps with searching the threads!');
-                    $formThreadCreateTags.addClass('has-error');
-                    !$threadCreateTags.focus();
-                    return;
-                } else {
-                    $formThreadCreateTags.removeClass('has-error');
-                }
-
-                if (!$threadCreateContent.val().trim()) {
-                    toastr.error('Thread content length must be between 5 and 2000 symbols!');
-                    $formThreadCreateContent.addClass('has-error');
-                    !$threadCreateContent.focus();
-                    return;
-                } else {
-                    $formThreadCreateContent.removeClass('has-error');
-                }
-
-                $btnCreateThread.addClass('diasabled');
+                $('.form-group').removeClass('has-error').addClass('has-success');
                 $btnCreateThread.attr('diasabled', true);
 
-                let title = $threadCreateTitle.val();
-                let content = $threadCreateContent.val();
-                let imageUrl = $threadCreateImageUrl.val();
-                let tags = $threadCreateTags.val();
-                let category = $threadCreateCategory.val();
-
-                forumService.createThread(title, content, imageUrl, category, tags)
-                    .then(response => {
+                forumService.createThread(thread.title, thread.content, thread.imageUrl, thread.category, thread.tags)
+                    .then(() => {
                         toastr.success('Thread successfully created!');
-                        $(location).attr('href', `#!/forum/${category}`);
+                        $(location).attr('href', `#!/forum/${thread.category}`);
                     })
                     .catch(error => {
                         console.log(error);
                         toastr.error('An error occured! Check if your data is valid or try again later!');
-                        $btnCreateThread.removeClass('diasabled');
                         $btnCreateThread.attr('diasabled', false);
                     });
             });
@@ -163,7 +168,7 @@ function getThread(params) {
                 pagination,
                 user
             };
-            console.log(data);
+            
             return compile('forum/details', data);
         })
         .then(html => $mainContainer.html(html))
@@ -452,80 +457,79 @@ function getEditThreadPage(params) {
             const $formThreadEditTags = $('#form-edit-thread-tags');
 
             $btnEditThread.on('click', () => {
-                if (!$threadEditTitle.val().trim() || $threadEditTitle.val().trim().length < 5 || $threadEditTitle.val().trim().length > 50) {
-                    toastr.error('Thread title length must be between 5 and 50 symbols!');
-                    $formThreadEditTitle.addClass('has-error');
-                    !$threadEditTitle.focus();
-                    return;
-                } else {
-                    $formThreadEditTitle.removeClass('has-error');
+                let thread;
+                try {
+                    thread = new Thread($threadEditTitle.val(), $threadEditImageUrl.val(),
+                        $threadEditTags.val(), $threadEditCategory.val(), $threadEditContent.val());
+                } catch (error) {
+                    if (error.message.indexOf('Title') == 0) {
+                        toastr.error(error.message);
+                        $formThreadEditTitle.addClass('has-error');
+                        $threadEditTitle.focus();
+                        return;
+                    } else {
+                        $formThreadEditTitle.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('URL') > -1) {
+                        toastr.error(error.message);
+                        $formThreadEditImageUrl.addClass('has-error');
+                        !$threadEditImageUrl.focus();
+                        return;
+                    } else {
+                        $formThreadEditImageUrl.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('Tags') > -1) {
+                        toastr.error(error.message);
+                        $formThreadEditTags.addClass('has-error');
+                        !$threadEditTags.focus();
+                        return;
+                    } else {
+                        $formThreadEditTags.removeClass('has-error');
+                    }
+
+                    if (error.message.indexOf('category') > -1) {
+                        toastr.error(error.message);
+                        return;
+                    }
+
+                    if (error.message.indexOf('Content') > -1) {
+                        toastr.error('Thread content length must be between 5 and 2000 symbols!');
+                        $formThreadEditContent.addClass('has-error');
+                        !$threadEditContent.focus();
+                        return;
+                    } else {
+                        $formThreadEditContent.removeClass('has-error');
+                    }
                 }
 
-                if (!$threadEditImageUrl.val().trim() || $threadEditImageUrl.val().trim().length < 5) {
-                    toastr.error('Please enter a valid URL!');
-                    $formThreadEditImageUrl.addClass('has-error');
-                    !$threadEditImageUrl.focus();
-                    return;
-                } else {
-                    $formThreadEditImageUrl.removeClass('has-error');
-                }
-
-                if (!$threadEditTags.val().trim()) {
-                    toastr.error('Please enter at least one tag! Helps with searching the threads!');
-                    $formThreadEditTags.addClass('has-error');
-                    !$threadEditTags.focus();
-                    return;
-                } else {
-                    $formThreadEditTags.removeClass('has-error');
-                }
-
-                if (!$threadEditContent.val().trim()) {
-                    toastr.error('Thread content length must be between 5 and 2000 symbols!');
-                    $formThreadEditContent.addClass('has-error');
-                    !$threadEditContent.focus();
-                    return;
-                } else {
-                    $formThreadEditContent.removeClass('has-error');
-                }
-
-                $btnEditThread.addClass('diasabled');
+                $('.form-group').removeClass('has-error').addClass('has-success');
                 $btnEditThread.attr('diasabled', true);
 
-                let title = $threadEditTitle.val();
-                let content = $threadEditContent.val();
-                let imageUrl = $threadEditImageUrl.val();
-                let tags = $threadEditTags.val();
-                let category = $threadEditCategory.val();
-
-                forumService.editThread(id, title, content, imageUrl, category, tags)
-                    .then(response => {
-                        console.log(response);
+                forumService.editThread(id, thread.title, thread.content, thread.imageUrl, thread.category, thread.tags)
+                    .then(() => {
                         toastr.success('Thread successfully edited!');
                         $(location).attr('href', `#!/forum/details/${id}`);
                     })
                     .catch(error => {
                         console.log(error);
                         toastr.error('An error occured! Check if your data is valid or try again later!');
-                        $btnEditThread.removeClass('diasabled');
                         $btnEditThread.attr('diasabled', false);
                     });
             });
 
             let $btnRestore = $('#btn-restore-thread');
             $btnRestore.on('click', () => {
-                $btnRestore.addClass('disabled');
                 $btnRestore.attr('disabled', true);
 
                 forumService.flagThreadAsActive(params.id)
-                    .then(response => {
-                        console.log(response);
+                    .then(() => {
                         toastr.success('Thread restored');
                     })
                     .catch(error => {
                         console.log(error);
                         toastr.error('An error occured!');
-
-                        $btnRestore.removeClass('disabled');
                         $btnRestore.attr('disabled', false);
                     });
             });
@@ -540,8 +544,7 @@ function flagDeleteThread(params) {
     let id = params.id;
 
     forumService.flagThreadAsDeleted(id)
-        .then(response => {
-            console.log(response);
+        .then(() => {
             toastr.success('Thread deleted!');
             $(location).attr('href', '#!/forum');
         })

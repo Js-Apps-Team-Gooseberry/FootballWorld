@@ -230,6 +230,18 @@ module.exports = (data) => {
                 .catch(error => {
                     return res.status(500).json(error);
                 });
+        },
+        searchArticles(req, res) {
+            let page = +req.params.page;
+            let query = req.params.query == '!-!' ? '' : req.params.query;
+
+            data.searchArticles(page, query)
+                .then(articles => {
+                    return res.status(200).json(articles);
+                })
+                .catch(error => {
+                    return res.status(500).json(error);
+                });
         }
     };
 };

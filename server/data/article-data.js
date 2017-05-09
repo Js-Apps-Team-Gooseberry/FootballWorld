@@ -224,6 +224,38 @@ module.exports = (models) => {
                         });
                     });
             });
+        },
+        searchArticles(page, query) {
+            const pageSize = 5;
+
+            let queryObj = query.trim() ? { title: { '$regex': query.trim(), '$options': 'i' } } : {};
+
+            return new Promise((resolve, reject) => {
+                Article.find(queryObj)
+                    .where({ isDeleted: false })
+                    .sort({ createdOn: -1 })
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec((error, articles) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        Article.count(queryObj, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let data = {
+                                articles,
+                                pagesCount
+                            };
+
+                            return resolve(data);
+                        });
+                    });
+            });
         }
     };
 };

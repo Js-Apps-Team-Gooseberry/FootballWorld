@@ -9,7 +9,8 @@ toggleButtonsIfLoggedIn();
 const router = new Navigo(null, true, '#!');
 
 router
-    .on('/home', controllers.home.get)
+    .on('/home', controllers.home.getHomePage)    
+    .on('/search', controllers.home.getSearchPage)
     .on('/register', controllers.auth.register)
     .on('/login', controllers.auth.login)
     .on('/logout', controllers.auth.logout)
@@ -41,7 +42,7 @@ router
     .on('/articles/:page', controllers.articles.getAllArticles)
     .on('/articles/details/:id', controllers.articles.getArticleById)
     .on('articles/edit/:id',controllers.articles.editArticle)
-    .on('*', controllers.home.get)
+    .on('*', controllers.home.getHomePage)
     .resolve();
 
 $('#navbar-main').on('click', 'ul li a', () => {

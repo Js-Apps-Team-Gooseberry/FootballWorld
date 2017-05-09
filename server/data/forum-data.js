@@ -179,7 +179,6 @@ module.exports = (models) => {
             return new Promise((resolve, reject) => {
                 Thread.findOne({ _id: threadId }, (error, thread) => {
                     if (error) {
-                        console.log(error);
                         return reject(error);
                     }
 
@@ -189,13 +188,28 @@ module.exports = (models) => {
                             console.log(error);
                             return reject(error);
                         }
-                        console.log('here');
+
                         Category.findOne({ linkName: thread.category }, (error, category) => {
-                            console.log(error);
                             category.threads -= 1;
                             category.posts -= thread.posts.length;
-                            category.save();
+
+                            Thread.findOne({ category: thread.category })
+                                .where({ isDeleted: false })
+                                .exec((error, resThread) => {
+                                    if (error || !resThread) {
+                                        category.lastPost = null;
+                                    } else {
+                                        category.lastPost.author = resThread.author.username;
+                                        category.lastPost.thread = resThread.title;
+                                        category.lastPost.createdOn = resThread.lastPostCreatedOn;
+                                    }
+
+
+                                    category.save();
+                                });
                         });
+
+
 
                         return resolve(success);
                     });
@@ -218,7 +232,20 @@ module.exports = (models) => {
                         Category.findOne({ linkName: thread.category }, (error, category) => {
                             category.threads += 1;
                             category.posts += thread.posts.length;
-                            category.save();
+
+                            Thread.findOne({ category: thread.category })
+                                .where({ isDeleted: false })
+                                .exec((error, resThread) => {
+                                    if (error || !resThread) {
+                                        category.lastPost = null;
+                                    } else {
+                                        category.lastPost.author = resThread.author.username;
+                                        category.lastPost.thread = resThread.title;
+                                        category.lastPost.createdOn = resThread.lastPostCreatedOn;
+                                    }
+
+                                    category.save();
+                                });
                         });
 
                         return resolve(success);
@@ -237,7 +264,20 @@ module.exports = (models) => {
                         Category.findOne({ linkName: thread.category }, (error, category) => {
                             category.threads -= 1;
                             category.posts -= thread.posts.length;
-                            category.save();
+                            
+                            Thread.findOne({ category: thread.category })
+                                .where({ isDeleted: false })
+                                .exec((error, resThread) => {
+                                    if (error || !resThread) {
+                                        category.lastPost = null;
+                                    } else {
+                                        category.lastPost.author = resThread.author.username;
+                                        category.lastPost.thread = resThread.title;
+                                        category.lastPost.createdOn = resThread.lastPostCreatedOn;
+                                    }
+
+                                    category.save();
+                                });
                         });
                     }
 
@@ -309,7 +349,20 @@ module.exports = (models) => {
 
                         Category.findOne({ linkName: thread.category }, (error, category) => {
                             category.posts -= 1;
-                            category.save();
+                            
+                            Thread.findOne({ category: thread.category })
+                                .where({ isDeleted: false })
+                                .exec((error, resThread) => {
+                                    if (error || !resThread) {
+                                        category.lastPost = null;
+                                    } else {
+                                        category.lastPost.author = resThread.author.username;
+                                        category.lastPost.thread = resThread.title;
+                                        category.lastPost.createdOn = resThread.lastPostCreatedOn;
+                                    }
+
+                                    category.save();
+                                });
                         });
 
                         User.findOne({ _id: post.author.userId }, (error, user) => {
@@ -469,6 +522,38 @@ module.exports = (models) => {
             return new Promise((resolve, reject) => {
                 Thread.find(queryObj)
                     .sort(sortMethod)
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec((error, threads) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        Thread.count(queryObj, (error, count) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            let result = {
+                                threads,
+                                pagesCount
+                            };
+
+                            return resolve(result);
+                        });
+                    });
+            });
+        },
+        searchThreads(page, query) {
+            let pageSize = 5;
+
+            let queryObj = query.trim() ? { title: { '$regex': query.trim(), '$options': 'i' } } : {};
+
+            return new Promise((resolve, reject) => {
+                Thread.find(queryObj)
+                    .where({ isDeleted: false })
+                    .sort({ lastPostCreatedOn: -1 })
                     .skip((page - 1) * pageSize)
                     .limit(pageSize)
                     .exec((error, threads) => {

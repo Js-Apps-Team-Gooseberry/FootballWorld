@@ -103,6 +103,22 @@
     .news-container {
         padding: 30px 0 10px 0;
     }
+    .search-main-description, .search-meta, .search-main-image {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .search-meta, .search-main-image {
+        width: 16%;
+    }
+    .search-main-description {
+        width: 65%;
+    }
+    .search-meta {
+        padding: 0;
+    }
+    .btn-search-home-page {
+        margin-top: 20px;
+    }
 }
 
 @media only screen and (max-width: 720px) {
@@ -156,6 +172,9 @@
         border-top: 1px solid lightgrey;
         border-bottom: 1px solid lightgrey;
     }
+    .search-meta {
+        margin-top: 22px;
+    }
 }
 
 @media only screen and (max-width: 650px) {
@@ -164,6 +183,9 @@
     }
     .forum-main-image {
         background-size: 650px;
+    }
+    .search-main-description h3 {
+        font-size: 2rem;
     }
 }
 
@@ -200,6 +222,23 @@
     .home-related-entry {
         height: 250px;
         background-size: 500px;
+    }
+    .search-main-description, .search-meta, .search-main-image {
+        display: block;
+        width: initial;
+    }
+    .search-main-image {
+        height: 200px;
+        background-size: 510px;
+    }
+    .search-section {
+        border-right: 1px solid lightgrey;
+        border-bottom: 3px solid black;
+    }
+
+    .search-section:hover {
+        border-right: 1px solid lightgrey;
+        border-bottom: 3px solid #43AC6A;
     }
 }
 

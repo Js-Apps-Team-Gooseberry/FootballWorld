@@ -45,7 +45,15 @@
     "toastr": "^2.1.2"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-sinon": "^2.8.1",
     "eslint": "^3.19.0",
-    "nodemon": "^1.11.0"
+    "gulp": "^3.9.1",
+    "gulp-concat-css": "^2.3.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-systemjs-builder": "^0.15.0",
+    "mocha": "^3.3.0",
+    "nodemon": "^1.11.0",
+    "sinon": "^2.2.0"
   }
 }

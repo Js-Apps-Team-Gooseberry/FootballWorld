@@ -6,6 +6,7 @@ module.exports = function (app, data) {
     const controllers = require('../controllers/articles-controller')(data);
 
     router
+        .get('/search/:page/:query', controllers.searchArticles)
         .post('/create', controllers.createNewArticle)
         .post('/get-all-not-deleted-articles', controllers.getNotDeletedArticlesByPage)
         .post('/get-by-id', controllers.getArticleById)
