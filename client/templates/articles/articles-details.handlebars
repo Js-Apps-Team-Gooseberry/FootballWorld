@@ -5,7 +5,7 @@
 			<hr class="no-margin-bottom">
 			<div class="socials-container">
 				<div class="col-md-2 no-padding news-author-field">
-					<p class="no-margin-bottom">By </p>
+					<p class="no-margin-bottom">By <span class="bold"><a class="black-text" href="#!/profile/{{articles.author}}">{{articles.author}}</a></span></p>
 					<p class="italic small no-margin-bottom">
 						<time>{{#date articles.createdOn}}{{/date}}</time>
 					</p>
@@ -19,7 +19,7 @@
 				</a>
 				<div id="btn-comments-scroll" class="col-md-3 no-padding field-comments text-center">
 					<img class="icon-social" src="/public/assets/comments-icon.png" alt="comments">
-					<span id="news-comments-count" class="bold news-field-text">&nbsp;&nbsp;{{#commentsCount article.comments}}{{/commentsCount}}</span>
+					<span id="news-comments-count" class="bold news-field-text">&nbsp;&nbsp;{{#commentsCount articles.comments}}{{/commentsCount}}</span>
 				</div>
 				<div class="col-md-4 text-right tags-header">
 					{{#each articles.tags}}
@@ -127,6 +127,14 @@
 			</div>
 			<h4 class="text-center article-aside-prediction"><strong>MATCH PREDICTION</strong></h4>
 			<p class="text-center"><strong>{{articles.matchPrediction}}</strong></p>
+
+				<div class="text-right">
+					<h4 class="aside-title">Admin options</h4>
+					<a href="#!/articles/edit/{{articles._id}}" class="btn btn-danger btn-black">Edit Article</a>
+					<a href="#!/articles/delete/{{articles._id}}" id="btn-articles-delete" onclick="return confirm('Do you really want to delete this article?')"
+					   class="btn btn-danger btn-black">Delete Article</a>
+				</div>
+
 		</aside>
 	</div>
 </div>

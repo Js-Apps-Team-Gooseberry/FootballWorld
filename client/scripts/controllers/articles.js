@@ -1,4 +1,4 @@
-import {compile} from 'templates-compiler';
+import { compile } from 'templates-compiler';
 import $ from 'jquery';
 import * as articlesService from 'articles-service';
 import * as toastr from 'toastr';
@@ -23,7 +23,7 @@ function getAllArticles(params) {
                 page
             };
             console.log(data);
-            return compile('articles-list', data);
+            return compile('articles/articles-list', data);
         })
         .then(html => $mainContainer.html(html))
         .catch(error => {
@@ -54,10 +54,11 @@ function getArticleById(params) {
 
     articlesService.getArticleById(id)
         .then(articles => {
+            console.log(data);
             data.articles = articles;
             data.user = JSON.parse(localStorage.getItem('currentUser'));
 
-            return compile('articles-details', data);
+            return compile('articles/articles-details', data);
         })
         .catch(error => {
             if (error.status == 500) {
@@ -172,6 +173,7 @@ function deleteArticleComment(data) {
         }
         let commentId = $(ev.target).parent().parent().attr('id');
 
+        csole.log(commentId);
         articlesService.deleteComment(data.articles._id, commentId)
             .then(() => {
                 toastr.success('Comment successfully deleted!');
@@ -196,8 +198,76 @@ function facebookShareButton() {
     });
 }
 
+function flagArticlesAsDeleted() {
+
+    articlesService.flagArticleAsDeleted(id)
+        .then((response)=>{
+            console.log(response);
+            toastr.success('Article successfully flagged as deleted!');
+        })
+}
+
+function getEditArticlePage() {
+    if (!isAdmin()) {
+        $(location).attr('href', '#!/home');
+        toastr.error('Unauthorized!');
+        return;
+    }
+
+    articlesService.getArticleById(id)
+        .then(articles =>{
+            console.log(articles);
+            return compile('articles/articles-edit', articles);
+        })
+        .then(html => $mainContainer.html(html))
+        .then(()=>{
+
+            const $btnArticleEdit = $('#btn-article-edit'),
+                $articleEditTitle = $('#article-edit-title'),
+                $articleEditUrl = $('#article-edit-image-url'),
+                $articleEditPrediction = $('#article-edit-prediction'),
+                $articleEditSideA = $('#article-edit-sideA'),
+                $articleEditSideB = $('#article-edit-sideB'),
+                $articleEditInjuredA = $('#article-edit-injuredA'),
+                $articleEditInjuredB = $('#article-edit-injuredB'),
+                $articleEditLineupsA = $('#article-edit-lineupsA'),
+                $articleEditLineupsB = $('#article-edit-lineupsB'),
+                $articleEditContent = $('#article-edit-content');
+
+            $btnArticleEdit.on('click',()=>{
+
+                $btnArticleEdit.attr('disabled', true);
+                $btnArticleEdit.addClass('disabled');
+
+                let title = $articleEditTitle.val(),
+                    imageUrl = $articleEditUrl.val(),
+                    matchPrediction = $articleEditPrediction.val(),
+                    sideA = $articleEditSideA.val(),
+                    sideB = $articleEditSideB.val(),
+                    lineupsA = $articleEditLineupsA.val(),
+                    lineupsB = $articleEditLineupsB.val(),
+                    injuredA = $articleEditInjuredA.val(),
+                    injuredB = $articleEditInjuredB.val(),
+                    content = $articleEditContent.val();
+
+                articlesService.editArticle(params.id,title,imageUrl,content,matchPrediction,sideA,sideB,injuredB,injuredA,lineupsA,lineupsB)
+                    .then(() => {
+                        toastr.success('Article successfully altered!');
+                        $(location).attr('href', `#!/articles/details/${id}`);
+                    })
+                    .catch(error => {
+                        $btnArticleEdit.attr('disabled', false);
+                        $btnArticleEdit.removeClass('disabled');
+                        toastr.error('An error occured! Check if your data is correct or try again later!');
+                        console.log(error);
+                    });
+
+            })
+        })
+}
+
 function getCreateArticlePage() {
-    compile('articles-create')
+    compile('articles/articles-create')
         .then(html => $mainContainer.html(html))
         .then(() => {
             const $btnArticleCreate = $('#btn-article-create'),
@@ -295,4 +365,10 @@ function getCreateArticlePage() {
     }
 }
 
-export {getCreateArticlePage, getAllArticles, getArticleById};
+export {
+    getCreateArticlePage,
+    getAllArticles,
+    getArticleById,
+    flagArticlesAsDeleted,
+    getEditArticlePage
+};

@@ -31,8 +31,25 @@ function createNewArticle(title, imageUrl, matchPrediction, sideA, sideB, lineup
         injuredB,
         content
     };
-    console.log(body);
+
     return requester.postJSON('/api/articles/create', body)
+}
+
+function editArticles(id, title, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB) {
+    let body = {
+        title,
+        imageUrl,
+        content,
+        matchPrediction,
+        sideA,
+        sideB,
+        lineupsA,
+        lineupsB,
+        injuredA,
+        injuredB
+    };
+
+    return requester.putJSON(`/api/articles/edit-article/${id}`, body);
 }
 
 function commentArticle(articleId, userId, commentContent) {
@@ -54,4 +71,16 @@ function deleteComment(articleId, commentId) {
     return requester.deleteJSON('/api/articles/delete-comment', body);
 }
 
-export {createNewArticle, getNotDeletedArticlesByPage, getArticleById, commentArticle, deleteComment}
+function flagArticlesAsDeleted(id) {
+
+    return requester.putJSON(`/api/articles/flag-delete/${id}`);
+}
+
+export {
+    createNewArticle,
+    getNotDeletedArticlesByPage,
+    getArticleById,
+    commentArticle,
+    deleteComment,
+    flagArticlesAsDeleted,
+    editArticles }
