@@ -41,7 +41,7 @@ router
     .on('/articles', controllers.articles.getAllArticles)
     .on('/articles/:page', controllers.articles.getAllArticles)
     .on('/articles/details/:id', controllers.articles.getArticleById)
-    .on('articles/edit/:id',controllers.articles.editArticle)
+    // .on('articles/edit/:id',controllers.articles.editArticle)
     .on('*', controllers.home.getHomePage)
     .resolve();
 
