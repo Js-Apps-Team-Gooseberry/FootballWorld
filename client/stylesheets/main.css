@@ -321,7 +321,7 @@ nav a {
     word-break: break-word;
 }
 
-.news-container,  .admin-container {
+.news-container, .admin-container, .article-container {
     padding: 30px 22px 10px 22px;
     margin-top: -30px;
     background-color: white;
@@ -832,10 +832,10 @@ th, td {
 }
 
 .search-main-image {
-    height: 100px; 
+    height: 100px;
     overflow: hidden;
     background-position: center center;
-    background-size:200px;
+    background-size: 200px;
     background-repeat: no-repeat;
 }
 
@@ -853,4 +853,28 @@ th, td {
 
 .tag-link, .tag-link:hover {
     text-decoration: none;
+}
+
+.btn-add-comment-article {
+    margin-right: 5px;
+}
+
+.img-articles-list {
+    height: 150px;
+    overflow: hidden;
+    background-position: center center;
+    background-size: 380px;
+    background-repeat: no-repeat;
+}
+
+.article-entry h3, .article-entry span {
+    color: black;
+}
+
+.article-entry {    
+    border-bottom: 3px solid black;
+}
+
+.article-entry:hover {    
+    border-bottom: 3px solid #43ac6a;
 }

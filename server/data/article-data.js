@@ -41,7 +41,7 @@ module.exports = (models) => {
                             return reject(error);
                         }
 
-                        Article.count((error, count) => {
+                        Article.count({ isDeleted: false }, (error, count) => {
                             if (error) {
                                 return reject(error);
                             }

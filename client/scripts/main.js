@@ -40,8 +40,9 @@ router
     .on('/articles/create', controllers.articles.getCreateArticlePage)
     .on('/articles', controllers.articles.getAllArticles)
     .on('/articles/:page', controllers.articles.getAllArticles)
+    .on('/articles/delete/:id', controllers.articles.flagArticlesAsDeleted)
     .on('/articles/details/:id', controllers.articles.getArticleById)
-    // .on('articles/edit/:id',controllers.articles.editArticle)
+    .on('articles/edit/:id',controllers.articles.getEditArticlePage)
     .on('*', controllers.home.getHomePage)
     .resolve();
 

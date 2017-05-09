@@ -22,7 +22,7 @@ function getAllArticles(params) {
                 pageCount: data.pagesCount,
                 page
             };
-            console.log(data);
+            
             return compile('articles/articles-list', data);
         })
         .then(html => $mainContainer.html(html))
@@ -45,16 +45,11 @@ function getAllArticles(params) {
 }
 
 function getArticleById(params) {
-    if (!params || !params.id) {
-        // handle the 404
-    }
-
     let id = params.id;
     let data = {};
 
     articlesService.getArticleById(id)
         .then(articles => {
-            console.log(data);
             data.articles = articles;
             data.user = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -161,7 +156,7 @@ function getArticleComment(data) {
                 $articleCommentContent.attr('disabled', false);
                 $btnArticleComment.attr('disabled', false);
             });
-    })
+    });
 }
 
 function deleteArticleComment(data) {
@@ -171,9 +166,9 @@ function deleteArticleComment(data) {
         if (ev.isDefaultPrevented()) {
             return;
         }
+
         let commentId = $(ev.target).parent().parent().attr('id');
 
-        csole.log(commentId);
         articlesService.deleteComment(data.articles._id, commentId)
             .then(() => {
                 toastr.success('Comment successfully deleted!');
@@ -183,7 +178,7 @@ function deleteArticleComment(data) {
                 console.log(error);
                 toastr.error('An error occurred!');
             });
-    })
+    });
 }
 
 function facebookShareButton() {
@@ -198,30 +193,30 @@ function facebookShareButton() {
     });
 }
 
-function flagArticlesAsDeleted() {
-
+function flagArticlesAsDeleted(params) {
+    let id = params.id;
     articlesService.flagArticleAsDeleted(id)
-        .then((response)=>{
-            console.log(response);
+        .then(() => {
             toastr.success('Article successfully flagged as deleted!');
-        })
+            $(location).attr('href', '#!/articles');
+        });
 }
 
-function getEditArticlePage() {
+function getEditArticlePage(params) {
     if (!isAdmin()) {
         $(location).attr('href', '#!/home');
         toastr.error('Unauthorized!');
         return;
     }
 
+    let id = params.id;
+
     articlesService.getArticleById(id)
         .then(articles =>{
-            console.log(articles);
             return compile('articles/articles-edit', articles);
         })
         .then(html => $mainContainer.html(html))
         .then(()=>{
-
             const $btnArticleEdit = $('#btn-article-edit'),
                 $articleEditTitle = $('#article-edit-title'),
                 $articleEditUrl = $('#article-edit-image-url'),
@@ -235,7 +230,6 @@ function getEditArticlePage() {
                 $articleEditContent = $('#article-edit-content');
 
             $btnArticleEdit.on('click',()=>{
-
                 $btnArticleEdit.attr('disabled', true);
                 $btnArticleEdit.addClass('disabled');
 
@@ -262,8 +256,8 @@ function getEditArticlePage() {
                         console.log(error);
                     });
 
-            })
-        })
+            });
+        });
 }
 
 function getCreateArticlePage() {
@@ -333,7 +327,7 @@ function getCreateArticlePage() {
                         toastr.error('Invalid data! Try again!');
                         console.log(error);
                     });
-            })
+            });
         });
 
 

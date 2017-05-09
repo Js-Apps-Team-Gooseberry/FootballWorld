@@ -6,40 +6,40 @@
 					<h2 class="text-center">Edit Article</h2>
 					<hr/>
 					<div id="form-article-edit-title" class="form-group">
-						<input type="text" placeholder="Title" id="article-edit-title" class="form-control">
+						<input type="text" placeholder="Title" value="{{title}}" id="article-edit-title" class="form-control">
 					</div>
 					<div id="form-article-edit-image-url" class="form-group">
-						<input type="text" placeholder="Image Url" id="article-edit-image-url" class="form-control">
+						<input type="text" placeholder="Image Url" value="{{imageUrl}}" id="article-edit-image-url" class="form-control">
 					</div>
 					<div id="form-article-edit-prediction" class="form-group">
-						<input type="text" placeholder="Match Prediction" id="article-edit-prediction" class="form-control">
+						<input type="text" placeholder="Match Prediction" value="{{matchPrediction}}" id="article-edit-prediction" class="form-control">
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<div id="form-article-edit-sideA" class="form-group">
-								<input id="article-edit-sideA" type="text" placeholder="Home team" class="form-control">
+								<input id="article-edit-sideA" value="{{sideA}}" type="text" placeholder="Home team" class="form-control">
 							</div>
 							<div id="form-article-edit-lineupsA" class="form-group">
-								<textarea id="article-edit-lineupsA" placeholder="Team lineups" cols="20" rows="10" class="form-control"></textarea>
+								<textarea id="article-edit-lineupsA" placeholder="Team lineups" cols="20" rows="10" class="form-control"> {{lineupsA}} </textarea>
 							</div>
 							<div id="form-article-edit-injuredA" class="form-group">
-								<textarea id="article-edit-injuredA" placeholder="Injured players" cols="20" rows="5" class="form-control"></textarea>
+								<textarea id="article-edit-injuredA"  placeholder="Injured players" cols="20" rows="5" class="form-control">{{injuredA}}</textarea>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div id="form-article-edit-sideB" class="form-group">
-								<input id="article-edit-sideB" type="text" placeholder="Away team" class="form-control">
+								<input id="article-edit-sideB" value="{{sideB}}" type="text" placeholder="Away team" class="form-control">
 							</div>
 							<div id="form-article-edit-lineupsB" class="form-group">
-								<textarea id="article-edit-lineupsB" placeholder="Team lineups" cols="20" rows="10" class="form-control"></textarea>
+								<textarea id="article-edit-lineupsB" placeholder="Team lineups" cols="20" rows="10" class="form-control">{{lineupsB}}</textarea>
 							</div>
 							<div id="form-article-edit-injuredB" class="form-group">
-								<textarea id="article-edit-injuredB" placeholder="Injured players" cols="20" rows="5" class="form-control"></textarea>
+								<textarea id="article-edit-injuredB"  placeholder="Injured players" cols="20" rows="5" class="form-control">{{injuredB}}</textarea>
 							</div>
 						</div>
 					</div>
 					<div id="form-article-edit-content" class="form-group">
-						<textarea placeholder="Content" id="article-edit-content" cols="30" rows="10" class="form-control"></textarea>
+						<textarea placeholder="Content" id="article-edit-content" cols="30" rows="10" class="form-control">{{content}}</textarea>
 					</div>
 					<div class="text-center">
 						<button id="btn-article-edit" type="submit" class="btn btn-success">Submit</button>

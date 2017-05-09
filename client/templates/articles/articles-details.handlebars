@@ -1,4 +1,4 @@
-<div class="container news-container">
+<div class="container article-container">
 	<div class="row">
 		<header class="row article-header">
 			<h1 class="article-details-title">{{articles.title}}</h1>
@@ -10,8 +10,7 @@
 						<time>{{#date articles.createdOn}}{{/date}}</time>
 					</p>
 				</div>
-				<a id="btn-facebook-share"
-				   href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=http%3A%2F%2Ftsar-football.herokuapp.com%2Farticle%2F{{articles._id}}%2F%23!%2Farticles%2Fdetails%2F{{articles._id}}&display=popup&ref=plugin&src=share_button">
+				<a id="btn-facebook-share" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=http%3A%2F%2Ftsar-football.herokuapp.com%2Farticle%2F{{articles._id}}%2F%23!%2Farticles%2Fdetails%2F{{articles._id}}&display=popup&ref=plugin&src=share_button">
 					<div class="col-md-3 no-padding field-facebook text-center">
 						<img class="icon-social" src="/public/assets/facebook-icon.png" alt="facebook">
 						<span class="bold news-field-text">&nbsp;&nbsp;Share to Facebook</span>
@@ -23,7 +22,9 @@
 				</div>
 				<div class="col-md-4 text-right tags-header">
 					{{#each articles.tags}}
-						<span class="label label-success">{{this}}</span> {{/each}}
+					<a class="tag-link" href="#!/search?query={{this}}">
+                    <span class="label label-success">{{this}}</span> 
+                    </a>{{/each}}
 				</div>
 			</div>
 			<hr class="no-margin-bottom">
@@ -31,76 +32,67 @@
 		<main class="col-md-8">
 			<img class="article-details-img" src="{{articles.imageUrl}}" alt="">
 			<div>
-				<p class="article-detail-content">
-					{{articles.content}}
-				</p>
+				<p class="article-detail-content pre-wrap">{{articles.content}}</p>
 			</div>
 			<div>
-				<h3 class="text-center article-comments-border"><strong>Comments</strong></h3>
+				<h3 class="aside-title">Comments</h3>
 			</div>
 			<div id="articles-comment-box" class="comment-box">
 				{{#each articles.comments}}
-					<div class="row comment" id="{{_id}}">
-						<div class="col-md-2 comment-avatar">
-							<img src="{{author.userAvatar}}" alt="{{author.username}}"
-								 class="img-responsive img-circle">
-						</div>
-						<div class="col-md-10 comment-content">
-							<p class="inline-block"><span class="bold">{{author.username}}</span> <span
-									class="italic small">{{#date createdOn}}{{/date}}</span></p>
-							{{#deleteCommentBtn ../user author.userId}}
-								<p class="btn-article-delete-comment inline-block pull-right small btn-comment-delete"
-								   onclick="return confirm('Are you sure you want to delete this comment?')">
-									Delete
-								</p>
-							{{/deleteCommentBtn}}
-							<p>{{content}}</p>
-						</div>
+				<div class="row comment" id="{{_id}}">
+					<div class="col-md-2 comment-avatar">
+						<img src="{{author.userAvatar}}" alt="{{author.username}}" class="img-responsive img-circle">
 					</div>
+					<div class="col-md-10 comment-content">
+						<p class="inline-block"><span class="bold">{{author.username}}</span> <span class="italic small">{{#date createdOn}}{{/date}}</span></p>
+						{{#isAuthorized ../user author.userId}}
+						<p class="btn-article-delete-comment inline-block pull-right small btn-comment-delete" onclick="return confirm('Are you sure you want to delete this comment?')">
+							Delete
+						</p>
+						{{/isAuthorized}}
+						<p>{{content}}</p>
+					</div>
+				</div>
 				{{/each}}
 			</div>
 			{{#if user}}
-				<div id="article-comment-box" class="row new-comment-box">
-					<div class="col-md-2 comment-avatar">
-						<img src="{{user.profilePicture}}" alt="{{user.username}}" class="img-responsive img-circle">
-					</div>
-					<div class="col-md-10 comment-content">
-						<p class="inline-block"><span class="bold">{{user.username}}</span></p>
-						<div id="article-comment-form">
-							<textarea id="article-comment-content" cols="30" rows="2"
-									  placeholder="Type your comment here..." class="form-control"></textarea>
-						</div>
-					</div>
-					<div class="text-right">
-						<button class="btn btn-success btn-xs btn-news-comment hidden" id="btn-article-comment">Submit
-						</button>
+			<div id="article-comment-box" class="row new-comment-box">
+				<div class="col-md-2 comment-avatar">
+					<img src="{{user.profilePicture}}" alt="{{user.username}}" class="img-responsive img-circle">
+				</div>
+				<div class="col-md-10 comment-content">
+					<p class="inline-block"><span class="bold">{{user.username}}</span></p>
+					<div id="article-comment-form">
+						<textarea id="article-comment-content" cols="30" rows="2" placeholder="Type your comment here..." class="form-control"></textarea>
 					</div>
 				</div>
+				<div class="text-right">
+					<button class="btn btn-success btn-add-comment-article btn-xs btn-news-comment hidden" id="btn-article-comment">Submit</button>
+				</div>
+			</div>
 			{{else}} {{#unless articles.comments.length}}
-				<h4 class="text-center bold">No comments yet! Sign in and be the first to comment...</h4>
+			<h4 class="text-center bold">No comments yet! Sign in and be the first to comment...</h4>
 			{{/unless}} {{/if}}
 		</main>
 		<aside class="article-details-aside col-md-4">
 			<h4 class="text-center article-aside-lineups"><strong>POSSIBLE LINE-UPS</strong></h4>
 			<div class="row">
 				<div class="col-sm-6 text-center">
-					<span class="article-aside-team">{{articles.sideA}}</span>
-					{{#each articles.lineupsA}}
-						<ul class="text-center article-aside-team-list">
-							<li>
-								<span>{{this}}</span>
-							</li>
-						</ul>
+					<span class="article-aside-team">{{articles.sideA}}</span> {{#each articles.lineupsA}}
+					<ul class="text-center article-aside-team-list">
+						<li>
+							<span>{{this}}</span>
+						</li>
+					</ul>
 					{{/each}}
 				</div>
 				<div class="col-sm-6 text-center">
-					<span class="article-aside-team">{{articles.sideB}}</span>
-					{{#each articles.lineupsB}}
-						<ul class="text-center article-aside-team-list">
-							<li>
-								<span>{{this}}</span>
-							</li>
-						</ul>
+					<span class="article-aside-team">{{articles.sideB}}</span> {{#each articles.lineupsB}}
+					<ul class="text-center article-aside-team-list">
+						<li>
+							<span>{{this}}</span>
+						</li>
+					</ul>
 					{{/each}}
 				</div>
 			</div>
@@ -108,33 +100,25 @@
 				<h4 class="article-aside-injured text-center"><strong>INJURED</strong></h4>
 				<div class="col-sm-6">
 					{{#each articles.injuredA}}
-						<ul class="text-center article-aside-team-list">
-							<li>
-								<span>{{this}}</span>
-							</li>
-						</ul>
+					<ul class="text-center article-aside-team-list">
+						<li>
+							<span>{{this}}</span>
+						</li>
+					</ul>
 					{{/each}}
 				</div>
 				<div class="col-sm-6">
 					{{#each articles.injuredB}}
-						<ul class="text-center article-aside-team-list">
-							<li>
-								<span>{{this}}</span>
-							</li>
-						</ul>
+					<ul class="text-center article-aside-team-list">
+						<li>
+							<span>{{this}}</span>
+						</li>
+					</ul>
 					{{/each}}
 				</div>
 			</div>
 			<h4 class="text-center article-aside-prediction"><strong>MATCH PREDICTION</strong></h4>
 			<p class="text-center"><strong>{{articles.matchPrediction}}</strong></p>
-
-				<div class="text-right">
-					<h4 class="aside-title">Admin options</h4>
-					<a href="#!/articles/edit/{{articles._id}}" class="btn btn-danger btn-black">Edit Article</a>
-					<a href="#!/articles/delete/{{articles._id}}" id="btn-articles-delete" onclick="return confirm('Do you really want to delete this article?')"
-					   class="btn btn-danger btn-black">Delete Article</a>
-				</div>
-
 		</aside>
 	</div>
 </div>

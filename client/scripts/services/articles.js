@@ -14,7 +14,7 @@ function getArticleById(id) {
         articleId: id
     };
 
-    return requester.postJSON('/api/articles/get-by-id', body)
+    return requester.postJSON('/api/articles/get-by-id', body);
 }
 
 
@@ -32,10 +32,10 @@ function createNewArticle(title, imageUrl, matchPrediction, sideA, sideB, lineup
         content
     };
 
-    return requester.postJSON('/api/articles/create', body)
+    return requester.postJSON('/api/articles/create', body);
 }
 
-function editArticles(id, title, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB) {
+function editArticle(id, title, imageUrl, content, matchPrediction, sideA, sideB, lineupsA, lineupsB, injuredA, injuredB) {
     let body = {
         title,
         imageUrl,
@@ -71,7 +71,7 @@ function deleteComment(articleId, commentId) {
     return requester.deleteJSON('/api/articles/delete-comment', body);
 }
 
-function flagArticlesAsDeleted(id) {
+function flagArticleAsDeleted(id) {
 
     return requester.putJSON(`/api/articles/flag-delete/${id}`);
 }
@@ -82,5 +82,6 @@ export {
     getArticleById,
     commentArticle,
     deleteComment,
-    flagArticlesAsDeleted,
-    editArticles }
+    flagArticleAsDeleted,
+    editArticle
+ };
