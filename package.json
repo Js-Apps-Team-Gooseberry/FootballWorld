@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Js-Apps-Team-Gooseberry/TsarFootball#readme",
   "dependencies": {
+    "babel-core": "^6.24.1",
     "body-parser": "^1.17.1",
     "bootstrap": "^3.3.7",
     "cookie-parser": "^1.4.3",

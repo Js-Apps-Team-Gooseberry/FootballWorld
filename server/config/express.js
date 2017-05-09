@@ -12,6 +12,7 @@ app.use(cors());
 app.use('/public', express.static('client'));
 app.use('/libs', express.static('node_modules'));
 app.use('/tests', express.static('tests'));
+app.use('/build', express.static('build/client'));
 app.use(cookieParser());
 app.engine('handlebars', handlebars({}));
 app.set('view engine', 'handlebars');

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<!--Shareing meta data-->
+	<meta property="og:title" content="TsarFootball">
+	<meta property="og:description" content="News, analyses, predictions for the English Premier League games and more. Get the latest info about your favourite team and share your opinion about our favourite sport with other supporters.">
+	<meta property="og:image" content="http://tsar-football.herokuapp.com/public/assets/logo-page.png">
+	<meta property="og:url" content="http://tsar-football.herokuapp.com">
+	<!--Shareing meta data end-->
+	<link rel="shortcut icon" href="/public/assets/favicon.png" type="image/x-icon">
+	<link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+	<!--<link rel="stylesheet" href="/public/stylesheets/styles.min.css">-->
+	<title>TsarFootball</title>
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#!/home" class="navbar-brand"><img src="/public/assets/logo-main.png" class="navbar-logo" alt="tsar-football"></a>
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			</div>
+			<div class="navbar-collapse collapse" id="navbar-main">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="#!/home">Home</a>
+					</li>
+					<li>
+						<a href="#!/news">News</a>
+					</li>
+					<li>
+						<a href="#!/articles">Articles</a>
+					</li>
+					<li>
+						<a href="#!/forum">Forum</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right logged-out hidden">
+					<li><a href="#!/login">Sign In</a></li>
+					<li><a href="#!/register">Register</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right logged-in hidden">
+					<li class="admin hidden"><a href="#!/admin/users">Admin</a></li>
+					<li><a href="#!/profile">Profile</a></li>
+					<li><a href="#!/logout">Sign Out</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<main id="main-container">
+		<div class="container-fluid">
+			<div class="col-md-8 col-md-offset-2 text-center no-padding">
+				<div class="home-loader text-center">
+					<img src="/public/assets/home-loader.gif" class="home-loader-animation" alt="loader">
+					<h1 class="home-loader-title">Tsar Football</h1>
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4 text-center">
+					<a id="btn-facebook-share-site" href="https://www.facebook.com/sharer/sharer.php?app_id=1860370324230547&kid_directed_site=0&sdk=joey&u=http%3A%2F%2Ftsar-football.herokuapp.com&display=popup&ref=plugin&src=share_button">© Tsar Football 2017</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script src="/build/client/main.js"></script>
+</body>
+
+</html>

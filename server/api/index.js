@@ -1,4 +1,4 @@
-/* globals module require __dirname */
+/* globals module require __dirname process */
 
 const router = require('express').Router(),
     fs = require('fs'),
@@ -41,7 +41,11 @@ module.exports = (app, data) => {
                 res.render('bots', siteInfo);
             }
         } else {
-            res.status(200).sendFile(path.join(__dirname + '/../../client/index.html'));
+            if (process.env.NODE_ENV) {
+                res.status(200).sendFile(path.join(__dirname + '/../../build/client/index.html'));
+            } else {
+                res.status(200).sendFile(path.join(__dirname + '/../../client/index.html'));
+            }
         }
     });
 
