@@ -75,6 +75,7 @@ nav a {
 
 .article-entry {
     border: 1px solid lightgrey;
+    border-bottom: 3px solid black;
     cursor: pointer;
     box-shadow: 0 0 6px lightgrey;
     overflow: hidden;
@@ -872,9 +873,9 @@ th, td {
 }
 
 .article-entry {    
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid black !important;
 }
 
 .article-entry:hover {    
-    border-bottom: 3px solid #43ac6a;
+    border-bottom: 3px solid #43ac6a !important;
 }
