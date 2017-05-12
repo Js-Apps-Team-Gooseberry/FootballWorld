@@ -7,7 +7,7 @@ module.exports = function (app, data) {
 
     router
         .get('/search/:page/:query', controllers.searchNews)
-        .get('/get-all-for-users', controllers.getNewsForUsers)
+        .get('/get-all-for-users/:page/:pageSize', controllers.getNewsForUsers)
         .post('/create', controllers.createNewNewsEntry)
         .post('/get-by-id', controllers.getNewsEntryById)
         .post('/get-aside-latest', controllers.getLatestAsideNewsEntries)

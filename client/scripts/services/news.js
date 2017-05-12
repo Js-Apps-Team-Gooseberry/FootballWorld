@@ -1,12 +1,20 @@
 import * as requester from 'requester';
 
 function getNotDeletedArticlesByPage(page, pageSize) {
-    let headers = {
-        page,
-        pageSize
-    };
+    return requester.getJSON(`/api/news/get-all-for-users/${page}/${pageSize}`)
+        .then(response => {
+            let pagination = {
+                page: response.page,
+                pageCount: response.pagesCount
+            };
 
-    return requester.getJSON('/api/news/get-all-for-users', headers);
+            let data = {
+                newsEntries: response.newsEntries,
+                pagination
+            };
+
+            return data;
+        });
 }
 
 function getById(id) {

@@ -31,10 +31,15 @@ module.exports = (data) => {
                 });
         },
         getNewsForUsers(req, res) {
-            let page = req.headers.page;
-            let pageSize = req.headers.pagesize;
-            if (!page) {
+            let page = +req.params.page;
+            let pageSize = +req.params.pageSize;
+
+            if (!page || isNaN(page)) {
                 page = 1;
+            }
+
+            if (!pageSize || isNaN(pageSize)) {
+                pageSize = 10;
             }
 
             data.getNotDeletedNewsEntriesByPage(page, pageSize)

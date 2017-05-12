@@ -2,40 +2,22 @@ import { compile } from 'templates-compiler';
 import $ from 'jquery';
 import * as newsService from 'news-service';
 import * as toastr from 'toastr';
-import { isAdmin, isLoggedIn } from 'utils';
+import * as utils from 'utils';
 import { NewsEntry } from 'news-entry-model';
 import { Comment } from 'comment-model';
 
 const $mainContainer = $('#main-container');
 
 function getAll(params) {
-    let page;
-    if (!params || !params.page) {
-        page = 1;
-    } else {
-        page = params.page;
-    }
-
+    let page = !params ? 1 : params.page;
     let pageSize = 10;
 
     newsService.getNotDeletedArticlesByPage(page, pageSize)
         .then(data => {
-            data.pagination = {
-                pageCount: data.pagesCount,
-                page
-            };
             return compile('news/news-list', data);
         })
-        .then(html => $mainContainer.html(html))
-        .catch(error => {
-            if (error.status == 500) {
-                compile('errors/server-error')
-                    .then(html => $mainContainer.html(html));
-            } else if (error.status == 404) {
-                compile('errors/not-found')
-                    .then(html => $mainContainer.html(html));
-            }
-        })
+        .then(html => utils.changeMainContainerHtml(html))
+        .catch(error => utils.loadErrorPage(error))
         .then(() => {
             $('.pagination').on('click', 'a', () => {
                 $('html, body').animate({
@@ -62,39 +44,15 @@ function getById(params) {
         })
         .then(latest => {
             data.latest = latest;
-
-            if (localStorage.getItem('currentUser')) {
-                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                data.user = currentUser;
-            }
-
+            data.user = JSON.parse(localStorage.getItem('currentUser'));
             return compile('news/news-details', data);
         })
-        .then(html => $mainContainer.html(html))
-        .catch(error => {
-            if (error.status == 500) {
-                compile('errors/server-error')
-                    .then(html => $mainContainer.html(html));
-            } else if (error.status == 404) {
-                compile('errors/not-found')
-                    .then(html => $mainContainer.html(html));
-            }
-        })
+        .then(html => utils.changeMainContainerHtml(html))
+        .catch(error => utils.loadErrorPage(error))
         .then(() => {
             $('html, body').animate({
                 scrollTop: $('body').offset().top
             }, 500);
-
-            _bindFacebookShareButton();
-
-            const $newCommentTextArea = $('#news-new-comment-content'),
-                $btnNewsComment = $('#btn-news-comment');
-
-            _bindDeleteButtons(data);
-
-            $newCommentTextArea.on('focus', () => {
-                $btnNewsComment.removeClass('hidden');
-            });
 
             $('#btn-comments-scroll').on('click', () => {
                 $('html, body').animate({
@@ -102,6 +60,8 @@ function getById(params) {
                 }, 1000);
             });
 
+            _bindFacebookShareButton();
+            _bindDeleteButtons(data);
             _bindCommentButton(data);
         })
         .catch(error => {
@@ -148,8 +108,12 @@ function _bindCommentButton(data) {
         $formNewsNewComment = $('#form-news-new-comment'),
         $newsCommentBox = $('#news-comment-box');
 
+    $newCommentTextArea.on('focus', () => {
+        $btnNewsComment.removeClass('hidden');
+    });
+
     $btnNewsComment.on('click', () => {
-        if (!isLoggedIn()) {
+        if (!utils.isLoggedIn()) {
             toastr.error('You need to be logged in to comment!');
             return;
         }
@@ -199,7 +163,7 @@ function _bindCommentButton(data) {
 }
 
 function getCreatePage() {
-    if (!isAdmin()) {
+    if (!utils.isAdmin()) {
         $(location).attr('href', '#!/home');
         toastr.error('Unauthorized!');
         return;
@@ -280,7 +244,7 @@ function getCreatePage() {
 }
 
 function getEditPage(params) {
-    if (!isAdmin()) {
+    if (!utils.isAdmin()) {
         $(location).attr('href', '#!/home');
         toastr.error('Unauthorized!');
         return;
@@ -365,7 +329,7 @@ function getEditPage(params) {
                         toastr.success('Article successfully altered!');
                         $(location).attr('href', `#!/news/details/${params.id}`);
                     })
-                    .catch(error => {
+                    .catch(() => {
                         $btnNewsEdit.attr('disabled', false);
                         $btnNewsEdit.removeClass('disabled');
                         toastr.error('An error occured! Check if your data is correct or try again later!');
@@ -395,7 +359,7 @@ function getEditPage(params) {
 function flagNewsEntryAsDeleted(params) {
     let id = params.id;
 
-    if (!isAdmin()) {
+    if (!utils.isAdmin()) {
         $(location).attr('href', `#!/news/details/${params.id}`);
         toastr.error('Unauthorized!');
         return;
@@ -418,8 +382,4 @@ function flagNewsEntryAsDeleted(params) {
         });
 }
 
-function _isUrlValid(str) {
-    let pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$', 'i');
-    return pattern.test(str);
-}
 export { getAll, getById, getCreatePage, getEditPage, flagNewsEntryAsDeleted };

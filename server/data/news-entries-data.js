@@ -32,32 +32,38 @@ module.exports = (models) => {
             });
         },
         getNotDeletedNewsEntriesByPage(page, pageSize) {
-            pageSize = +pageSize;
             return new Promise((resolve, reject) => {
-                NewsEntry.find({})
-                    .where({ isDeleted: false })
-                    .sort({ createdOn: -1 })
-                    .skip((page - 1) * pageSize)
-                    .limit(pageSize)
-                    .exec((error, newsEntries) => {
-                        if (error) {
-                            return reject(error);
-                        }
+                NewsEntry.count((error, count) => {
+                    if (error) {
+                        return reject(error);
+                    }
 
-                        NewsEntry.count((error, count) => {
+                    let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                    if (page < 1) {
+                        page = 1;
+                    } else if (page > pagesCount) {
+                        page = pagesCount;
+                    }
+
+                    NewsEntry.find({})
+                        .where({ isDeleted: false })
+                        .sort({ createdOn: -1 })
+                        .skip((page - 1) * pageSize)
+                        .limit(pageSize)
+                        .exec((error, newsEntries) => {
                             if (error) {
                                 return reject(error);
                             }
-
-                            let pagesCount = pageCalculator.getPagesCount(count, pageSize);
+                            
                             let news = {
                                 newsEntries,
-                                pagesCount
+                                pagesCount,
+                                page
                             };
 
                             return resolve(news);
                         });
-                    });
+                });
             });
         },
         getNewsEntryById(id) {

@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import * as loader from 'templates-compiler';
 
 function toggleButtonsIfLoggedIn() {
     const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -141,6 +142,12 @@ function bindHomePageEvents() {
     });
 }
 
+function loadErrorPage(error) {
+    let templateName = error.status == 404 ? 'errors/not-found' : 'errors/server-error';
+    loader.compile(templateName)
+        .then(html => $('#main-container').html(html));
+}
+
 export {
     toggleButtonsIfLoggedIn,
     formatDate,
@@ -152,5 +159,6 @@ export {
     changeMainContainerHtml,
     searchQueryExtractor,
     isUrlValid,
-    bindHomePageEvents
+    bindHomePageEvents,
+    loadErrorPage
 };
