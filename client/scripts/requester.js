@@ -1,90 +1,57 @@
 import $ from 'jquery';
 
-function get(url) {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url,
-            method: 'GET'
-        })
-            .done(resolve)
-            .fail(reject);
-    });
-}
-
 function apiGetJSON(url, headers = {}) {
     headers['X-Auth-Token'] = 'd0063ff1d3264556a92143db04f9b24a';
+    return ajax('GET', url, null, headers);
+}
 
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url,
-            method: 'GET',
-            headers: headers
-        })
-            .done(resolve)
-            .fail(reject);
-    });
+function get(url) {
+    return ajax('GET', url, null, null);
 }
 
 function getJSON(url, headers = {}) {
-    headers.authorization = localStorage.getItem('token');
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url,
-            method: 'GET',
-            headers: headers,
-            contentType: 'application/json'
-        })
-            .done(resolve)
-            .fail(reject);
-    });
+    return ajaxWithSetHeaders('GET', url, null, headers);
 }
 
 function putJSON(url, body, headers = {}) {
-    headers.authorization = localStorage.getItem('token');
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url,
-            headers,
-            method: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(body)
-        })
-            .done(resolve)
-            .fail(reject);
-    });
+    return ajaxWithSetHeaders('PUT', url, body, headers);
 }
 
 function postJSON(url, body, headers = {}) {
-    headers.authorization = localStorage.getItem('token');
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url,
-            headers,
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(body)
-        })
-            .done(resolve)
-            .fail(reject);
-    });
+    return ajaxWithSetHeaders('POST', url, body, headers);
 }
 
 function deleteJSON(url, body, headers = {}) {
-    headers.authorization = localStorage.getItem('token');
+    return ajaxWithSetHeaders('DELETE', url, body, headers);
+}
 
+function ajaxWithSetHeaders(method, url, body, headers = {}) {
+    headers.authorization = localStorage.getItem('token');
+    headers['content-type'] = 'application/json';
+    return ajax(method, url, body, headers);
+}
+
+function ajax(method, url, body, headers = {}) {
+    let timeout = setTimeout(() => {
+        $('#loader').show();
+    }, 300);
     return new Promise((resolve, reject) => {
         $.ajax({
             url,
             headers,
-            method: 'DELETE',
-            contentType: 'application/json',
+            method,
             data: JSON.stringify(body)
         })
-            .done(resolve)
-            .fail(reject);
+            .done(result => {
+                clearTimeout(timeout);
+                $('#loader').hide();
+                return resolve(result);
+            })
+            .fail(error => {
+                clearTimeout(timeout);
+                $('#loader').hide();
+                return reject(error);
+            });
     });
 }
 

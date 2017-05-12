@@ -120,6 +120,27 @@ function searchQueryExtractor(query) {
     };
 }
 
+function bindHomePageEvents() {
+    $('#navbar-main').on('click', 'ul li a', () => {
+        $('#navbar-main').collapse('hide');
+    });
+
+    $('#btn-facebook-share-site').click((ev) => {
+        ev.preventDefault();
+        window.open(
+            $('#btn-facebook-share-site').attr('href'),
+            'popupWindow',
+            'width=600,height=600'
+        );
+    });
+
+    $('.nav-link').click(() => {
+        $('html, body').animate({
+            scrollTop: $('body').offset().top
+        }, 500);
+    });
+}
+
 export {
     toggleButtonsIfLoggedIn,
     formatDate,
@@ -130,5 +151,6 @@ export {
     validateEmail,
     changeMainContainerHtml,
     searchQueryExtractor,
-    isUrlValid
+    isUrlValid,
+    bindHomePageEvents
 };

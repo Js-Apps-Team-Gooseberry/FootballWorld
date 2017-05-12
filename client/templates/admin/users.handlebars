@@ -33,9 +33,9 @@
             <thead>
                 <tr>
                     <th>Username</th>
-                    <th>E-Mail</th>
-                    <th>Role</th>
-                    <th>Registration Date</th>
+                    <th  class="low-res-hidden">E-Mail</th>
+                    <th class="lowest-res-hidden">Role</th>
+                    <th><span class="low-res-hidden">Registration</span> Date</th>
                     <th>Status</th>
                     <th></th>
                     <th></th>
@@ -49,12 +49,12 @@
                             <h5><a class="black-text" href="#!/profile/{{username}}">{{username}}</a></h5>
                         </a>
                     </td>
-                    <td>{{email}}</td>
-                    <td>{{#if admin}}Admin{{else}}User{{/if}}</td>
+                    <td class="low-res-hidden">{{email}}</td>
+                    <td class="lowest-res-hidden">{{#if admin}}Admin{{else}}User{{/if}}</td>
                     <td>{{#date registeredOn}}{{/date}}</td>
                     <td>{{#if isDeleted}}Blocked{{else}}Active{{/if}}</td>
-                    <td class=text-center><a href="#!/update-profile/{{_id}}" class="btn btn-danger btn-black btn-xs">Edit</a></td>
-                    <td class=text-center><button onclick="return confirm('Are ypu sure you want to permanently delete this user?')" class="btn btn-danger btn-black btn-xs btn-user-delete-premanently">Remove</button></td>
+                    <td class="text-center low-res-no-padding-right"><a href="#!/update-profile/{{_id}}" class="btn btn-danger btn-black btn-xs">Edit</a></td>
+                    <td class="text-center low-res-no-padding-right"><button onclick="return confirm('Are ypu sure you want to permanently delete this user?')" class="btn btn-danger btn-black btn-xs btn-user-delete-premanently">Remove</button></td>
                 </tr>
                 {{/each}}
             </tbody>

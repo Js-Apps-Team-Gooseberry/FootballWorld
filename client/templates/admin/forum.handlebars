@@ -37,10 +37,10 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Author</th>
-                    <th>Category</th>
-                    <th>Last activity</th>
-                    <th>Status</th>
+                    <th class="lowest-res-hidden">Author</th>
+                    <th class="lowest-res-hidden">Category</th>
+                    <th class="low-res-no-padding-right">Last activity</th>
+                    <th class="low-res-no-padding-right">Status</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -53,13 +53,13 @@
                             <h5>{{title}}</h5>
                         </a>
                     </td>
-                    <td>
+                    <td class="lowest-res-hidden">
                         <a class="black-text" href="#!/profile/{{author.username}}">{{author.username}}</a></td>
-                    <td>{{category}}</td>
-                    <td>{{#date lastPostCreatedOn}}{{/date}}</td>
-                    <td>{{#if isDeleted}}Flagged as deleted{{else}}Active{{/if}}</td>
-                    <td class=text-center><a href="#!/forum/edit/{{_id}}" class="btn btn-danger btn-black btn-xs">Edit</a></td>
-                    <td class=text-center><button onclick="return confirm('Are ypu sure you want to permanently delete this thread?')" class="btn btn-danger btn-black btn-xs btn-forum-delete-premanently">Remove</button></td>
+                    <td class="lowest-res-hidden">{{category}}</td>
+                    <td class="low-res-no-padding-right">{{#date lastPostCreatedOn}}{{/date}}</td>
+                    <td class="low-res-no-padding-right">{{#if isDeleted}}Flagged as deleted{{else}}Active{{/if}}</td>
+                    <td class="text-center low-res-no-padding-right"><a href="#!/forum/edit/{{_id}}" class="btn btn-danger btn-black btn-xs">Edit</a></td>
+                    <td class="text-center low-res-no-padding-right"><button onclick="return confirm('Are ypu sure you want to permanently delete this thread?')" class="btn btn-danger btn-black btn-xs btn-forum-delete-premanently">Remove</button></td>
                 </tr>
                 {{/each}}
             </tbody>

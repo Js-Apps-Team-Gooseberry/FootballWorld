@@ -26,6 +26,7 @@ function getHomePage() {
         .then(html => $mainContainer.html(html))
         .then(() => {
             _bindSearchAssets();
+            utils.bindHomePageEvents();
         })
         .catch(() => {
             toastr.error('An error occured! Redirecting to another section...');

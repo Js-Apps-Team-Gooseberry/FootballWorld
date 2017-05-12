@@ -11,6 +11,7 @@ if (typeof window == 'undefined') {
 
             // app
             'main': './client/scripts/main.js',
+            'routing': './client/scripts/routing.js',
             'utils': './client/scripts/utils.js',
             'toastr': './client/scripts/config/toastr-config.js',
             'requester': './client/scripts/requester.js',
@@ -62,6 +63,7 @@ if (typeof window == 'undefined') {
 
             // app
             'main': '/public/scripts/main.js',
+            'routing': '/public/scripts/routing.js',
             'utils': '/public/scripts/utils.js',
             'toastr': '/public/scripts/config/toastr-config.js',
             'requester': '/public/scripts/requester.js',

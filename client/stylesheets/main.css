@@ -880,3 +880,32 @@ th, td {
 .article-entry:hover {    
     border-bottom: 3px solid #43ac6a !important;
 }
+
+.loader {
+  border: 5px solid #fff;
+  border-radius: 50%;
+  border: 5px solid #333;
+  border-top: 5px solid #fff;
+  width: 25px;
+  height: 25px;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 0.5s linear infinite;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.home-loader-animation {
+    max-width: 200px;
+}
