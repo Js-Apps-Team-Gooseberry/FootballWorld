@@ -13,7 +13,9 @@
 	<!--Shareing meta data end-->
 	<link rel="shortcut icon" href="/public/assets/favicon.png" type="image/x-icon">
 	<link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
-	<link rel="stylesheet" href="/build/stylesheets/styles.min.css">
+	<!-- inject:css -->
+	<link rel="stylesheet" href="/build/css/styles.min.css">
+	<!-- endinject -->
 	<title>TsarFootball</title>
 </head>
 
@@ -21,7 +23,7 @@
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
-				<a href="#!/home" class="navbar-brand"><img src="/public/assets/logo-main.png" class="navbar-logo" alt="tsar-football"></a>
+				<a href="#!/home" class="navbar-brand nav-link"><img src="/public/assets/logo-main.png" class="navbar-logo" alt="tsar-football"></a>
 				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -31,16 +33,16 @@
 			<div class="navbar-collapse collapse" id="navbar-main">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="#!/home">Home</a>
+						<a class="nav-link" href="#!/home">Home</a>
 					</li>
 					<li>
-						<a href="#!/news">News</a>
+						<a class="nav-link" href="#!/news">News</a>
 					</li>
 					<li>
-						<a href="#!/articles">Articles</a>
+						<a class="nav-link" href="#!/articles">Articles</a>
 					</li>
 					<li>
-						<a href="#!/forum">Forum</a>
+						<a class="nav-link" href="#!/forum">Forum</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right logged-out hidden">
@@ -48,19 +50,19 @@
 					<li><a href="#!/register">Register</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right logged-in hidden">
-					<li class="admin hidden"><a href="#!/admin/users">Admin</a></li>
+					<li class="admin hidden nav-link"><a href="#!/admin/users">Admin</a></li>
 					<li><a href="#!/profile">Profile</a></li>
 					<li><a href="#!/logout">Sign Out</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-
+	<div class="loader" id="loader"></div>
 	<main id="main-container">
 		<div class="container-fluid">
 			<div class="col-md-8 col-md-offset-2 text-center no-padding">
 				<div class="home-loader text-center">
-					<img src="/public/assets/home-loader.gif" class="home-loader-animation" alt="loader">
+					<img src="/public/assets/logo-large.png" class="home-loader-animation" alt="loader">
 					<h1 class="home-loader-title">Tsar Football</h1>
 				</div>
 			</div>
@@ -75,7 +77,10 @@
 			</div>
 		</div>
 	</footer>
-	<script src="/build/scripts/main.js"></script>
+
+	<!-- inject:js -->
+	<script src="/build/scripts/main.min.js"></script>
+	<!-- endinject -->
 </body>
 
 </html>

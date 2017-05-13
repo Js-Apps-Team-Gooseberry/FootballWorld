@@ -12,7 +12,7 @@ function getNotDeletedArticlesByPage(page, pageSize) {
                 newsEntries: response.newsEntries,
                 pagination
             };
-
+            
             return data;
         });
 }

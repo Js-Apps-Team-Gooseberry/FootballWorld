@@ -48,7 +48,7 @@ nav a {
     font-family: 'Charlemagne';
     font-style: normal;
     font-weight: normal;
-    src: local('Charlemagne Std Bold'), url('./CharlemagneStd-Bold.woff') format('woff');
+    src: local('Charlemagne Std Bold'), url('../fonts/CharlemagneStd-Bold.woff') format('woff');
 }
 
 .home-loader {

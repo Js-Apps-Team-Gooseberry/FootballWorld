@@ -42,7 +42,7 @@ module.exports = (app, data) => {
             }
         } else {
             if (process.env.NODE_ENV) {
-                res.status(200).sendFile(path.join(__dirname + '/../../build/client/index.html'));
+                res.status(200).sendFile(path.join(__dirname + '/../../build/index.html'));
             } else {
                 res.status(200).sendFile(path.join(__dirname + '/../../client/index.html'));
             }

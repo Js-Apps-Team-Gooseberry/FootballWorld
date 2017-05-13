@@ -12,47 +12,17 @@ describe('News service tests', () => {
 
         let getJsonStub;
         beforeEach(() => {
-            getJsonStub = sinon.stub(requester, 'getJSON').returns(Promise.resolve());
+            getJsonStub = sinon.stub(requester, 'getJSON').returns(Promise.resolve({}));
         });
 
         afterEach(() => {
             getJsonStub.restore();
         });
 
-        it('make a put request ot correct url', (done) => {
+        it('make a put request ot correct url', (done) => {     
             newsService.getNotDeletedArticlesByPage(page, pageSize)
                 .then(() => {
-                    expect(getJsonStub).to.be.calledWith('/api/news/get-all-for-users');
-                })
-                .then(done, done);
-        });
-
-        it('make a put request ot correct params', (done) => {
-            let data = {
-                page,
-                pageSize
-            };
-
-            getJsonStub.returns(Promise.resolve(data));
-
-            newsService.getNotDeletedArticlesByPage(page, pageSize)
-                .then(() => {
-                    expect(getJsonStub.args[0][1]).to.be.deep.equal(data);
-                })
-                .then(done, done);
-        });
-
-        it('make a put request with correctly named headers', (done) => {
-            let data = {
-                page,
-                pageSize
-            };
-
-            getJsonStub.returns(Promise.resolve(data));
-
-            newsService.getNotDeletedArticlesByPage(page, pageSize)
-                .then(() => {
-                    expect(getJsonStub.args[0][1]).to.include.keys('page', 'pageSize');
+                    expect(getJsonStub).to.be.calledWith(`/api/news/get-all-for-users/${page}/${pageSize}`);
                 })
                 .then(done, done);
         });
