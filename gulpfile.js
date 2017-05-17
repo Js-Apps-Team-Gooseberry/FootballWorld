@@ -4,6 +4,7 @@ const gulp = require('gulp'),
     concatCss = require('gulp-concat-css'),
     minifyCss = require('gulp-minify-css'),
     systemjsBuilder = require('gulp-systemjs-builder'),
+    clean = require('gulp-clean'),
     inject = require('gulp-inject');
 
 const path = require('path');
@@ -29,6 +30,11 @@ gulp.task('build-css', () => {
 gulp.task('copy-fonts', () => {
     gulp.src('./client/fonts/**')
         .pipe(gulp.dest('./build/fonts'));
+});
+
+gulp.task('clean', () => {
+    gulp.src('./build')
+        .pipe(clean());
 });
 
 gulp.task('inject-html', () => {
