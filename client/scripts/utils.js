@@ -124,6 +124,9 @@ function searchQueryExtractor(query) {
 function bindHomePageEvents() {
     $('#navbar-main').on('click', 'ul li a', () => {
         $('#navbar-main').collapse('hide');
+        $('html, body').animate({
+            scrollTop: $('body').offset().top
+        }, 100);
     });
 
     $('#btn-facebook-share-site').click((ev) => {
@@ -133,12 +136,6 @@ function bindHomePageEvents() {
             'popupWindow',
             'width=600,height=600'
         );
-    });
-
-    $('.nav-link').click(() => {
-        $('html, body').animate({
-            scrollTop: $('body').offset().top
-        }, 500);
     });
 }
 

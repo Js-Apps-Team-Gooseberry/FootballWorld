@@ -5,6 +5,7 @@ const gulp = require('gulp'),
     minifyCss = require('gulp-minify-css'),
     systemjsBuilder = require('gulp-systemjs-builder'),
     clean = require('gulp-clean'),
+    uglify = require('gulp-uglify'),
     inject = require('gulp-inject');
 
 const path = require('path');
@@ -17,6 +18,7 @@ gulp.task('build-sjs', () => {
         minify: true,
         mangle: false
     })
+        .pipe(uglify())
         .pipe(gulp.dest('./build'));
 });
 
